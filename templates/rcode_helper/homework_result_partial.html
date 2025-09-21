@@ -1,0 +1,124 @@
+<div class="result-section">
+    <h3 class="mb-4 text-center">
+        <i class="fas fa-magic text-primary me-2"></i>AI生成的解决方案
+    </h3>
+    
+    {% for solution in solutions %}
+    <div class="result-card">
+        <div class="result-header">
+            <div class="result-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <div>
+                <h5 class="result-title">{{ solution.name }}</h5>
+                <p class="text-muted mb-0">{{ solution.description }}</p>
+            </div>
+        </div>
+        
+        <div class="code-section">
+            <h6 class="code-header">
+                <i class="fas fa-file-code me-2"></i>R语言代码
+            </h6>
+            <pre><code class="language-r">{{ solution.code }}</code></pre>
+        </div>
+        
+        {% if solution.explanation %}
+        <div class="explanation-section mt-4">
+            <h6 class="explanation-header">
+                <i class="fas fa-lightbulb me-2"></i>代码说明
+            </h6>
+            <div class="explanation-content">
+                {{ solution.explanation|linebreaks }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <div class="text-center mt-4">
+        <small class="text-muted">
+            <i class="fas fa-info-circle me-1"></i>
+            生成时间：{{ request.session.created_at|default:"刚刚" }}
+        </small>
+    </div>
+</div>
+
+<style>
+.result-card {
+    background: rgba(255, 182, 193, 0.1);
+    border: 1px solid rgba(255, 182, 193, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 105, 180, 0.15);
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 182, 193, 0.2);
+}
+
+.result-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.result-title {
+    font-weight: 700;
+    color: #ff1493;
+    margin: 0;
+    font-size: 20px;
+}
+
+.code-section {
+    margin-bottom: 20px;
+}
+
+.code-header, .explanation-header {
+    font-weight: 600;
+    color: #ff1493;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+pre {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 182, 193, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 0;
+    overflow-x: auto;
+}
+
+code {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.explanation-content {
+    background: rgba(255, 192, 203, 0.1);
+    border-left: 4px solid #ff69b4;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #555;
+}
+</style>

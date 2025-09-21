@@ -3,6 +3,7 @@ import requests
 import re
 from django.conf import settings
 from typing import List, Dict, Optional
+from .prompts import PromptManager
 
 
 class DeepSeekService:
@@ -16,9 +17,12 @@ class DeepSeekService:
             'Content-Type': 'application/json'
         }
     
-    def _make_request(self, prompt: str, max_tokens: int = 4000) -> Optional[str]:
+    def _make_request(self, prompt: str, request_type: str = 'chat') -> Optional[str]:
         """向DeepSeek API发送请求"""
         try:
+            # 获取模型配置
+            config = PromptManager.get_model_config(request_type)
+            
             data = {
                 "model": "deepseek-chat",
                 "messages": [
@@ -27,8 +31,8 @@ class DeepSeekService:
                         "content": prompt
                     }
                 ],
-                "max_tokens": max_tokens,
-                "temperature": 0.7,
+                "max_tokens": config["max_tokens"],
+                "temperature": config["temperature"],
                 "stream": False
             }
             
@@ -52,45 +56,8 @@ class DeepSeekService:
     
     def generate_homework_solutions(self, homework_question: str) -> List[Dict[str, str]]:
         """为R语言作业题生成三种解决方案"""
-        prompt = f"""
-你是一位专业的R语言教师，请为以下作业题提供三种不同的R语言解决方案。
-
-作业题目：{homework_question}
-
-请按照以下格式返回，每种方案都要包含：
-1. 方案名称（简洁明了，体现解决思路）
-2. 完整的R语言代码（包含详细的中文注释）
-3. 方法说明（解释这种方法的特点和适用场景）
-
-请严格按照以下JSON格式返回：
-{{
-    "solutions": [
-        {{
-            "name": "方案一名称",
-            "code": "# 这里是带中文注释的R代码\\n# 注释要详细解释每一步\\ndata <- read.csv('file.csv')\\n# 更多代码...",
-            "description": "这种方法的特点和说明"
-        }},
-        {{
-            "name": "方案二名称", 
-            "code": "# 第二种方法的R代码\\n# 详细注释...",
-            "description": "第二种方法的说明"
-        }},
-        {{
-            "name": "方案三名称",
-            "code": "# 第三种方法的R代码\\n# 详细注释...",
-            "description": "第三种方法的说明"
-        }}
-    ]
-}}
-
-要求：
-1. 三种方案要体现不同的解决思路或使用不同的R包/函数
-2. 代码注释必须用中文，要详细解释每一步的作用
-3. 确保代码的正确性和实用性
-4. 方案名称要简洁有意义，体现各自特点
-"""
-        
-        response = self._make_request(prompt, max_tokens=3000)
+        prompt = PromptManager.get_homework_prompt(homework_question)
+        response = self._make_request(prompt, 'homework')
         
         if not response:
             return self._get_fallback_solutions()
@@ -109,28 +76,21 @@ class DeepSeekService:
     
     def explain_r_code(self, r_code: str) -> str:
         """解释R语言代码"""
-        prompt = f"""
-你是一位亲切的R语言老师，请用平易近人、形象具体的语气来解释以下R语言代码。
-
-R代码：
-```r
-{r_code}
-```
-
-请按照以下要求解释：
-1. 用通俗易懂的语言，就像对朋友讲解一样
-2. 逐步分析代码的功能和作用
-3. 对于复杂的概念，用生活中的比喻来说明
-4. 指出代码中的关键部分和注意事项
-5. 如果代码有问题，友好地指出并给出建议
-
-请用温暖、耐心的语气，让初学者也能理解。
-"""
-        
-        response = self._make_request(prompt, max_tokens=2000)
+        prompt = PromptManager.get_explanation_prompt(r_code)
+        response = self._make_request(prompt, 'explanation')
         
         if not response:
-            return "抱歉，暂时无法为您解释这段代码。请稍后再试或检查您的代码格式。"
+            return PromptManager.get_system_prompts()["fallback_messages"]["explanation"]
+        
+        return response
+    
+    def chat_with_user(self, user_message: str) -> str:
+        """与用户进行普通聊天"""
+        prompt = PromptManager.get_chat_prompt(user_message)
+        response = self._make_request(prompt, 'chat')
+        
+        if not response:
+            return PromptManager.get_system_prompts()["fallback_messages"]["chat"]
         
         return response
     

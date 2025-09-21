@@ -1,0 +1,181 @@
+<div class="result-section">
+    <h3 class="mb-4 text-center">
+        <i class="fas fa-comments text-success me-2"></i>AI助手回复
+    </h3>
+    
+    <div class="chat-container">
+        <div class="user-message">
+            <div class="message-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="message-info">
+                    <h6 class="message-sender">您的问题</h6>
+                    <small class="message-time">刚刚</small>
+                </div>
+            </div>
+            <div class="message-content">
+                {{ user_message|linebreaks }}
+            </div>
+        </div>
+        
+        <div class="ai-message">
+            <div class="message-header">
+                <div class="ai-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-info">
+                    <h6 class="message-sender">R语言专家</h6>
+                    <small class="message-time">刚刚</small>
+                </div>
+            </div>
+            <div class="message-content">
+                {{ chat_response|linebreaks }}
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-4">
+        <small class="text-muted">
+            <i class="fas fa-info-circle me-1"></i>
+            对话时间：{{ request.session.created_at|default:"刚刚" }}
+        </small>
+    </div>
+</div>
+
+<style>
+.chat-container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.user-message, .ai-message {
+    margin-bottom: 25px;
+    padding: 0;
+}
+
+.user-message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.ai-message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-message .message-header {
+    flex-direction: row-reverse;
+}
+
+.user-avatar, .ai-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    margin: 0 12px;
+}
+
+.user-avatar {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+}
+
+.ai-avatar {
+    background: linear-gradient(135deg, #20c997, #17a2b8);
+}
+
+.message-info {
+    text-align: left;
+}
+
+.user-message .message-info {
+    text-align: right;
+}
+
+.message-sender {
+    font-weight: 600;
+    color: #ff1493;
+    margin: 0;
+    font-size: 14px;
+}
+
+.message-time {
+    color: #888;
+    font-size: 12px;
+}
+
+.message-content {
+    max-width: 75%;
+    padding: 20px 25px;
+    border-radius: 20px;
+    font-size: 15px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    position: relative;
+}
+
+.user-message .message-content {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.user-message .message-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-left-color: #ff1493;
+    border-bottom: 0;
+    border-right: 0;
+}
+
+.ai-message .message-content {
+    background: rgba(255, 182, 193, 0.1);
+    border: 1px solid rgba(255, 182, 193, 0.3);
+    color: #333;
+    border-bottom-left-radius: 5px;
+}
+
+.ai-message .message-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-right-color: rgba(255, 182, 193, 0.3);
+    border-bottom: 0;
+    border-left: 0;
+}
+
+@media (max-width: 768px) {
+    .message-content {
+        max-width: 85%;
+        padding: 15px 20px;
+        font-size: 14px;
+    }
+    
+    .user-avatar, .ai-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+}
+</style>

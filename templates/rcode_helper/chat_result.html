@@ -1,0 +1,105 @@
+{% extends 'rcode_helper/base.html' %}
+
+{% block title %}聊天结果 - R语言助手{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- 返回按钮 -->
+        <div class="mb-3">
+            <a href="{% url 'rcode_helper:home' %}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-1"></i>返回首页
+            </a>
+        </div>
+
+        <!-- 聊天对话框 -->
+        <div class="chat-container">
+            <!-- 用户消息 -->
+            <div class="message-wrapper user-message mb-4">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <i class="fas fa-user fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">您</h6>
+                            <small class="opacity-75">刚刚</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text mb-0">{{ user_message }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI回复 -->
+            <div class="message-wrapper ai-message mb-4">
+                <div class="card border-info">
+                    <div class="card-header bg-info text-white d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <i class="fas fa-robot fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">R语言专家</h6>
+                            <small class="opacity-75">刚刚</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-response">
+                            {{ chat_response|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="text-center mt-5">
+            <a href="{% url 'rcode_helper:home' %}" class="btn btn-info btn-lg me-3">
+                <i class="fas fa-plus me-2"></i>继续聊天
+            </a>
+            <a href="{% url 'rcode_helper:history' %}" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-history me-2"></i>查看历史记录
+            </a>
+        </div>
+
+        <!-- 聊天提示 -->
+        <div class="alert alert-light mt-5">
+            <h6><i class="fas fa-lightbulb me-2 text-warning"></i>聊天小贴士</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="mb-0">
+                        <li class="mb-2">可以询问任何R语言相关的问题</li>
+                        <li class="mb-2">分享您的学习心得和困惑</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="mb-0">
+                        <li class="mb-2">获得个性化的学习建议</li>
+                        <li class="mb-2">讨论数据分析的最佳实践</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // 聊天消息动画
+    document.addEventListener('DOMContentLoaded', function() {
+        const messages = document.querySelectorAll('.message-wrapper');
+        messages.forEach((message, index) => {
+            message.style.opacity = '0';
+            message.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                message.style.transition = 'all 0.6s ease';
+                message.style.opacity = '1';
+                message.style.transform = 'translateY(0)';
+            }, index * 300);
+        });
+    });
+</script>
+{% endblock %}

@@ -3,44 +3,146 @@
 {% block title %}R语言助手 - 智能R语言学习平台{% endblock %}
 
 {% block content %}
+<div class="premium-container">
+    <!-- 粒子背景效果 -->
+    <div class="particles-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
 <div class="row">
     <div class="col-lg-8 mx-auto">
         <!-- 欢迎信息 -->
-        <div class="text-center mb-5">
-            <h1 class="display-4 mb-3">
-                <i class="fas fa-chart-line text-primary"></i>
-                R语言智能助手
+        <div class="text-center mb-5 dynamic-glow">
+            <h1 class="display-4 mb-3 title-gradient">
+                <i class="fas fa-chart-line icon-glow me-3"></i>
+                <span class="typewriter">R语言智能助手</span>
             </h1>
-            <p class="lead text-muted">
+            <p class="lead text-muted mb-4">
                 基于先进AI技术，为您提供专业的R语言学习支持
             </p>
+            
+            <!-- 特色标签 -->
+            <div class="mb-4">
+                <span class="feature-tag glass-effect">
+                    <i class="fas fa-brain me-1"></i>智能分析
+                </span>
+                <span class="feature-tag glass-effect">
+                    <i class="fas fa-code me-1"></i>代码生成
+                </span>
+                <span class="feature-tag glass-effect">
+                    <i class="fas fa-comments me-1"></i>详细解释
+                </span>
+                <span class="feature-tag glass-effect">
+                    <i class="fas fa-rocket me-1"></i>高效学习
+                </span>
+            </div>
         </div>
 
         <!-- 功能选择卡片 -->
-        <div class="row mb-4">
-            <div class="col-md-6 mb-3">
-                <div class="card h-100 feature-card" onclick="showHomeworkForm()">
+        <div class="row mb-5">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 feature-card pulse premium-card" onclick="showHomeworkForm()">
                     <div class="card-body text-center">
-                        <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
-                        <h5 class="card-title">作业题解答</h5>
-                        <p class="card-text">
+                        <div class="feature-icon-wrapper mb-4">
+                            <i class="fas fa-clipboard-list fa-4x text-primary icon-glow"></i>
+                        </div>
+                        <h5 class="card-title fw-bold mb-3">Answer</h5>
+                        <h6 class="text-muted mb-3">作业题解答</h6>
+                        <p class="card-text mb-4">
                             输入R语言作业题，获得三种不同的解决方案，
                             每种方案都包含详细的中文注释和解释
                         </p>
-                        <button class="btn btn-primary">开始解题</button>
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-check-circle text-success me-1"></i> 三种解决方案
+                                <i class="fas fa-check-circle text-success me-1 ms-2"></i> 详细注释
+                            </small>
+                        </div>
+                        <button class="btn btn-premium btn-lg">
+                            <i class="fas fa-magic me-2"></i>开始解题
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <div class="card h-100 feature-card" onclick="showExplanationForm()">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 feature-card pulse premium-card" onclick="showExplanationForm()" style="animation-delay: 0.3s;">
                     <div class="card-body text-center">
-                        <i class="fas fa-code fa-3x text-success mb-3"></i>
-                        <h5 class="card-title">代码解释</h5>
-                        <p class="card-text">
+                        <div class="feature-icon-wrapper mb-4">
+                            <i class="fas fa-code fa-4x text-success icon-glow"></i>
+                        </div>
+                        <h5 class="card-title fw-bold mb-3">Explain</h5>
+                        <h6 class="text-muted mb-3">代码解释</h6>
+                        <p class="card-text mb-4">
                             粘贴您的R语言代码，我会用平易近人的语气
                             为您详细解释代码的功能和意义
                         </p>
-                        <button class="btn btn-success">解释代码</button>
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-check-circle text-success me-1"></i> 通俗易懂
+                                <i class="fas fa-check-circle text-success me-1 ms-2"></i> 逐步分析
+                            </small>
+                        </div>
+                        <button class="btn btn-premium btn-lg">
+                            <i class="fas fa-lightbulb me-2"></i>解释代码
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 mx-auto">
+                <div class="card h-100 feature-card pulse premium-card" onclick="showChatForm()" style="animation-delay: 0.6s;">
+                    <div class="card-body text-center">
+                        <div class="feature-icon-wrapper mb-4">
+                            <i class="fas fa-comments fa-4x text-info icon-glow"></i>
+                        </div>
+                        <h5 class="card-title fw-bold mb-3">Talk</h5>
+                        <h6 class="text-muted mb-3">普通聊天</h6>
+                        <p class="card-text mb-4">
+                            与R语言专家进行友好交流，讨论学习心得，
+                            获得专业建议和学习指导
+                        </p>
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-check-circle text-success me-1"></i> 友好交流
+                                <i class="fas fa-check-circle text-success me-1 ms-2"></i> 专业指导
+                            </small>
+                        </div>
+                        <button class="btn btn-premium btn-lg">
+                            <i class="fas fa-comments me-2"></i>开始聊天
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 mx-auto">
+                <div class="card h-100 feature-card pulse" onclick="showChatForm()" style="animation-delay: 0.6s;">
+                    <div class="card-body text-center">
+                        <div class="feature-icon-wrapper mb-4">
+                            <i class="fas fa-comments fa-4x text-info icon-glow"></i>
+                        </div>
+                        <h5 class="card-title fw-bold mb-3">Talk</h5>
+                        <h6 class="text-muted mb-3">普通聊天</h6>
+                        <p class="card-text mb-4">
+                            与R语言专家进行友好交流，讨论学习心得，
+                            获得专业建议和学习指导
+                        </p>
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-check-circle text-success me-1"></i> 友好交流
+                                <i class="fas fa-check-circle text-success me-1 ms-2"></i> 专业指导
+                            </small>
+                        </div>
+                        <button class="btn btn-info btn-lg">
+                            <i class="fas fa-comments me-2"></i>开始聊天
+                        </button>
                     </div>
                 </div>
             </div>
@@ -48,8 +150,8 @@
 
         <!-- 作业题解答表单 -->
         <div id="homework-section" class="section-form" style="display: none;">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
+            <div class="card premium-card glass-effect">
+                <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 28px 28px 0 0;">
                     <h5 class="mb-0">
                         <i class="fas fa-clipboard-list me-2"></i>R语言作业题解答
                     </h5>
@@ -68,7 +170,7 @@
                             <button type="button" class="btn btn-secondary me-md-2" onclick="hideAllForms()">
                                 取消
                             </button>
-                            <button type="submit" class="btn btn-primary" id="homework-submit">
+                            <button type="submit" class="btn btn-premium" id="homework-submit">
                                 <i class="fas fa-magic me-1"></i>生成解决方案
                             </button>
                         </div>
@@ -79,8 +181,8 @@
 
         <!-- 代码解释表单 -->
         <div id="explanation-section" class="section-form" style="display: none;">
-            <div class="card">
-                <div class="card-header bg-success text-white">
+            <div class="card premium-card glass-effect">
+                <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border-radius: 28px 28px 0 0;">
                     <h5 class="mb-0">
                         <i class="fas fa-code me-2"></i>R语言代码解释
                     </h5>
@@ -99,8 +201,39 @@
                             <button type="button" class="btn btn-secondary me-md-2" onclick="hideAllForms()">
                                 取消
                             </button>
-                            <button type="submit" class="btn btn-success" id="explanation-submit">
+                            <button type="submit" class="btn btn-premium" id="explanation-submit">
                                 <i class="fas fa-lightbulb me-1"></i>解释代码
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 普通聊天表单 -->
+        <div id="chat-section" class="section-form" style="display: none;">
+            <div class="card premium-card glass-effect">
+                <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%); border-radius: 28px 28px 0 0;">
+                    <h5 class="mb-0">
+                        <i class="fas fa-comments me-2"></i>与R语言专家聊天
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'rcode_helper:chat' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ chat_form.message.id_for_label }}" class="form-label">
+                                {{ chat_form.message.label }}
+                            </label>
+                            {{ chat_form.message }}
+                            <div class="form-text">{{ chat_form.message.help_text }}</div>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-secondary me-md-2" onclick="hideAllForms()">
+                                取消
+                            </button>
+                            <button type="submit" class="btn btn-premium" id="chat-submit">
+                                <i class="fas fa-paper-plane me-1"></i>发送消息
                             </button>
                         </div>
                     </form>
@@ -111,27 +244,35 @@
         <!-- 功能介绍 -->
         <div class="row mt-5">
             <div class="col-12">
-                <h3 class="text-center mb-4">功能特色</h3>
+                <h3 class="text-center mb-5 title-gradient">
+                    <i class="fas fa-star icon-glow me-2"></i>功能特色
+                </h3>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4 mb-4">
                 <div class="text-center">
-                    <i class="fas fa-brain fa-2x text-info mb-2"></i>
-                    <h6>智能AI分析</h6>
-                    <small class="text-muted">基于DeepSeek强大的AI能力，提供专业准确的R语言解决方案</small>
+                    <div class="mb-3">
+                        <i class="fas fa-brain fa-3x text-info icon-glow"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">智能AI分析</h5>
+                    <p class="text-muted">基于DeepSeek强大的AI能力，提供专业准确的R语言解决方案</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4 mb-4">
                 <div class="text-center">
-                    <i class="fas fa-list-ol fa-2x text-warning mb-2"></i>
-                    <h6>多种解决方案</h6>
-                    <small class="text-muted">为每个问题提供三种不同的解决思路，拓展您的编程视野</small>
+                    <div class="mb-3">
+                        <i class="fas fa-list-ol fa-3x text-warning icon-glow"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">多种解决方案</h5>
+                    <p class="text-muted">为每个问题提供三种不同的解决思路，拓展您的编程视野</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4 mb-4">
                 <div class="text-center">
-                    <i class="fas fa-comments fa-2x text-danger mb-2"></i>
-                    <h6>中文详细注释</h6>
-                    <small class="text-muted">所有代码都包含详细的中文注释，帮助理解每一步操作</small>
+                    <div class="mb-3">
+                        <i class="fas fa-comments fa-3x text-danger icon-glow"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">中文详细注释</h5>
+                    <p class="text-muted">所有代码都包含详细的中文注释，帮助理解每一步操作</p>
                 </div>
             </div>
         </div>
@@ -153,9 +294,16 @@
         document.getElementById('explanation-section').scrollIntoView({ behavior: 'smooth' });
     }
 
+    function showChatForm() {
+        hideAllForms();
+        document.getElementById('chat-section').style.display = 'block';
+        document.getElementById('chat-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
     function hideAllForms() {
         document.getElementById('homework-section').style.display = 'none';
         document.getElementById('explanation-section').style.display = 'none';
+        document.getElementById('chat-section').style.display = 'none';
     }
 
     // 表单提交加载状态
@@ -168,5 +316,14 @@
         this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>正在解释...';
         this.disabled = true;
     });
+
+    document.getElementById('chat-submit').addEventListener('click', function() {
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>正在思考...';
+        this.disabled = true;
+    });
 </script>
+
+    </div>
+</div>
+</div>
 {% endblock %}

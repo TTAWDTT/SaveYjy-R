@@ -4,10 +4,65 @@ from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.http import JsonResponse
-from .forms import HomeworkForm, CodeExplanationForm
+from .forms import LoginForm, HomeworkForm, CodeExplanationForm, ChatForm
 from .models import RequestLog, CodeSolution
 from .services import DeepSeekService
 import json
+
+
+class LoginView(View):
+    """用户登录视图"""
+    template_name = 'rcode_helper/login.html'
+    
+    def get(self, request):
+        if request.session.get('user_authenticated'):
+            return redirect('rcode_helper:dashboard')
+        form = LoginForm()
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            
+            # 简单的演示登录逻辑
+            if username == 'admin' and password == 'admin123':
+                request.session['user_authenticated'] = True
+                request.session['username'] = username
+                return redirect('rcode_helper:dashboard')
+            else:
+                messages.error(request, '用户名或密码错误')
+        
+        return render(request, self.template_name, {'form': form})
+
+
+class LogoutView(View):
+    """用户登出视图"""
+    
+    def get(self, request):
+        request.session.flush()  # 清除所有会话数据
+        messages.success(request, '您已成功登出')
+        return redirect('rcode_helper:login')
+
+
+class DashboardView(View):
+    """主面板视图 - 新的SPA界面"""
+    template_name = 'rcode_helper/dashboard.html'
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.get('user_authenticated'):
+            return redirect('rcode_helper:login')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request):
+        context = {
+            'homework_form': HomeworkForm(),
+            'explanation_form': CodeExplanationForm(),
+            'chat_form': ChatForm(),
+            'username': request.session.get('username', 'Guest')
+        }
+        return render(request, self.template_name, context)
 
 
 def get_client_ip(request):
@@ -21,15 +76,17 @@ def get_client_ip(request):
 
 
 class HomeView(View):
-    """首页视图"""
+    """首页视图 - 重定向到登录页面"""
     
     def get(self, request):
-        homework_form = HomeworkForm()
-        explanation_form = CodeExplanationForm()
+        if request.session.get('user_authenticated'):
+            return redirect('rcode_helper:dashboard')
+        return redirect('rcode_helper:login')
         
         context = {
             'homework_form': homework_form,
             'explanation_form': explanation_form,
+            'chat_form': chat_form,
         }
         return render(request, 'rcode_helper/home.html', context)
 
@@ -37,6 +94,11 @@ class HomeView(View):
 @method_decorator(csrf_protect, name='dispatch')
 class HomeworkSolutionView(View):
     """作业题解答视图"""
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.get('user_authenticated'):
+            return redirect('rcode_helper:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def post(self, request):
         form = HomeworkForm(request.POST)
@@ -76,20 +138,33 @@ class HomeworkSolutionView(View):
                     'request_id': request_log.id
                 }
                 
-                return render(request, 'rcode_helper/homework_result.html', context)
+                # 检查是否为AJAX请求
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return render(request, 'rcode_helper/homework_result_partial.html', context)
+                else:
+                    return render(request, 'rcode_helper/homework_result.html', context)
                 
             except Exception as e:
                 messages.error(request, f'生成解决方案时出现错误：{str(e)}')
-                return redirect('home')
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'error': str(e)}, status=500)
+                return redirect('rcode_helper:dashboard')
         
         else:
             messages.error(request, '请输入有效的作业题目')
-            return redirect('home')
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'error': '请输入有效的作业题目'}, status=400)
+            return redirect('rcode_helper:dashboard')
 
 
 @method_decorator(csrf_protect, name='dispatch') 
 class CodeExplanationView(View):
     """代码解释视图"""
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.get('user_authenticated'):
+            return redirect('rcode_helper:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def post(self, request):
         form = CodeExplanationForm(request.POST)
@@ -119,19 +194,88 @@ class CodeExplanationView(View):
                     'request_id': request_log.id
                 }
                 
-                return render(request, 'rcode_helper/explanation_result.html', context)
+                # 检查是否为AJAX请求
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return render(request, 'rcode_helper/explanation_result_partial.html', context)
+                else:
+                    return render(request, 'rcode_helper/explanation_result.html', context)
                 
             except Exception as e:
                 messages.error(request, f'解释代码时出现错误：{str(e)}')
-                return redirect('home')
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'error': str(e)}, status=500)
+                return redirect('rcode_helper:dashboard')
         
         else:
             messages.error(request, '请输入有效的R语言代码')
-            return redirect('home')
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'error': '请输入有效的R语言代码'}, status=400)
+            return redirect('rcode_helper:dashboard')
+
+
+@method_decorator(csrf_protect, name='dispatch')
+class ChatView(View):
+    """普通聊天视图"""
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.get('user_authenticated'):
+            return redirect('rcode_helper:login')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def post(self, request):
+        form = ChatForm(request.POST)
+        
+        if form.is_valid():
+            user_message = form.cleaned_data['message']
+            
+            # 创建请求记录
+            request_log = RequestLog.objects.create(
+                request_type='chat',
+                user_input=user_message,
+                ip_address=get_client_ip(request)
+            )
+            
+            try:
+                # 调用DeepSeek API进行聊天
+                deepseek_service = DeepSeekService()
+                chat_response = deepseek_service.chat_with_user(user_message)
+                
+                # 保存AI响应
+                request_log.ai_response = chat_response
+                request_log.save()
+                
+                context = {
+                    'user_message': user_message,
+                    'chat_response': chat_response,
+                    'request_id': request_log.id
+                }
+                
+                # 检查是否为AJAX请求
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return render(request, 'rcode_helper/chat_result_partial.html', context)
+                else:
+                    return render(request, 'rcode_helper/chat_result.html', context)
+                
+            except Exception as e:
+                messages.error(request, f'聊天时出现错误：{str(e)}')
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'error': str(e)}, status=500)
+                return redirect('rcode_helper:dashboard')
+        
+        else:
+            messages.error(request, '请输入有效的消息')
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'error': '请输入有效的消息'}, status=400)
+            return redirect('rcode_helper:dashboard')
 
 
 class HistoryView(View):
     """历史记录视图"""
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.get('user_authenticated'):
+            return redirect('rcode_helper:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request):
         # 获取最近的请求记录
@@ -147,6 +291,11 @@ class HistoryView(View):
 class RequestDetailView(View):
     """请求详情视图"""
     
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.get('user_authenticated'):
+            return redirect('rcode_helper:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, request_id):
         try:
             request_log = RequestLog.objects.get(id=request_id)
@@ -160,6 +309,8 @@ class RequestDetailView(View):
                 solutions = request_log.solutions.all()
                 context['solutions'] = solutions
                 return render(request, 'rcode_helper/homework_detail.html', context)
+            elif request_log.request_type == 'chat':
+                return render(request, 'rcode_helper/chat_detail.html', context)
             else:
                 return render(request, 'rcode_helper/explanation_detail.html', context)
                 

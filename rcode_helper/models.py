@@ -7,6 +7,7 @@ class RequestLog(models.Model):
     REQUEST_TYPES = [
         ('homework', '作业题解答'),
         ('explanation', '代码解释'),
+        ('chat', '普通聊天'),
     ]
     
     request_type = models.CharField(
