@@ -1,5 +1,9 @@
 from django.urls import path
 from . import views
+from .api_views import (
+    CodeQualityAnalysisView, TestCaseGenerationView, OptimizationSuggestionsView,
+    ClientMetricsView, PerformanceDashboardView, HealthCheckView
+)
 
 app_name = 'rcode_helper'
 
@@ -13,4 +17,13 @@ urlpatterns = [
     path('chat/', views.ChatView.as_view(), name='chat'),
     path('history/', views.HistoryView.as_view(), name='history'),
     path('request/<int:request_id>/', views.RequestDetailView.as_view(), name='request_detail'),
+    path('monitoring/', views.MonitoringDashboardView.as_view(), name='monitoring_dashboard'),
+    
+    # 新的增强API端点
+    path('api/code-quality/', CodeQualityAnalysisView.as_view(), name='api_code_quality'),
+    path('api/test-cases/', TestCaseGenerationView.as_view(), name='api_test_cases'),
+    path('api/optimization/', OptimizationSuggestionsView.as_view(), name='api_optimization'),
+    path('api/client-metrics/', ClientMetricsView.as_view(), name='api_client_metrics'),
+    path('api/performance-dashboard/', PerformanceDashboardView.as_view(), name='api_performance_dashboard'),
+    path('api/health/', HealthCheckView.as_view(), name='api_health_check'),
 ]

@@ -84,6 +84,56 @@ class DeepSeekService:
         
         return response
     
+    def explain_r_code_enhanced(self, r_code: str, user_query: str = '', selected_lines: List[int] = None) -> str:
+        """增强的R语言代码解释，支持用户查询和行选择"""
+        if selected_lines is None:
+            selected_lines = []
+        
+        # 构建增强的prompt
+        prompt_parts = []
+        
+        # 基础代码解释请求
+        prompt_parts.append(f"请详细解释以下R语言代码：\n\n```r\n{r_code}\n```\n")
+        
+        # 如果用户有特定查询
+        if user_query and user_query.strip():
+            prompt_parts.append(f"\n用户特别想了解：{user_query.strip()}")
+        
+        # 如果用户选择了特定行
+        if selected_lines:
+            code_lines = r_code.split('\n')
+            selected_code_parts = []
+            
+            for line_num in selected_lines:
+                if 1 <= line_num <= len(code_lines):
+                    selected_code_parts.append(f"第{line_num}行: {code_lines[line_num-1]}")
+            
+            if selected_code_parts:
+                prompt_parts.append(f"\n请特别关注以下选中的代码行：\n" + "\n".join(selected_code_parts))
+        
+        # 添加解释要求
+        prompt_parts.append("""
+        
+请按以下要求进行解释：
+1. 首先概述代码的整体功能和目的
+2. 逐行或逐段详细解释关键代码
+3. 解释用到的R函数和语法
+4. 如果有选中的特定行，请重点解释这些行的作用
+5. 如果用户有特定问题，请针对性地回答
+6. 提供实际应用场景和使用建议
+7. 用通俗易懂的语言，避免过于技术化的表达
+
+请用Markdown格式组织回答，使结构清晰易读。
+        """)
+        
+        full_prompt = "".join(prompt_parts)
+        response = self._make_request(full_prompt, 'explanation')
+        
+        if not response:
+            return PromptManager.get_system_prompts()["fallback_messages"]["explanation"]
+        
+        return response
+    
     def chat_with_user(self, user_message: str) -> str:
         """与用户进行普通聊天"""
         prompt = PromptManager.get_chat_prompt(user_message)

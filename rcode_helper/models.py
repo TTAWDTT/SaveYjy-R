@@ -49,3 +49,44 @@ class CodeSolution(models.Model):
     
     def __str__(self):
         return f"{self.solution_name} (方案{self.order})"
+
+
+class PerformanceMetrics(models.Model):
+    """性能指标模型"""
+    timestamp = models.DateTimeField(default=timezone.now)
+    metric_type = models.CharField(max_length=50)  # response_time, cache_hit, error_rate
+    metric_value = models.FloatField()
+    endpoint = models.CharField(max_length=100, blank=True)
+    additional_data = models.JSONField(default=dict, blank=True)
+    
+    class Meta:
+        db_table = 'performance_metrics'
+        indexes = [
+            models.Index(fields=['timestamp', 'metric_type']),
+            models.Index(fields=['endpoint', 'timestamp']),
+        ]
+        verbose_name = '性能指标'
+        verbose_name_plural = '性能指标'
+
+
+class UserAnalytics(models.Model):
+    """用户行为分析模型"""
+    session_id = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(default=timezone.now)
+    action_type = models.CharField(max_length=50)  # page_view, code_explain, chat, etc.
+    page_url = models.CharField(max_length=200, blank=True)
+    user_agent = models.TextField(blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    processing_time = models.FloatField(null=True, blank=True)
+    success = models.BooleanField(default=True)
+    error_message = models.TextField(blank=True)
+    additional_data = models.JSONField(default=dict, blank=True)
+    
+    class Meta:
+        db_table = 'user_analytics'
+        indexes = [
+            models.Index(fields=['timestamp', 'action_type']),
+            models.Index(fields=['session_id', 'timestamp']),
+        ]
+        verbose_name = '用户行为分析'
+        verbose_name_plural = '用户行为分析'

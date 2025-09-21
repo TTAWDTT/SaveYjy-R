@@ -1,124 +1,633 @@
 <div class="result-section">
-    <h3 class="mb-4 text-center">
-        <i class="fas fa-lightbulb text-warning me-2"></i>代码解释结果
-    </h3>
+    <!-- 结果标题 -->
+    <div class="result-title-section">
+        <h3 class="result-main-title">
+            <i class="fas fa-lightbulb me-2"></i>
+            代码解释结果
+        </h3>
+        <p class="result-subtitle">AI为您详细解析R语言代码的含义和用法</p>
+    </div>
     
-    <div class="result-card">
-        <div class="result-header">
-            <div class="result-icon">
+    <!-- 用户查询信息显示 -->
+    {% if user_query %}
+    <div class="info-card query-info-card">
+        <div class="info-header">
+            <div class="info-icon query-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <div class="info-content">
+                <h6 class="info-title">您的具体问题</h6>
+                <p class="info-text">{{ user_query }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- 选中行信息显示 -->
+    {% if selected_lines %}
+    <div class="info-card selected-lines-card">
+        <div class="info-header">
+            <div class="info-icon highlight-icon">
+                <i class="fas fa-highlight"></i>
+            </div>
+            <div class="info-content">
+                <h6 class="info-title">重点关注的代码行</h6>
+                <p class="info-text">第 {{ selected_lines|join:", " }} 行</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- 主要结果卡片 -->
+    <div class="main-result-card">
+        <!-- 卡片头部 -->
+        <div class="card-header-section">
+            <div class="header-icon">
                 <i class="fas fa-file-code"></i>
             </div>
-            <div>
-                <h5 class="result-title">您的R语言代码</h5>
-                <p class="text-muted mb-0">以下是您提交的代码及其详细解释</p>
+            <div class="header-content">
+                <h4 class="card-title">代码分析结果</h4>
+                <p class="card-subtitle">完整的代码解释和说明</p>
             </div>
         </div>
         
-        <div class="code-section">
-            <h6 class="code-header">
-                <i class="fas fa-code me-2"></i>原始代码
-            </h6>
-            <pre><code class="language-r">{{ r_code }}</code></pre>
+        <!-- 代码展示区域 -->
+        <div class="code-display-section">
+            <div class="section-header">
+                <i class="fas fa-code me-2"></i>
+                <span>原始代码</span>
+                {% if selected_lines %}
+                <span class="highlight-badge">已高亮显示关注行</span>
+                {% endif %}
+            </div>
+            
+            <div class="enhanced-code-container">
+                <div class="line-numbers-panel" id="result-line-numbers">
+                    <!-- 行号将通过JavaScript动态生成 -->
+                </div>
+                <div class="code-display-panel">
+                    <pre class="code-block"><code class="language-r" id="result-code-content">{{ r_code }}</code></pre>
+                </div>
+            </div>
         </div>
         
-        <div class="explanation-section">
-            <h6 class="explanation-header">
-                <i class="fas fa-comments me-2"></i>详细解释
-            </h6>
-            <div class="explanation-content">
-                {{ explanation|linebreaks }}
+        <!-- 解释内容区域 -->
+        <div class="explanation-display-section">
+            <div class="section-header">
+                <i class="fas fa-brain me-2"></i>
+                <span>AI详细解释</span>
+            </div>
+            
+            <div class="explanation-content-wrapper">
+                <div class="explanation-text">
+                    {{ explanation|linebreaks }}
+                </div>
             </div>
         </div>
     </div>
     
-    <div class="text-center mt-4">
-        <small class="text-muted">
-            <i class="fas fa-info-circle me-1"></i>
-            解释时间：{{ request.session.created_at|default:"刚刚" }}
-        </small>
+    <!-- 页脚信息 -->
+    <div class="result-footer">
+        <div class="footer-actions">
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.print()">
+                <i class="fas fa-print me-1"></i>打印结果
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-sm" onclick="copyToClipboard()">
+                <i class="fas fa-copy me-1"></i>复制解释
+            </button>
+        </div>
+        <div class="footer-info">
+            <small class="text-muted">
+                <i class="fas fa-clock me-1"></i>
+                解释完成时间：{{ request.session.created_at|default:"刚刚" }}
+            </small>
+        </div>
     </div>
 </div>
 
 <style>
-.result-card {
-    background: rgba(255, 182, 193, 0.1);
-    border: 1px solid rgba(255, 182, 193, 0.3);
-    border-radius: 20px;
-    padding: 30px;
-    margin-bottom: 25px;
+/* 主要容器样式 */
+.result-section {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 标题区域 */
+.result-title-section {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 105, 180, 0.2);
+}
+
+.result-main-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color, #ff1493);
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.result-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+/* 信息卡片通用样式 */
+.info-card {
+    margin-bottom: 20px;
+    border-radius: 15px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 105, 180, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 }
 
-.result-card:hover {
+.info-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255, 105, 180, 0.15);
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.15);
 }
 
-.result-header {
+.info-header {
     display: flex;
     align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid rgba(255, 182, 193, 0.2);
+    padding: 15px 20px;
 }
 
-.result-icon {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #ff69b4, #ff1493);
+.info-icon {
+    width: 45px;
+    height: 45px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     margin-right: 15px;
-    font-size: 20px;
+    font-size: 18px;
+    color: white;
 }
 
-.result-title {
-    font-weight: 700;
-    color: #ff1493;
-    margin: 0;
-    font-size: 20px;
+.query-icon {
+    background: linear-gradient(135deg, #3498db, #2980b9);
 }
 
-.code-section {
-    margin-bottom: 20px;
+.highlight-icon {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
 }
 
-.code-header, .explanation-header {
-    font-weight: 600;
-    color: #ff1493;
-    margin-bottom: 15px;
+.info-content {
+    flex: 1;
+}
+
+.info-title {
     font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    color: #333;
 }
 
-pre {
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 182, 193, 0.3);
-    border-radius: 12px;
-    padding: 20px;
+.info-text {
     margin: 0;
-    overflow-x: auto;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
-code {
-    font-family: 'Fira Code', monospace;
+/* 主结果卡片 */
+.main-result-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 105, 180, 0.2);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.main-result-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(255, 105, 180, 0.2);
+}
+
+/* 卡片头部 */
+.card-header-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 105, 180, 0.15);
+}
+
+.header-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 20px;
+    font-size: 24px;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+}
+
+.header-content {
+    flex: 1;
+}
+
+.card-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-color, #ff1493);
+    margin: 0 0 5px 0;
+}
+
+.card-subtitle {
+    color: #666;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* 部分标题 */
+.section-header {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-color, #ff1493);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 105, 180, 0.2);
+}
+
+.highlight-badge {
+    margin-left: auto;
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* 增强的代码容器 */
+.enhanced-code-container {
+    display: flex;
+    background: #f8f9fa;
+    border: 1px solid rgba(255, 105, 180, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.line-numbers-panel {
+    width: 60px;
+    background: rgba(255, 105, 180, 0.05);
+    border-right: 1px solid rgba(255, 105, 180, 0.2);
+    padding: 20px 10px;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #999;
+    text-align: right;
+    user-select: none;
+}
+
+.line-number {
+    display: block;
+    padding: 0 5px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.line-number.highlighted {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.3), rgba(230, 126, 34, 0.3));
+    color: #f39c12;
+    font-weight: bold;
+    border: 1px solid rgba(243, 156, 18, 0.4);
+}
+
+.code-display-panel {
+    flex: 1;
+}
+
+.code-block {
+    margin: 0;
+    padding: 20px;
+    background: transparent;
+    border: none;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.6;
+    color: #333;
 }
 
-.explanation-section {
-    margin-top: 25px;
+.code-block code {
+    background: transparent;
+    padding: 0;
 }
 
-.explanation-content {
-    background: rgba(255, 192, 203, 0.1);
-    border-left: 4px solid #ff69b4;
-    padding: 20px;
-    border-radius: 8px;
+/* 解释内容区域 */
+.explanation-content-wrapper {
+    background: linear-gradient(135deg, rgba(255, 192, 203, 0.1), rgba(255, 182, 193, 0.1));
+    border: 1px solid rgba(255, 105, 180, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+    border-left: 4px solid var(--primary-color, #ff69b4);
+}
+
+.explanation-text {
     font-size: 15px;
-    line-height: 1.7;
+    line-height: 1.8;
     color: #555;
+    margin: 0;
+}
+
+.explanation-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* 页脚 */
+.result-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 105, 180, 0.2);
+}
+
+.footer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.footer-actions .btn {
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.footer-actions .btn:hover {
+    transform: translateY(-1px);
+}
+
+.footer-info {
+    color: #999;
+    font-size: 13px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .result-section {
+        padding: 15px;
+    }
+    
+    .main-result-card {
+        padding: 20px;
+    }
+    
+    .card-header-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .header-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .enhanced-code-container {
+        flex-direction: column;
+    }
+    
+    .line-numbers-panel {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 105, 180, 0.2);
+    }
+    
+    .line-number {
+        display: inline-block;
+        margin: 0 2px;
+    }
+    
+    .result-footer {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .footer-actions {
+        justify-content: center;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .footer-actions {
+        display: none;
+    }
+    
+    .main-result-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .result-main-title {
+        color: #333 !important;
+        -webkit-text-fill-color: #333 !important;
+    }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 生成行号和高亮显示
+    const codeContent = document.getElementById('result-code-content');
+    const lineNumbersContainer = document.getElementById('result-line-numbers');
+    
+    if (codeContent && lineNumbersContainer) {
+        const codeText = codeContent.textContent;
+        const lines = codeText.split('\n');
+        // 从模板获取选中的行数据
+        const selectedLinesData = document.querySelector('[data-selected-lines]');
+        let selectedLines = [];
+        
+        if (selectedLinesData) {
+            try {
+                selectedLines = JSON.parse(selectedLinesData.getAttribute('data-selected-lines'));
+            } catch (e) {
+                selectedLines = [];
+            }
+        }
+        
+        let lineNumbersHtml = '';
+        for (let i = 1; i <= lines.length; i++) {
+            const isHighlighted = selectedLines.includes(i);
+            lineNumbersHtml += `<span class="line-number ${isHighlighted ? 'highlighted' : ''}" title="第 ${i} 行">${i}</span>`;
+        }
+        
+        lineNumbersContainer.innerHTML = lineNumbersHtml;
+    }
+    
+    // 如果存在Prism.js，进行语法高亮
+    if (typeof Prism !== 'undefined') {
+        Prism.highlightAll();
+    }
+    
+    // 结果卡片入场动画
+    const animationElements = document.querySelectorAll('.info-card, .main-result-card');
+    animationElements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            element.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }, index * 150);
+    });
+    
+    // 页面标题动画
+    const titleElement = document.querySelector('.result-main-title');
+    if (titleElement) {
+        titleElement.style.opacity = '0';
+        titleElement.style.transform = 'scale(0.9)';
+        
+        setTimeout(() => {
+            titleElement.style.transition = 'all 0.6s ease';
+            titleElement.style.opacity = '1';
+            titleElement.style.transform = 'scale(1)';
+        }, 100);
+    }
+});
+
+// 复制解释内容到剪贴板
+function copyToClipboard() {
+    const explanationText = document.querySelector('.explanation-text');
+    if (explanationText) {
+        const text = explanationText.textContent || explanationText.innerText;
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('解释内容已复制到剪贴板！', 'success');
+            }).catch(() => {
+                fallbackCopyTextToClipboard(text);
+            });
+        } else {
+            fallbackCopyTextToClipboard(text);
+        }
+    }
+}
+
+// 备用复制方法
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showNotification('解释内容已复制到剪贴板！', 'success');
+        } else {
+            showNotification('复制失败，请手动选择并复制', 'error');
+        }
+    } catch (err) {
+        showNotification('复制功能不可用', 'error');
+    }
+
+    document.body.removeChild(textArea);
+}
+
+// 通知提示函数
+function showNotification(message, type = 'info') {
+    // 移除已存在的通知
+    const existingNotification = document.querySelector('.custom-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // 创建通知元素
+    const notification = document.createElement('div');
+    notification.className = `custom-notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // 添加样式
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 12px 20px;
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        transform: translateX(100%);
+        ${type === 'success' ? 'background: linear-gradient(135deg, #27ae60, #2ecc71);' : 
+          type === 'error' ? 'background: linear-gradient(135deg, #e74c3c, #c0392b);' : 
+          'background: linear-gradient(135deg, #3498db, #2980b9);'}
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 显示动画
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // 自动隐藏
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// 滚动到特定行号
+function scrollToLine(lineNumber) {
+    const lineElement = document.querySelector(`.line-number:nth-child(${lineNumber})`);
+    if (lineElement) {
+        lineElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // 临时高亮效果
+        lineElement.style.background = 'rgba(255, 193, 7, 0.5)';
+        setTimeout(() => {
+            lineElement.style.background = '';
+        }, 2000);
+    }
+}
+</script>
+
+<!-- 隐藏的数据容器，用于传递选中行信息给JavaScript -->
+{% if selected_lines %}
+<div data-selected-lines="{{ selected_lines|safe }}" style="display: none;"></div>
+{% endif %}

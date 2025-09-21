@@ -157,7 +157,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{% url 'rcode_helper:homework_solution' %}">
+                    <form method="post" action="{% url 'rcode_helper:homework_solution' %}" data-progress="true" id="homework-form">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="{{ homework_form.homework_question.id_for_label }}" class="form-label">
@@ -188,15 +188,29 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{% url 'rcode_helper:code_explanation' %}">
+                    <form method="post" action="{% url 'rcode_helper:code_explanation' %}" data-progress="true" id="explanation-form">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="{{ explanation_form.r_code.id_for_label }}" class="form-label">
                                 {{ explanation_form.r_code.label }}
                             </label>
                             {{ explanation_form.r_code }}
+                            <input type="hidden" id="r_code_input" value="">
                             <div class="form-text">{{ explanation_form.r_code.help_text }}</div>
                         </div>
+                        
+                        <!-- 额外功能按钮 -->
+                        <div class="mb-3">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-info btn-sm" data-action="generate-tests">
+                                    <i class="fas fa-vial me-2"></i>生成测试用例
+                                </button>
+                                <button type="button" class="btn btn-outline-warning btn-sm" data-action="optimize-code">
+                                    <i class="fas fa-rocket me-2"></i>优化建议
+                                </button>
+                            </div>
+                        </div>
+                        
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="button" class="btn btn-secondary me-md-2" onclick="hideAllForms()">
                                 取消
@@ -219,7 +233,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{% url 'rcode_helper:chat' %}">
+                    <form method="post" action="{% url 'rcode_helper:chat' %}" data-progress="true" id="chat-form">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="{{ chat_form.message.id_for_label }}" class="form-label">
@@ -240,6 +254,16 @@
                 </div>
             </div>
         </div>
+
+        <!-- 结果显示容器 -->
+        <div id="explanation-result" class="mt-4"></div>
+        <div id="chat-result" class="mt-4"></div>
+        
+        <!-- 质量分析容器 -->
+        <div id="quality-analysis-container" class="d-none"></div>
+        
+        <!-- 测试用例容器 -->
+        <div id="test-cases-container" class="d-none"></div>
 
         <!-- 功能介绍 -->
         <div class="row mt-5">
@@ -292,6 +316,15 @@
         hideAllForms();
         document.getElementById('explanation-section').style.display = 'block';
         document.getElementById('explanation-section').scrollIntoView({ behavior: 'smooth' });
+        
+        // 同步代码输入
+        const codeTextarea = document.querySelector('#explanation-section textarea[name="r_code"]');
+        const hiddenInput = document.getElementById('r_code_input');
+        if (codeTextarea && hiddenInput) {
+            codeTextarea.addEventListener('input', function() {
+                hiddenInput.value = this.value;
+            });
+        }
     }
 
     function showChatForm() {

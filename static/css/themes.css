@@ -1,0 +1,179 @@
+/* ========== 多样粉色主题系统 ========== */
+
+/* 主题切换器样式 */
+.theme-selector {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.theme-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.theme-button:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.theme-button.active {
+    border: 3px solid #333;
+    transform: scale(1.1);
+}
+
+/* ========== 主题1: 经典粉色 (默认) ========== */
+:root,
+.theme-classic {
+    --primary-pink: #ff69b4;
+    --secondary-pink: #ff1493;
+    --light-pink: #fecfef;
+    --soft-pink: rgba(255, 182, 193, 0.2);
+    --gradient-pink: linear-gradient(135deg, #ff69b4, #ff1493);
+    --gradient-bg: linear-gradient(135deg, #fecfef 0%, #ffc0cb 50%, #ff69b4 100%);
+    --theme-name: "经典粉色";
+}
+
+/* ========== 主题2: 浅樱花粉 ========== */
+.theme-sakura {
+    --primary-pink: #ffb7c5;
+    --secondary-pink: #ffa0b3;
+    --light-pink: #ffeef0;
+    --soft-pink: rgba(255, 183, 197, 0.2);
+    --gradient-pink: linear-gradient(135deg, #ffb7c5, #ffa0b3);
+    --gradient-bg: linear-gradient(135deg, #ffeef0 0%, #ffccd5 50%, #ffb7c5 100%);
+    --theme-name: "樱花粉";
+}
+
+/* ========== 主题3: 深玫瑰粉 ========== */
+.theme-rose {
+    --primary-pink: #dc143c;
+    --secondary-pink: #b91c3c;
+    --light-pink: #fdf2f2;
+    --soft-pink: rgba(220, 20, 60, 0.2);
+    --gradient-pink: linear-gradient(135deg, #dc143c, #b91c3c);
+    --gradient-bg: linear-gradient(135deg, #fdf2f2 0%, #f87171 50%, #dc143c 100%);
+    --theme-name: "玫瑰粉";
+}
+
+/* ========== 主题4: 紫粉渐变 ========== */
+.theme-purple-pink {
+    --primary-pink: #d946ef;
+    --secondary-pink: #c026d3;
+    --light-pink: #faf5ff;
+    --soft-pink: rgba(217, 70, 239, 0.2);
+    --gradient-pink: linear-gradient(135deg, #d946ef, #c026d3);
+    --gradient-bg: linear-gradient(135deg, #faf5ff 0%, #e879f9 50%, #d946ef 100%);
+    --theme-name: "紫粉渐变";
+}
+
+/* ========== 主题5: 珊瑚粉 ========== */
+.theme-coral {
+    --primary-pink: #ff6b9d;
+    --secondary-pink: #ff5722;
+    --light-pink: #fff5f5;
+    --soft-pink: rgba(255, 107, 157, 0.2);
+    --gradient-pink: linear-gradient(135deg, #ff6b9d, #ff5722);
+    --gradient-bg: linear-gradient(135deg, #fff5f5 0%, #ffab91 50%, #ff6b9d 100%);
+    --theme-name: "珊瑚粉";
+}
+
+/* ========== 主题6: 玫瑰金 ========== */
+.theme-rose-gold {
+    --primary-pink: #e91e63;
+    --secondary-pink: #ad1457;
+    --light-pink: #fce4ec;
+    --soft-pink: rgba(233, 30, 99, 0.2);
+    --gradient-pink: linear-gradient(135deg, #e91e63, #ad1457);
+    --gradient-bg: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 50%, #e91e63 100%);
+    --theme-name: "玫瑰金";
+}
+
+/* ========== 应用主题变量到元素 ========== */
+
+/* 背景渐变 */
+body {
+    background: var(--gradient-bg) !important;
+}
+
+/* 按钮样式 */
+.btn-pink {
+    background: var(--gradient-pink) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-pink:hover {
+    background: linear-gradient(135deg, var(--secondary-pink), var(--primary-pink)) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--soft-pink) !important;
+}
+
+/* 卡片样式 */
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+.glassmorphism:hover {
+    box-shadow: 0 8px 25px var(--soft-pink) !important;
+}
+
+/* 导航栏 */
+.sidebar {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85)) !important;
+    backdrop-filter: blur(15px) !important;
+}
+
+.nav-link.active {
+    background: var(--gradient-pink) !important;
+    color: white !important;
+}
+
+/* 表单控件 */
+.form-control:focus {
+    border-color: var(--primary-pink) !important;
+    box-shadow: 0 0 0 0.2rem var(--soft-pink) !important;
+}
+
+/* 主题切换器颜色 */
+.theme-classic-btn { background: linear-gradient(45deg, #ff69b4, #ff1493); }
+.theme-sakura-btn { background: linear-gradient(45deg, #ffb7c5, #ffa0b3); }
+.theme-rose-btn { background: linear-gradient(45deg, #dc143c, #b91c3c); }
+.theme-purple-pink-btn { background: linear-gradient(45deg, #d946ef, #c026d3); }
+.theme-coral-btn { background: linear-gradient(45deg, #ff6b9d, #ff5722); }
+.theme-rose-gold-btn { background: linear-gradient(45deg, #e91e63, #ad1457); }
+
+/* 动画效果 */
+.theme-transition {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 响应式主题切换器 */
+@media (max-width: 768px) {
+    .theme-selector {
+        top: 10px;
+        right: 10px;
+        padding: 8px;
+    }
+    
+    .theme-button {
+        width: 25px;
+        height: 25px;
+        margin: 2px;
+    }
+}

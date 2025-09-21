@@ -5,7 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录 - R语言智能助手</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnj        .intro-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff1493;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .intro-title i {
+            margin-right: 12px;
+            font-size: 22px;
+        }
+
+        .intro-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }x/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% load static %}
     <style>
@@ -23,7 +42,8 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            padding: 20px;
         }
 
         /* 粒子背景效果 */
@@ -90,7 +110,7 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 30px;
-            padding: 50px 40px;
+            padding: 40px 35px;
             box-shadow: 
                 0 20px 60px rgba(255, 105, 180, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -98,6 +118,11 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            height: fit-content;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .login-card::before {
@@ -274,6 +299,322 @@
                 font-size: 30px;
             }
         }
+
+        /* ========== 新增样式 ========== */
+        
+        /* 主容器 */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            width: 100%;
+            gap: 30px;
+            align-items: flex-start;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* 项目介绍区域 */
+        .project-intro {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        /* 前言区域 */
+        .preface-area {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .intro-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.2);
+            height: fit-content;
+            min-height: 500px;
+        }
+
+        .intro-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ff1493;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .intro-title i {
+            margin-right: 15px;
+            font-size: 28px;
+        }
+
+        .intro-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(8px);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+        }
+
+        .feature-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .feature-content p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff1493;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* 前言内容样式 */
+        .preface-content {
+            line-height: 1.6;
+        }
+
+        .preface-content .main-text p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            border-left: 3px solid #ff69b4;
+        }
+
+        .section-title {
+            margin: 20px 0 15px 0;
+        }
+
+        .section-title h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ff1493;
+            margin: 0;
+            padding: 10px 15px;
+            background: rgba(255, 105, 180, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .detail-list {
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .detail-item:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateX(5px);
+        }
+
+        .detail-item .number {
+            color: #ff1493;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+        }
+
+        .detail-item p {
+            font-size: 13px;
+            color: #555;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .final-message {
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.15), rgba(255, 20, 147, 0.15));
+            border-radius: 12px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            text-align: center;
+        }
+
+        .final-message p {
+            font-size: 14px;
+            color: #ff1493;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* 登录区域 */
+        .login-area {
+            flex-shrink: 0;
+            width: 380px;
+        }
+
+        /* 响应式设计更新 */
+        @media (max-width: 1200px) {
+            .main-container {
+                flex-direction: column;
+                gap: 25px;
+                max-width: 600px;
+            }
+
+            .project-intro,
+            .preface-area {
+                max-width: 100%;
+                order: 2;
+            }
+
+            .login-area {
+                width: 100%;
+                order: 1;
+            }
+
+            .intro-card {
+                padding: 30px;
+            }
+
+            .intro-title {
+                font-size: 28px;
+            }
+
+            .stats-row {
+                gap: 15px;
+            }
+
+            .stat-item {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .main-container {
+                gap: 20px;
+            }
+
+            .intro-card {
+                padding: 25px;
+            }
+
+            .intro-title {
+                font-size: 24px;
+            }
+
+            .intro-subtitle {
+                font-size: 16px;
+            }
+
+            .feature-item {
+                padding: 12px 15px;
+            }
+
+            .feature-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                margin-right: 15px;
+            }
+
+            .feature-content h4 {
+                font-size: 14px;
+            }
+
+            .feature-content p {
+                font-size: 12px;
+            }
+
+            .stats-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .stat-number {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -287,52 +628,154 @@
         <div class="particle"></div>
     </div>
 
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="login-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h1 class="login-title">R语言智能助手</h1>
-                <p class="login-subtitle">欢迎使用AI驱动的学习平台</p>
-            </div>
+    <div class="main-container">
+        <!-- 项目介绍区域 -->
+        <div class="project-intro">
+            <div class="intro-card">
+                <h2 class="intro-title">
+                    <i class="fas fa-rocket"></i>
+                    智能R语言学习平台
+                </h2>
+                <p class="intro-subtitle">
+                    基于AI驱动的R语言智能学习助手
+                </p>
 
-            <!-- 错误消息 -->
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}" role="alert">
-                        <i class="fas fa-exclamation-circle me-2"></i>{{ message }}
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>智能作业辅助</h4>
+                            <p>AI生成解决方案，支持文件上传</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>智能对话交流</h4>
+                            <p>实时聊天式学习体验</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>多主题界面</h4>
+                            <p>6种精美粉色主题</p>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-number">AI</span>
+                        <div class="stat-label">驱动技术</div>
                     </div>
-                {% endfor %}
-            {% endif %}
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <div class="stat-label">在线服务</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">∞</span>
+                        <div class="stat-label">学习可能</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <form method="post">
-                {% csrf_token %}
+        <!-- 登录区域 -->
+        <div class="login-area">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="login-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h1 class="login-title">R语言智能助手</h1>
+                    <p class="login-subtitle">欢迎使用AI驱动的学习平台</p>
+                </div>
+
+                <!-- 错误消息 -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>{{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">
+                            <i class="fas fa-user me-2"></i>{{ form.username.label }}
+                        </label>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">
+                            <i class="fas fa-lock me-2"></i>{{ form.password.label }}
+                        </label>
+                        {{ form.password }}
+                    </div>
+
+                    <button type="submit" class="btn btn-login">
+                        <i class="fas fa-sign-in-alt me-2"></i>登录
+                    </button>
+                </form>
+
+                <!-- 演示信息 -->
+                <div class="demo-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>演示账户</h6>
+                    <p><strong>用户名:</strong> admin</p>
+                    <p><strong>密码:</strong> admin123</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 前言区域 -->
+        <div class="preface-area">
+            <div class="intro-card">
+                <h2 class="intro-title">
+                    <i class="fas fa-heart"></i>
+                    项目前言
+                </h2>
                 
-                <div class="form-group">
-                    <label for="{{ form.username.id_for_label }}" class="form-label">
-                        <i class="fas fa-user me-2"></i>{{ form.username.label }}
-                    </label>
-                    {{ form.username }}
+                <div class="preface-content">
+                    <div class="main-text">
+                        <p>这个网页是给我对象写的。取了她名字的首字母（即YJY），作为网页的名字。她是学生物的，要用到R语言编程。但这门课似乎对于她有点困难，于是我筹备开发了这样一个网页，用于给她提供教程、解析，以及答案。近日我通过提示词工程，使deepseek针对诸多编程类的难题提供了更加形象的描述与解答。希望这套教程能帮助到她学习R语言。</p>
+                    </div>
+                    
+                    <div class="section-title">
+                        <h4>关于一些细节的点</h4>
+                    </div>
+
+                    <div class="detail-list">
+                        <div class="detail-item">
+                            <span class="number">1.</span>
+                            <p>该页面采用粉色主题是因为我老婆喜欢粉色。并非本人的特殊癖好，不要恶意解读。</p>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="number">2.</span>
+                            <p>如果你正好也是在R语言学习上遇上了困难的学生，且正好路过了该GitHub项目，你也可以大胆地使用该网页，甚至直接获取该网页的代码，不用担心专利问题。但是请你注意，其中的deepseek api-key是我的个人key，请你不要滥用，造成不必要的消费（不然我对象就用不了了）。</p>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="number">3.</span>
+                            <p>技术栈上采用的是Django框架，langgraph的工作流。</p>
+                        </div>
+                    </div>
+
+                    <div class="final-message">
+                        <p><strong>无论是谁在使用该网页，我都希望：通过该网页的使用，你会迎来不再需要借助该网页的一天</strong></p>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="{{ form.password.id_for_label }}" class="form-label">
-                        <i class="fas fa-lock me-2"></i>{{ form.password.label }}
-                    </label>
-                    {{ form.password }}
-                </div>
-
-                <button type="submit" class="btn btn-login">
-                    <i class="fas fa-sign-in-alt me-2"></i>登录
-                </button>
-            </form>
-
-            <!-- 演示信息 -->
-            <div class="demo-info">
-                <h6><i class="fas fa-info-circle me-2"></i>演示账户</h6>
-                <p><strong>用户名:</strong> admin</p>
-                <p><strong>密码:</strong> admin123</p>
             </div>
         </div>
     </div>

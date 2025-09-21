@@ -48,6 +48,137 @@ class PromptManager:
 4. 方案名称要简洁有意义，体现各自特点
 5. 每个方案都应该是完整可运行的代码
 """
+    
+    @staticmethod
+    def get_prompt(prompt_type: str, **kwargs) -> str:
+        """根据类型获取提示词"""
+        prompts = {
+            'code_semantic_analysis': """
+作为R语言专家，请对以下代码进行深度语义分析：
+
+代码内容：
+{code}
+
+代码结构信息：
+{structure}
+
+请从以下几个维度进行分析：
+1. 代码的主要功能和目的
+2. 数据处理流程
+3. 使用的算法或统计方法
+4. 可能的应用场景
+5. 代码质量评估
+
+请提供详细且专业的分析结果。
+""",
+            
+            'line_specific_analysis': """
+请针对以下选定的代码行进行详细分析：
+
+选定行号：{line_numbers}
+选定代码：
+{code}
+
+用户查询：{user_query}
+
+请重点解释：
+1. 这些代码行的具体作用
+2. 与用户查询的关联
+3. 在整体代码中的重要性
+4. 可能的改进建议
+
+请提供针对性的详细解释。
+""",
+            
+            'query_focused_analysis': """
+根据用户的具体问题，对以下R代码进行针对性分析：
+
+代码：
+{code}
+
+用户查询：{user_query}
+
+请围绕用户的问题进行回答，包括：
+1. 与查询相关的代码部分解释
+2. 回答用户的具体问题
+3. 提供相关的学习建议
+4. 给出实际应用示例
+
+确保回答直接回应用户的疑问。
+""",
+            
+            'final_explanation_synthesis': """
+作为R语言专家，请综合以下所有分析结果，生成一个完整、清晰的代码解释：
+
+原始代码：
+{original_code}
+
+代码结构分析：
+{code_structure}
+
+语法分析：
+{syntax_analysis}
+
+语义分析：
+{semantic_analysis}
+
+针对性分析：
+{targeted_analysis}
+
+用户查询：{user_query}
+选定行：{selected_lines}
+
+请生成一个综合性的解释，包括：
+1. 代码整体概述
+2. 关键部分详细解释
+3. 技术要点说明
+4. 学习建议
+5. 实践应用
+
+确保解释既专业又易懂，适合不同水平的学习者。
+""",
+            
+            'intent_analysis': """
+分析用户的意图和需求：
+
+用户查询：{query}
+对话上下文：{context}
+历史记录：{history}
+
+请判断用户的主要意图类型：
+- code_help: 需要编程帮助
+- concept_explanation: 需要概念解释
+- debugging: 需要调试帮助
+- general_inquiry: 一般性询问
+
+分析结果请包含：
+1. 主要意图类型
+2. 具体需求描述
+3. 期望的回复风格
+""",
+            
+            'contextual_response': """
+基于以下信息生成合适的回复：
+
+用户查询：{query}
+用户意图：{intent}
+回复类型：{response_type}
+知识库信息：{knowledge}
+对话上下文：{context}
+历史记录：{history}
+
+请生成一个：
+1. 针对性强的回复
+2. 结合上下文的连贯响应
+3. 包含实用信息的回答
+4. 符合用户期望的风格
+
+确保回复专业、友好且有帮助。
+"""
+        }
+        
+        prompt_template = prompts.get(prompt_type, "")
+        return prompt_template.format(**kwargs)
 
     @staticmethod
     def get_explanation_prompt(r_code: str) -> str:
