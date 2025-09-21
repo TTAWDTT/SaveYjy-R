@@ -1,0 +1,102 @@
+{% extends 'rcode_helper/base.html' %}
+
+{% block title %}代码解释结果 - R语言助手{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- 返回按钮 -->
+        <div class="mb-3">
+            <a href="{% url 'rcode_helper:home' %}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-1"></i>返回首页
+            </a>
+        </div>
+
+        <!-- 代码显示 -->
+        <div class="card mb-4">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-code text-success me-2"></i>您的R语言代码
+                </h5>
+                <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyCode('original-code')">
+                    <i class="fas fa-copy me-1"></i>复制代码
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="code-container">
+                    <pre><code id="original-code" class="language-r">{{ r_code }}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 代码解释 -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>代码解释
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="explanation-content">
+                    {{ explanation|linebreaks }}
+                </div>
+            </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="text-center mt-4">
+            <a href="{% url 'rcode_helper:home' %}" class="btn btn-success me-2">
+                <i class="fas fa-plus me-1"></i>解释新代码
+            </a>
+            <a href="{% url 'rcode_helper:history' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-history me-1"></i>查看历史记录
+            </a>
+        </div>
+
+        <!-- 学习提示 -->
+        <div class="alert alert-light mt-4">
+            <h6><i class="fas fa-graduation-cap me-1"></i>学习建议：</h6>
+            <ul class="mb-0">
+                <li>仔细阅读解释内容，理解每个函数和操作的目的</li>
+                <li>尝试在R环境中运行代码，观察实际效果</li>
+                <li>对于不熟悉的函数，可以使用 <code>?function_name</code> 查看帮助文档</li>
+                <li>建议结合实际数据练习，加深理解</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function copyCode(elementId) {
+        const codeElement = document.getElementById(elementId);
+        const text = codeElement.textContent;
+        
+        navigator.clipboard.writeText(text).then(function() {
+            // 显示复制成功提示
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check me-1"></i>已复制';
+            btn.classList.add('btn-success');
+            btn.classList.remove('btn-outline-secondary');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-outline-secondary');
+            }, 2000);
+        }).catch(function(err) {
+            console.error('复制失败: ', err);
+            alert('复制失败，请手动复制代码');
+        });
+    }
+
+    // 代码高亮
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    });
+</script>
+{% endblock %}

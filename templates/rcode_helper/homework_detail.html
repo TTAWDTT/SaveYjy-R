@@ -1,0 +1,114 @@
+{% extends 'rcode_helper/base.html' %}
+
+{% block title %}作业题详情 - R语言助手{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- 返回按钮 -->
+        <div class="mb-3">
+            <a href="{% url 'rcode_helper:history' %}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-1"></i>返回历史记录
+            </a>
+        </div>
+
+        <!-- 请求信息 -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clipboard-list me-2"></i>作业题详情
+                    </h5>
+                    <small>{{ request_log.created_at|date:"Y-m-d H:i:s" }}</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ request_log.user_input }}</p>
+                {% if request_log.ip_address %}
+                <small class="text-muted">
+                    <i class="fas fa-map-marker-alt me-1"></i>IP: {{ request_log.ip_address }}
+                </small>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 解决方案 -->
+        {% if solutions %}
+        <h4 class="mb-4">
+            <i class="fas fa-lightbulb text-warning me-2"></i>解决方案
+        </h4>
+
+        {% for solution in solutions %}
+        <div class="card mb-4 solution-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <span class="badge bg-primary me-2">方案 {{ solution.order }}</span>
+                    {{ solution.solution_name }}
+                </h5>
+                <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyCode('code-{{ solution.order }}')">
+                    <i class="fas fa-copy me-1"></i>复制代码
+                </button>
+            </div>
+            <div class="card-body">
+                <!-- 代码块 -->
+                <div class="code-container mb-3">
+                    <pre><code id="code-{{ solution.order }}" class="language-r">{{ solution.code_content }}</code></pre>
+                </div>
+                
+                <!-- 方法说明 -->
+                {% if solution.method_description %}
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-1"></i>方法说明：</h6>
+                    <p class="mb-0">{{ solution.method_description }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- 操作按钮 -->
+        <div class="text-center mt-4">
+            <a href="{% url 'rcode_helper:home' %}" class="btn btn-primary me-2">
+                <i class="fas fa-plus me-1"></i>解答新题目
+            </a>
+            <a href="{% url 'rcode_helper:history' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-history me-1"></i>返回历史记录
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function copyCode(elementId) {
+        const codeElement = document.getElementById(elementId);
+        const text = codeElement.textContent;
+        
+        navigator.clipboard.writeText(text).then(function() {
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check me-1"></i>已复制';
+            btn.classList.add('btn-success');
+            btn.classList.remove('btn-outline-secondary');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-outline-secondary');
+            }, 2000);
+        }).catch(function(err) {
+            console.error('复制失败: ', err);
+            alert('复制失败，请手动复制代码');
+        });
+    }
+
+    // 代码高亮
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    });
+</script>
+{% endblock %}

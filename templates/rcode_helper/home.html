@@ -1,0 +1,172 @@
+{% extends 'rcode_helper/base.html' %}
+
+{% block title %}R语言助手 - 智能R语言学习平台{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <!-- 欢迎信息 -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-chart-line text-primary"></i>
+                R语言智能助手
+            </h1>
+            <p class="lead text-muted">
+                基于先进AI技术，为您提供专业的R语言学习支持
+            </p>
+        </div>
+
+        <!-- 功能选择卡片 -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 feature-card" onclick="showHomeworkForm()">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">作业题解答</h5>
+                        <p class="card-text">
+                            输入R语言作业题，获得三种不同的解决方案，
+                            每种方案都包含详细的中文注释和解释
+                        </p>
+                        <button class="btn btn-primary">开始解题</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 feature-card" onclick="showExplanationForm()">
+                    <div class="card-body text-center">
+                        <i class="fas fa-code fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">代码解释</h5>
+                        <p class="card-text">
+                            粘贴您的R语言代码，我会用平易近人的语气
+                            为您详细解释代码的功能和意义
+                        </p>
+                        <button class="btn btn-success">解释代码</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 作业题解答表单 -->
+        <div id="homework-section" class="section-form" style="display: none;">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clipboard-list me-2"></i>R语言作业题解答
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'rcode_helper:homework_solution' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ homework_form.homework_question.id_for_label }}" class="form-label">
+                                {{ homework_form.homework_question.label }}
+                            </label>
+                            {{ homework_form.homework_question }}
+                            <div class="form-text">{{ homework_form.homework_question.help_text }}</div>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-secondary me-md-2" onclick="hideAllForms()">
+                                取消
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="homework-submit">
+                                <i class="fas fa-magic me-1"></i>生成解决方案
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 代码解释表单 -->
+        <div id="explanation-section" class="section-form" style="display: none;">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-code me-2"></i>R语言代码解释
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'rcode_helper:code_explanation' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ explanation_form.r_code.id_for_label }}" class="form-label">
+                                {{ explanation_form.r_code.label }}
+                            </label>
+                            {{ explanation_form.r_code }}
+                            <div class="form-text">{{ explanation_form.r_code.help_text }}</div>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-secondary me-md-2" onclick="hideAllForms()">
+                                取消
+                            </button>
+                            <button type="submit" class="btn btn-success" id="explanation-submit">
+                                <i class="fas fa-lightbulb me-1"></i>解释代码
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 功能介绍 -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">功能特色</h3>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="text-center">
+                    <i class="fas fa-brain fa-2x text-info mb-2"></i>
+                    <h6>智能AI分析</h6>
+                    <small class="text-muted">基于DeepSeek强大的AI能力，提供专业准确的R语言解决方案</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="text-center">
+                    <i class="fas fa-list-ol fa-2x text-warning mb-2"></i>
+                    <h6>多种解决方案</h6>
+                    <small class="text-muted">为每个问题提供三种不同的解决思路，拓展您的编程视野</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="text-center">
+                    <i class="fas fa-comments fa-2x text-danger mb-2"></i>
+                    <h6>中文详细注释</h6>
+                    <small class="text-muted">所有代码都包含详细的中文注释，帮助理解每一步操作</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function showHomeworkForm() {
+        hideAllForms();
+        document.getElementById('homework-section').style.display = 'block';
+        document.getElementById('homework-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showExplanationForm() {
+        hideAllForms();
+        document.getElementById('explanation-section').style.display = 'block';
+        document.getElementById('explanation-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideAllForms() {
+        document.getElementById('homework-section').style.display = 'none';
+        document.getElementById('explanation-section').style.display = 'none';
+    }
+
+    // 表单提交加载状态
+    document.getElementById('homework-submit').addEventListener('click', function() {
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>正在生成...';
+        this.disabled = true;
+    });
+
+    document.getElementById('explanation-submit').addEventListener('click', function() {
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>正在解释...';
+        this.disabled = true;
+    });
+</script>
+{% endblock %}

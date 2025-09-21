@@ -1,0 +1,91 @@
+{% extends 'rcode_helper/base.html' %}
+
+{% block title %}历史记录 - R语言助手{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-history text-primary me-2"></i>历史记录
+            </h2>
+            <a href="{% url 'rcode_helper:home' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i>新建请求
+            </a>
+        </div>
+
+        {% if recent_requests %}
+            <div class="row">
+                {% for request in recent_requests %}
+                <div class="col-lg-6 mb-3">
+                    <div class="card h-100 request-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="badge {% if request.request_type == 'homework' %}bg-primary{% else %}bg-success{% endif %}">
+                                {% if request.request_type == 'homework' %}
+                                    <i class="fas fa-clipboard-list me-1"></i>作业题解答
+                                {% else %}
+                                    <i class="fas fa-code me-1"></i>代码解释
+                                {% endif %}
+                            </span>
+                            <small class="text-muted">{{ request.created_at|date:"m-d H:i" }}</small>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                {{ request.user_input|truncatechars:100 }}
+                            </p>
+                            {% if request.request_type == 'homework' and request.solutions.count > 0 %}
+                            <div class="mb-2">
+                                <small class="text-success">
+                                    <i class="fas fa-check-circle me-1"></i>已生成 {{ request.solutions.count }} 个解决方案
+                                </small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="{% url 'rcode_helper:request_detail' request.id %}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-eye me-1"></i>查看详情
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- 分页提示 -->
+            {% if recent_requests|length == 20 %}
+            <div class="text-center mt-4">
+                <p class="text-muted">显示最近20条记录</p>
+            </div>
+            {% endif %}
+        {% else %}
+            <!-- 空状态 -->
+            <div class="text-center py-5">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">暂无历史记录</h5>
+                <p class="text-muted">开始使用R语言助手来创建您的第一个记录吧！</p>
+                <a href="{% url 'rcode_helper:home' %}" class="btn btn-primary">
+                    <i class="fas fa-rocket me-1"></i>开始使用
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // 卡片悬停效果
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.request-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+{% endblock %}
