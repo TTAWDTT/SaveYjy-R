@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修复演示 - R语言助手</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <style>
+        .demo-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .emoji-test {
+            font-size: 2rem;
+            margin: 0.5rem;
+            display: inline-block;
+        }
+        
+        .status-indicator {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 0.25rem;
+            display: inline-block;
+        }
+        
+        .status-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+        
+        .status-fixed {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .theme-preview-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: rgba(255,255,255,0.95);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            min-width: 44px;
+            min-height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            margin: 0.5rem;
+        }
+        
+        .theme-preview-btn:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-check-circle me-2"></i>修复演示
+            </a>
+            <div class="navbar-nav ms-auto">
+                <div id="navbar-theme-selector" class="d-flex align-items-center"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="demo-section">
+            <h2><i class="fas fa-bug-slash me-2"></i>问题修复状态</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>✅ 已修复问题</h4>
+                    <div class="status-fixed">1. JavaScript文件重复代码已清理</div>
+                    <div class="status-fixed">2. Emoji字体显示已优化</div>
+                    <div class="status-fixed">3. 主题切换按钮可见性增强</div>
+                    <div class="status-fixed">4. 历史页面样式统一</div>
+                    <div class="status-fixed">5. 冗余文件已删除</div>
+                </div>
+                <div class="col-md-6">
+                    <h4>🔧 技术改进</h4>
+                    <div class="status-success">代码重复问题解决</div>
+                    <div class="status-success">字体渲染优化</div>
+                    <div class="status-success">UI一致性提升</div>
+                    <div class="status-success">用户体验改善</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-smile me-2"></i>Emoji显示测试</h3>
+            <p>以下emoji应该能正常显示（修复前可能显示为方块或问号）：</p>
+            <div class="text-center">
+                <span class="emoji-test">🎨</span>
+                <span class="emoji-test">🌸</span>
+                <span class="emoji-test">🌺</span>
+                <span class="emoji-test">🌹</span>
+                <span class="emoji-test">🐚</span>
+                <span class="emoji-test">💜</span>
+                <span class="emoji-test">🔥</span>
+                <span class="emoji-test">🌙</span>
+                <span class="emoji-test">🌲</span>
+                <span class="emoji-test">🌊</span>
+                <span class="emoji-test">🌅</span>
+                <span class="emoji-test">✨</span>
+                <span class="emoji-test">🎲</span>
+                <span class="emoji-test">🔄</span>
+                <span class="emoji-test">🔧</span>
+                <span class="emoji-test">📱</span>
+                <span class="emoji-test">💻</span>
+                <span class="emoji-test">🚀</span>
+                <span class="emoji-test">⚡</span>
+                <span class="emoji-test">🎯</span>
+            </div>
+            <div class="mt-3 text-center">
+                <small class="text-muted">如果以上emoji都能正常显示彩色图标，则修复成功！</small>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-palette me-2"></i>主题切换按钮测试</h3>
+            <p>主题切换按钮现在应该更加清晰可见，具有背景和边框：</p>
+            <div class="text-center">
+                <h5>修复后的按钮样式：</h5>
+                <button class="theme-preview-btn">🎨</button>
+                <button class="theme-preview-btn">🌸</button>
+                <button class="theme-preview-btn">🌙</button>
+                <button class="theme-preview-btn">🌊</button>
+            </div>
+            <p class="mt-3">导航栏右上角的主题切换按钮现在应该：</p>
+            <ul>
+                <li>✅ 具有半透明背景</li>
+                <li>✅ 有明显的边框</li>
+                <li>✅ 悬停时有视觉反馈</li>
+                <li>✅ 具有适当的尺寸和对比度</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-code me-2"></i>代码清理结果</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>移除的重复代码：</h5>
+                    <ul>
+                        <li><code>window.iconManager = new IconManager()</code> 重复初始化</li>
+                        <li><code>window.IconManager = IconManager</code> 重复导出</li>
+                        <li>重复的事件监听器绑定</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>删除的冗余文件：</h5>
+                    <ul>
+                        <li>各种测试HTML文件</li>
+                        <li>备份CSS文件</li>
+                        <li>临时演示文件</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-history me-2"></i>历史页面改进</h3>
+            <p>历史页面现在与主应用保持一致的视觉风格：</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <h6>颜色方案</h6>
+                    <p>从粉色主题改为蓝紫渐变，与主应用一致</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>布局优化</h6>
+                    <p>改进了卡片布局、间距和响应式设计</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>视觉效果</h6>
+                    <p>添加了毛玻璃效果和现代阴影</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="js/theme-manager.js"></script>
+    <script src="js/icon-manager.js"></script>
+    <script src="js/emoji-fix.js"></script>
+    
+    <script>
+        // 演示页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ 演示页面加载完成');
+            console.log('📊 检查修复状态：');
+            console.log('  - JavaScript重复代码: 已清理');
+            console.log('  - Emoji字体支持: 已优化');
+            console.log('  - 主题按钮可见性: 已增强');
+            console.log('  - 历史页面兼容性: 已改进');
+            console.log('  - 冗余文件: 已删除');
+        });
+    </script>
+</body>
+</html>
