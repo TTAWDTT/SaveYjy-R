@@ -244,20 +244,17 @@ body {
 .icon-fallback-active i.fa::before,
 .icon-fallback-active i.far::before,
 .icon-fallback-active i.fab::before {
-    content: "" !important;
-    display: none !important;
+    content: none !important;
 }
 
 .icon-fallback-active i.fas::after,
 .icon-fallback-active i.fa::after,
 .icon-fallback-active i.far::after,
 .icon-fallback-active i.fab::after {
-    content: attr(data-emoji) !important;
     font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
     font-weight: normal !important;
     font-style: normal !important;
     font-size: 1em !important;
-    display: inline-block !important;
 }
 
 /* 特定图标映射 */
@@ -286,22 +283,6 @@ body {
 .icon-fallback-active i.fa-icons::after { content: "🔧"; }
 .icon-fallback-active i.fa-swatchbook::after { content: "🎨"; }
 .icon-fallback-active i.fa-info-circle::after { content: "ℹ️"; }
-.icon-fallback-active i.fa-sync::after { content: "🔄"; }
-.icon-fallback-active i.fa-random::after { content: "🎲"; }
-.icon-fallback-active i.fa-indent::after { content: "📝"; }
-.icon-fallback-active i.fa-rocket::after { content: "🚀"; }
-.icon-fallback-active i.fa-star::after { content: "⭐"; }
-.icon-fallback-active i.fa-users::after { content: "👥"; }
-.icon-fallback-active i.fa-search::after { content: "🔍"; }
-.icon-fallback-active i.fa-download::after { content: "⬇️"; }
-.icon-fallback-active i.fa-upload::after { content: "⬆️"; }
-.icon-fallback-active i.fa-save::after { content: "💾"; }
-.icon-fallback-active i.fa-edit::after { content: "✏️"; }
-.icon-fallback-active i.fa-trash::after { content: "🗑️"; }
-.icon-fallback-active i.fa-plus::after { content: "➕"; }
-.icon-fallback-active i.fa-minus::after { content: "➖"; }
-.icon-fallback-active i.fa-times::after { content: "❌"; }
-.icon-fallback-active i.fa-check::after { content: "✅"; }
 
 /* 图标大小一致性 */
 i {

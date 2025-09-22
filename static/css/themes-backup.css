@@ -1,0 +1,393 @@
+/* ========== 统一主题系统 ========== */
+
+/* 基础CSS变量定义 */
+:root {
+    /* 默认主题（经典粉色） */
+    --primary-color: #ff69b4;
+    --secondary-color: #ff1493;
+    --accent-color: #ffc0cb;
+    --background-gradient: linear-gradient(135deg, #fecfef 0%, #ffc0cb 50%, #ff69b4 100%);
+    --card-background: rgba(255, 255, 255, 0.95);
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border-color: rgba(255, 105, 180, 0.2);
+    --shadow-color: rgba(255, 105, 180, 0.3);
+    --hover-color: rgba(255, 105, 180, 0.05);
+}
+
+/* ========== 主题1: 经典粉色 (默认) ========== */
+.theme-classic {
+    --primary-color: #ff69b4;
+    --secondary-color: #ff1493;
+    --accent-color: #ffc0cb;
+    --background-gradient: linear-gradient(135deg, #fecfef 0%, #ffc0cb 50%, #ff69b4 100%);
+    --card-background: rgba(255, 255, 255, 0.95);
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border-color: rgba(255, 105, 180, 0.2);
+    --shadow-color: rgba(255, 105, 180, 0.3);
+    --hover-color: rgba(255, 105, 180, 0.05);
+}
+
+/* ========== 主题2: 浅樱花粉 ========== */
+.theme-sakura {
+    --primary-color: #ffb6c1;
+    --secondary-color: #ffc0cb;
+    --accent-color: #f0e6f7;
+    --background-gradient: linear-gradient(135deg, #f8f4f8 0%, #ffe4e1 50%, #ffb6c1 100%);
+    --card-background: rgba(255, 255, 255, 0.95);
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border-color: rgba(255, 182, 193, 0.2);
+    --shadow-color: rgba(255, 182, 193, 0.3);
+    --hover-color: rgba(255, 182, 193, 0.05);
+}
+
+/* ========== 主题3: 玫瑰红 ========== */
+.theme-rose {
+    --primary-color: #dc143c;
+    --secondary-color: #b22222;
+    --accent-color: #ff69b4;
+    --background-gradient: linear-gradient(135deg, #ffe4e1 0%, #ffc0cb 50%, #dc143c 100%);
+    --card-background: rgba(255, 255, 255, 0.95);
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border-color: rgba(220, 20, 60, 0.2);
+    --shadow-color: rgba(220, 20, 60, 0.3);
+    --hover-color: rgba(220, 20, 60, 0.05);
+}
+.theme-sakura {
+    --primary-pink: #ffb7c5;
+    --secondary-pink: #ffa0b3;
+    --light-pink: #ffeef0;
+    --soft-pink: rgba(255, 183, 197, 0.2);
+    --gradient-pink: linear-gradient(135deg, #ffb7c5, #ffa0b3);
+    --gradient-bg: linear-gradient(135deg, #ffeef0 0%, #ffccd5 50%, #ffb7c5 100%);
+    --theme-name: "樱花粉";
+}
+
+/* ========== 主题3: 深玫瑰粉 ========== */
+.theme-rose {
+    --primary-pink: #dc143c;
+    --secondary-pink: #b91c3c;
+    --light-pink: #fdf2f2;
+    --soft-pink: rgba(220, 20, 60, 0.2);
+    --gradient-pink: linear-gradient(135deg, #dc143c, #b91c3c);
+    --gradient-bg: linear-gradient(135deg, #fdf2f2 0%, #f87171 50%, #dc143c 100%);
+    --theme-name: "玫瑰粉";
+}
+
+/* ========== 主题4: 紫粉渐变 ========== */
+.theme-purple-pink {
+    --primary-pink: #d946ef;
+    --secondary-pink: #c026d3;
+    --light-pink: #faf5ff;
+    --soft-pink: rgba(217, 70, 239, 0.2);
+    --gradient-pink: linear-gradient(135deg, #d946ef, #c026d3);
+    --gradient-bg: linear-gradient(135deg, #faf5ff 0%, #e879f9 50%, #d946ef 100%);
+    --theme-name: "紫粉渐变";
+}
+
+/* ========== 主题5: 珊瑚粉 ========== */
+.theme-coral {
+    --primary-pink: #ff6b9d;
+    --secondary-pink: #ff5722;
+    --light-pink: #fff5f5;
+    --soft-pink: rgba(255, 107, 157, 0.2);
+    --gradient-pink: linear-gradient(135deg, #ff6b9d, #ff5722);
+    --gradient-bg: linear-gradient(135deg, #fff5f5 0%, #ffab91 50%, #ff6b9d 100%);
+    --theme-name: "珊瑚粉";
+}
+
+/* ========== 主题6: 玫瑰金 ========== */
+.theme-rose-gold {
+    --primary-pink: #e91e63;
+    --secondary-pink: #ad1457;
+    --light-pink: #fce4ec;
+    --soft-pink: rgba(233, 30, 99, 0.2);
+    --gradient-pink: linear-gradient(135deg, #e91e63, #ad1457);
+    --gradient-bg: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 50%, #e91e63 100%);
+    --theme-name: "玫瑰金";
+}
+
+/* ========== 应用主题变量到元素 ========== */
+
+/* 背景渐变 */
+body {
+    background: var(--gradient-bg) !important;
+}
+
+/* 按钮样式 */
+.btn-pink {
+    background: var(--gradient-pink) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-pink:hover {
+    background: linear-gradient(135deg, var(--secondary-pink), var(--primary-pink)) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--soft-pink) !important;
+}
+
+/* 卡片样式 */
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+.glassmorphism:hover {
+    box-shadow: 0 8px 25px var(--soft-pink) !important;
+}
+
+/* 导航栏 */
+.sidebar {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85)) !important;
+    backdrop-filter: blur(15px) !important;
+}
+
+.nav-link.active {
+    background: var(--gradient-pink) !important;
+    color: white !important;
+}
+
+/* 表单控件 */
+.form-control:focus {
+    border-color: var(--primary-pink) !important;
+    box-shadow: 0 0 0 0.2rem var(--soft-pink) !important;
+}
+
+/* 主题切换器颜色 */
+.theme-classic-btn { background: linear-gradient(45deg, #ff69b4, #ff1493); }
+.theme-sakura-btn { background: linear-gradient(45deg, #ffb7c5, #ffa0b3); }
+.theme-rose-btn { background: linear-gradient(45deg, #dc143c, #b91c3c); }
+.theme-purple-pink-btn { background: linear-gradient(45deg, #d946ef, #c026d3); }
+.theme-coral-btn { background: linear-gradient(45deg, #ff6b9d, #ff5722); }
+.theme-rose-gold-btn { background: linear-gradient(45deg, #e91e63, #ad1457); }
+
+/* 动画效果 */
+.theme-transition {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 响应式主题切换器 */
+@media (max-width: 768px) {
+    .theme-selector {
+        top: 10px;
+        right: 10px;
+        padding: 8px;
+    }
+    
+    .theme-button {
+        width: 25px;
+        height: 25px;
+        margin: 2px;
+    }
+}
+
+/* ========== 扩展主题系统 ========== */
+
+/* 主题7: 深色专业主题 */
+.theme-dark {
+    --primary-color: #6366f1;
+    --secondary-color: #4f46e5;
+    --accent-color: #8b5cf6;
+    --background-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    --card-background: rgba(30, 41, 59, 0.95);
+    --text-primary: #f1f5f9;
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-color: rgba(99, 102, 241, 0.3);
+    --shadow-color: rgba(99, 102, 241, 0.4);
+    --hover-color: rgba(99, 102, 241, 0.1);
+}
+
+/* 主题8: 森林绿主题 */
+.theme-forest {
+    --primary-color: #10b981;
+    --secondary-color: #059669;
+    --accent-color: #34d399;
+    --background-gradient: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    --card-background: rgba(236, 253, 245, 0.95);
+    --text-primary: #064e3b;
+    --text-secondary: #065f46;
+    --text-muted: #047857;
+    --border-color: rgba(16, 185, 129, 0.2);
+    --shadow-color: rgba(16, 185, 129, 0.3);
+    --hover-color: rgba(16, 185, 129, 0.05);
+}
+
+/* 主题9: 海洋蓝主题 */
+.theme-ocean {
+    --primary-color: #0ea5e9;
+    --secondary-color: #0284c7;
+    --accent-color: #38bdf8;
+    --background-gradient: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+    --card-background: rgba(240, 249, 255, 0.95);
+    --text-primary: #0c4a6e;
+    --text-secondary: #075985;
+    --text-muted: #0369a1;
+    --border-color: rgba(14, 165, 233, 0.2);
+    --shadow-color: rgba(14, 165, 233, 0.3);
+    --hover-color: rgba(14, 165, 233, 0.05);
+}
+
+/* 主题10: 日落橙主题 */
+.theme-sunset {
+    --primary-color: #f97316;
+    --secondary-color: #ea580c;
+    --accent-color: #fb923c;
+    --background-gradient: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+    --card-background: rgba(255, 255, 255, 0.95);
+    --text-primary: #9a3412;
+    --text-secondary: #c2410c;
+    --text-muted: #ea580c;
+    --border-color: rgba(249, 115, 22, 0.2);
+    --shadow-color: rgba(249, 115, 22, 0.3);
+    --hover-color: rgba(249, 115, 22, 0.05);
+}
+
+/* 主题11: 薰衣草紫主题 */
+.theme-lavender {
+    --primary-color: #a855f7;
+    --secondary-color: #9333ea;
+    --accent-color: #c084fc;
+    --background-gradient: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);
+    --card-background: rgba(250, 245, 255, 0.95);
+    --text-primary: #581c87;
+    --text-secondary: #6b21a8;
+    --text-muted: #7c3aed;
+    --border-color: rgba(168, 85, 247, 0.2);
+    --shadow-color: rgba(168, 85, 247, 0.3);
+    --hover-color: rgba(168, 85, 247, 0.05);
+}
+
+/* 主题12: 玫瑰金主题 */
+.theme-rose-gold {
+    --primary-color: #f43f5e;
+    --secondary-color: #e11d48;
+    --accent-color: #fb7185;
+    --background-gradient: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+    --card-background: rgba(255, 255, 255, 0.95);
+    --text-primary: #881337;
+    --text-secondary: #9f1239;
+    --text-muted: #be123c;
+    --border-color: rgba(244, 63, 94, 0.2);
+    --shadow-color: rgba(244, 63, 94, 0.3);
+    --hover-color: rgba(244, 63, 94, 0.05);
+}
+
+/* ========== 图标修复和增强 ========== */
+
+/* Font Awesome 备用方案 */
+.icon-fallback {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+
+/* 当Font Awesome未加载时的备用图标 */
+i.fas:before {
+    font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Pro', sans-serif;
+    font-weight: 900;
+}
+
+/* Emoji备用图标映射 */
+i.fas.fa-lightbulb:after {
+    content: "💡";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+i.fas.fa-question-circle:after {
+    content: "❓";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+i.fas.fa-highlighter:after {
+    content: "📍";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+i.fas.fa-file-code:after {
+    content: "📄";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+i.fas.fa-code:after {
+    content: "💻";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+i.fas.fa-brain:after {
+    content: "🧠";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+i.fas.fa-print:after {
+    content: "🖨️";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+i.fas.fa-copy:after {
+    content: "📋";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+i.fas.fa-clock:after {
+    content: "🕐";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+/* 主题应用到所有元素 */
+.theme-dark body,
+.theme-forest body,
+.theme-ocean body,
+.theme-sunset body,
+.theme-lavender body,
+.theme-rose-gold body {
+    background: var(--background-gradient) !important;
+    color: var(--text-primary) !important;
+}
+
+.theme-dark .card,
+.theme-forest .card,
+.theme-ocean .card,
+.theme-sunset .card,
+.theme-lavender .card,
+.theme-rose-gold .card {
+    background: var(--card-background) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 0 10px 30px var(--shadow-color) !important;
+}
+
+/* 增强的主题按钮 */
+.theme-button.dark {
+    background: linear-gradient(45deg, #1e293b, #334155);
+}
+
+.theme-button.forest {
+    background: linear-gradient(45deg, #10b981, #059669);
+}
+
+.theme-button.ocean {
+    background: linear-gradient(45deg, #0ea5e9, #0284c7);
+}
+
+.theme-button.sunset {
+    background: linear-gradient(45deg, #f97316, #ea580c);
+}
+
+.theme-button.lavender {
+    background: linear-gradient(45deg, #a855f7, #9333ea);
+}
+
+.theme-button.rose-gold {
+    background: linear-gradient(45deg, #f43f5e, #e11d48);
+}

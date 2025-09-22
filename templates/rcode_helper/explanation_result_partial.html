@@ -2,7 +2,7 @@
     <!-- 结果标题 -->
     <div class="result-title-section">
         <h3 class="result-main-title">
-            <i class="fas fa-lightbulb me-2"></i>
+            <i class="fas fa-lightbulb me-2" aria-hidden="true">💡</i>
             代码解释结果
         </h3>
         <p class="result-subtitle">AI为您详细解析R语言代码的含义和用法</p>
@@ -13,7 +13,7 @@
     <div class="info-card query-info-card">
         <div class="info-header">
             <div class="info-icon query-icon">
-                <i class="fas fa-question-circle"></i>
+                <i class="fas fa-question-circle" aria-hidden="true">❓</i>
             </div>
             <div class="info-content">
                 <h6 class="info-title">您的具体问题</h6>
@@ -28,7 +28,7 @@
     <div class="info-card selected-lines-card">
         <div class="info-header">
             <div class="info-icon highlight-icon">
-                <i class="fas fa-highlight"></i>
+                <i class="fas fa-highlighter" aria-hidden="true">📍</i>
             </div>
             <div class="info-content">
                 <h6 class="info-title">重点关注的代码行</h6>
@@ -43,7 +43,7 @@
         <!-- 卡片头部 -->
         <div class="card-header-section">
             <div class="header-icon">
-                <i class="fas fa-file-code"></i>
+                <i class="fas fa-file-code" aria-hidden="true">📄</i>
             </div>
             <div class="header-content">
                 <h4 class="card-title">代码分析结果</h4>
@@ -54,7 +54,7 @@
         <!-- 代码展示区域 -->
         <div class="code-display-section">
             <div class="section-header">
-                <i class="fas fa-code me-2"></i>
+                <i class="fas fa-code me-2" aria-hidden="true">💻</i>
                 <span>原始代码</span>
                 {% if selected_lines %}
                 <span class="highlight-badge">已高亮显示关注行</span>
@@ -74,7 +74,7 @@
         <!-- 解释内容区域 -->
         <div class="explanation-display-section">
             <div class="section-header">
-                <i class="fas fa-brain me-2"></i>
+                <i class="fas fa-brain me-2" aria-hidden="true">🧠</i>
                 <span>AI详细解释</span>
             </div>
             
@@ -90,15 +90,15 @@
     <div class="result-footer">
         <div class="footer-actions">
             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.print()">
-                <i class="fas fa-print me-1"></i>打印结果
+                <i class="fas fa-print me-1" aria-hidden="true">🖨️</i>打印结果
             </button>
             <button type="button" class="btn btn-outline-primary btn-sm" onclick="copyToClipboard()">
-                <i class="fas fa-copy me-1"></i>复制解释
+                <i class="fas fa-copy me-1" aria-hidden="true">📋</i>复制解释
             </button>
         </div>
         <div class="footer-info">
             <small class="text-muted">
-                <i class="fas fa-clock me-1"></i>
+                <i class="fas fa-clock me-1" aria-hidden="true">🕐</i>
                 解释完成时间：{{ request.session.created_at|default:"刚刚" }}
             </small>
         </div>

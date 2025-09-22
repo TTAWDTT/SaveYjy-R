@@ -38,6 +38,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/enhanced-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themes.css' %}">
     
     <!-- 响应式和无障碍增强 -->
     <style>
@@ -220,6 +221,10 @@
                            {% if request.resolver_match.url_name == 'test_features' %}aria-current="page"{% endif %}>
                             <i class="fas fa-vial me-1" aria-hidden="true"></i>功能测试
                         </a>
+                    </li>
+                    <!-- 主题选择器 -->
+                    <li class="nav-item">
+                        <div id="navbar-theme-selector"></div>
                     </li>
                 </ul>
             </div>
@@ -424,6 +429,12 @@
     
     <!-- 用户体验增强器 -->
     <script src="{% static 'js/ux-enhancer.js' %}" defer></script>
+    
+    <!-- 主题管理器 -->
+    <script src="{% static 'js/theme-manager.js' %}" defer></script>
+    
+    <!-- 图标管理器 -->
+    <script src="{% static 'js/icon-manager.js' %}" defer></script>
     
     <!-- 全局脚本和错误处理 -->
     <script>

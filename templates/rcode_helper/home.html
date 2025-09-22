@@ -147,6 +147,128 @@
                 </div>
             </div>
         </div>
+        
+        <!-- 图标和主题演示区域 -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card feature-card glass-effect">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-palette me-2" aria-hidden="🎨"></i>
+                            图标显示测试与主题演示
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-icons me-2" aria-hidden="🔧"></i>
+                                    图标显示测试
+                                </h6>
+                                <div class="icon-demo-grid">
+                                    <div class="icon-demo-item">
+                                        <i class="fas fa-lightbulb" aria-hidden="💡"></i>
+                                        <span>想法</span>
+                                    </div>
+                                    <div class="icon-demo-item">
+                                        <i class="fas fa-question-circle" aria-hidden="❓"></i>
+                                        <span>问题</span>
+                                    </div>
+                                    <div class="icon-demo-item">
+                                        <i class="fas fa-highlighter" aria-hidden="📍"></i>
+                                        <span>高亮</span>
+                                    </div>
+                                    <div class="icon-demo-item">
+                                        <i class="fas fa-file-code" aria-hidden="📄"></i>
+                                        <span>代码</span>
+                                    </div>
+                                    <div class="icon-demo-item">
+                                        <i class="fas fa-brain" aria-hidden="🧠"></i>
+                                        <span>智能</span>
+                                    </div>
+                                    <div class="icon-demo-item">
+                                        <i class="fas fa-print" aria-hidden="🖨️"></i>
+                                        <span>打印</span>
+                                    </div>
+                                    <div class="icon-demo-item">
+                                        <i class="fas fa-copy" aria-hidden="📋"></i>
+                                        <span>复制</span>
+                                    </div>
+                                    <div class="icon-demo-item">
+                                        <i class="fas fa-clock" aria-hidden="🕐"></i>
+                                        <span>时间</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-success mb-3">
+                                    <i class="fas fa-swatchbook me-2" aria-hidden="🎨"></i>
+                                    主题配色预览
+                                </h6>
+                                <div class="theme-preview-grid">
+                                    <div class="theme-preview-item" data-theme="classic">
+                                        <div class="theme-color-box" style="background: linear-gradient(45deg, #ff69b4, #ff1493);"></div>
+                                        <span>经典粉色</span>
+                                    </div>
+                                    <div class="theme-preview-item" data-theme="dark">
+                                        <div class="theme-color-box" style="background: linear-gradient(45deg, #6366f1, #4f46e5);"></div>
+                                        <span>深色专业</span>
+                                    </div>
+                                    <div class="theme-preview-item" data-theme="forest">
+                                        <div class="theme-color-box" style="background: linear-gradient(45deg, #10b981, #059669);"></div>
+                                        <span>森林绿</span>
+                                    </div>
+                                    <div class="theme-preview-item" data-theme="ocean">
+                                        <div class="theme-color-box" style="background: linear-gradient(45deg, #0ea5e9, #0284c7);"></div>
+                                        <span>海洋蓝</span>
+                                    </div>
+                                    <div class="theme-preview-item" data-theme="sunset">
+                                        <div class="theme-color-box" style="background: linear-gradient(45deg, #f97316, #ea580c);"></div>
+                                        <span>日落橙</span>
+                                    </div>
+                                    <div class="theme-preview-item" data-theme="lavender">
+                                        <div class="theme-color-box" style="background: linear-gradient(45deg, #a855f7, #9333ea);"></div>
+                                        <span>薰衣草紫</span>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1" aria-hidden="ℹ️"></i>
+                                        右上角有主题切换器，可以实时切换主题配色
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 测试按钮区域 -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="text-center">
+                                    <h6 class="text-info mb-3">
+                                        <i class="fas fa-vial me-2" aria-hidden="🧪"></i>
+                                        功能测试区域
+                                    </h6>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="toggleIconMode()">
+                                            <i class="fas fa-sync me-1" aria-hidden="🔄"></i>
+                                            切换图标模式
+                                        </button>
+                                        <button type="button" class="btn btn-outline-success btn-sm" onclick="testRandomTheme()">
+                                            <i class="fas fa-palette me-1" aria-hidden="🎨"></i>
+                                            随机主题
+                                        </button>
+                                        <button type="button" class="btn btn-outline-info btn-sm" onclick="showThemeInfo()">
+                                            <i class="fas fa-info me-1" aria-hidden="ℹ️"></i>
+                                            主题信息
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- 作业题解答表单 -->
         <div id="homework-section" class="section-form" style="display: none;">
@@ -738,8 +860,175 @@ animationStyles.textContent = `
         from { transform: translateX(0); opacity: 1; }
         to { transform: translateX(100%); opacity: 0; }
     }
+    
+    /* 图标演示区域样式 */
+    .icon-demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .icon-demo-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .icon-demo-item:hover {
+        transform: translateY(-3px);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .icon-demo-item i {
+        font-size: 24px;
+        margin-bottom: 8px;
+        color: #667eea;
+    }
+    
+    .icon-demo-item span {
+        font-size: 12px;
+        color: #666;
+        font-weight: 500;
+    }
+    
+    /* 主题预览区域样式 */
+    .theme-preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 12px;
+    }
+    
+    .theme-preview-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .theme-preview-item:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .theme-color-box {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-bottom: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .theme-preview-item span {
+        font-size: 11px;
+        color: #666;
+        text-align: center;
+        font-weight: 500;
+    }
+    
+    @media (max-width: 768px) {
+        .icon-demo-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .icon-demo-item {
+            padding: 10px 5px;
+        }
+        
+        .theme-preview-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .theme-preview-item {
+            padding: 8px 4px;
+        }
+        
+        .theme-color-box {
+            width: 30px;
+            height: 30px;
+        }
+    }
 `;
 document.head.appendChild(animationStyles);
+
+// 主题预览点击功能
+document.addEventListener('click', function(e) {
+    const themeItem = e.target.closest('.theme-preview-item');
+    if (themeItem && window.themeManager) {
+        const theme = themeItem.dataset.theme;
+        window.themeManager.setTheme(theme);
+        
+        // 高亮选中的主题预览
+        document.querySelectorAll('.theme-preview-item').forEach(item => {
+            item.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+        themeItem.style.background = 'rgba(102, 126, 234, 0.3)';
+    }
+});
+
+// 测试功能函数
+function toggleIconMode() {
+    if (window.iconManager) {
+        window.iconManager.toggleIconMode();
+        showNotification('图标模式已切换', 'info');
+    } else {
+        showNotification('图标管理器未初始化', 'warning');
+    }
+}
+
+function testRandomTheme() {
+    if (window.themeManager) {
+        const themes = Object.keys(window.themeManager.themes);
+        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+        window.themeManager.setTheme(randomTheme);
+    } else {
+        showNotification('主题管理器未初始化', 'warning');
+    }
+}
+
+function showThemeInfo() {
+    if (window.themeManager) {
+        const current = window.themeManager.currentTheme;
+        const themeData = window.themeManager.themes[current];
+        const info = `当前主题: ${themeData.name} ${themeData.icon}\n主题类名: theme-${current}\n可用主题: ${Object.keys(window.themeManager.themes).length}个`;
+        alert(info);
+    } else {
+        alert('主题管理器未初始化');
+    }
+}
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show`;
+    notification.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; min-width: 300px;';
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 3000);
+}
 </script>
 
     </div>
