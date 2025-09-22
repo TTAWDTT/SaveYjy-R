@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图标功能演示</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 我们的CSS文件 -->
+    <link rel="stylesheet" href="/static/css/icon-fix.css">
+    
+    <style>
+        body {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .icon-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .icon-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-item:hover {
+            border-color: #007bff;
+            transform: translateY(-2px);
+        }
+        
+        .icon-large {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .icon-name {
+            font-size: 0.8rem;
+            color: #666;
+            font-family: monospace;
+        }
+        
+        .status-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            z-index: 9999;
+            max-width: 300px;
+        }
+        
+        .control-panel {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .btn-custom {
+            margin: 5px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .mode-indicator {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        
+        .mode-fa {
+            background: #28a745;
+            color: white;
+        }
+        
+        .mode-emoji {
+            background: #ffc107;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-white mb-4">🎯 图标系统演示</h1>
+        
+        <!-- 状态显示 -->
+        <div class="status-bar" id="statusBar">
+            <div><strong>图标管理器状态</strong></div>
+            <div id="currentMode">检测中...</div>
+            <div id="faStatus">Font Awesome: 检查中</div>
+            <div><small>按 Ctrl+Shift+I 打开调试面板</small></div>
+        </div>
+        
+        <!-- 控制面板 -->
+        <div class="demo-card">
+            <h3>🎛️ 控制面板</h3>
+            <div class="control-panel">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>当前模式</h5>
+                        <div id="modeIndicator" class="mode-indicator mode-fa">Font Awesome模式</div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>操作</h5>
+                        <button class="btn btn-warning btn-custom" onclick="toggleMode()">
+                            <i class="fas fa-exchange-alt"></i> 切换图标模式
+                        </button>
+                        <button class="btn btn-info btn-custom" onclick="showDebugPanel()">
+                            <i class="fas fa-bug"></i> 调试面板
+                        </button>
+                        <button class="btn btn-success btn-custom" onclick="forceCheck()">
+                            <i class="fas fa-sync"></i> 强制检查
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 图标展示 -->
+        <div class="demo-card">
+            <h3>📱 图标展示区</h3>
+            <p>这些图标会根据当前模式显示为 <strong>Font Awesome图标</strong> 或 <strong>Emoji回退</strong>：</p>
+            
+            <div class="icon-showcase">
+                <div class="icon-item">
+                    <i class="fas fa-home icon-large"></i>
+                    <div class="icon-name">fa-home</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-user icon-large"></i>
+                    <div class="icon-name">fa-user</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-heart icon-large"></i>
+                    <div class="icon-name">fa-heart</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-star icon-large"></i>
+                    <div class="icon-name">fa-star</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-cog icon-large"></i>
+                    <div class="icon-name">fa-cog</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-search icon-large"></i>
+                    <div class="icon-name">fa-search</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-code icon-large"></i>
+                    <div class="icon-name">fa-code</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-chart-line icon-large"></i>
+                    <div class="icon-name">fa-chart-line</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-lightbulb icon-large"></i>
+                    <div class="icon-name">fa-lightbulb</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-brain icon-large"></i>
+                    <div class="icon-name">fa-brain</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-comments icon-large"></i>
+                    <div class="icon-name">fa-comments</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-magic icon-large"></i>
+                    <div class="icon-name">fa-magic</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 对比说明 -->
+        <div class="demo-card">
+            <h3>📊 对比说明</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Font Awesome模式</h5>
+                    <p>当Font Awesome成功加载时：</p>
+                    <ul>
+                        <li>显示矢量图标</li>
+                        <li>支持颜色自定义</li>
+                        <li>完美缩放</li>
+                        <li>更专业的外观</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Emoji回退模式</h5>
+                    <p>当Font Awesome加载失败时：</p>
+                    <ul>
+                        <li>显示emoji字符</li>
+                        <li>系统原生支持</li>
+                        <li>无需网络加载</li>
+                        <li>确保总有图标显示</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 纯Emoji区域 -->
+        <div class="demo-card">
+            <h3>😊 纯Emoji对比区</h3>
+            <p>这些是纯emoji，不会被图标管理器影响：</p>
+            <div style="font-size: 2rem; text-align: center; padding: 20px;">
+                🏠 👤 ❤️ ⭐ ⚙️ 🔍 💻 📈 💡 🧠 💬 ✨ 🎯 🚀 🎨 📱
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="/static/js/icon-manager-final.js"></script>
+    
+    <script>
+        let isEmojiMode = false;
+        
+        // 控制函数
+        function toggleMode() {
+            if (window.iconManagerInstance) {
+                window.iconManagerInstance.toggleEmojiMode();
+            } else {
+                // 手动切换
+                isEmojiMode = !isEmojiMode;
+                if (isEmojiMode) {
+                    document.body.classList.add('icon-fallback-active');
+                    updateUI('emoji', false);
+                } else {
+                    document.body.classList.remove('icon-fallback-active');
+                    updateUI('fontawesome', true);
+                }
+            }
+        }
+        
+        function showDebugPanel() {
+            const panel = document.getElementById('icon-control-panel');
+            if (panel) {
+                panel.style.display = 'block';
+            }
+            if (window.iconManagerInstance) {
+                window.iconManagerInstance.debugMode = true;
+                window.iconManagerInstance.toggleDebugMode();
+            }
+        }
+        
+        function forceCheck() {
+            if (window.iconManagerInstance) {
+                window.iconManagerInstance.forceCheck();
+            }
+        }
+        
+        function updateUI(mode, fontAwesome) {
+            const modeIndicator = document.getElementById('modeIndicator');
+            const currentMode = document.getElementById('currentMode');
+            const faStatus = document.getElementById('faStatus');
+            
+            if (mode === 'emoji') {
+                modeIndicator.textContent = 'Emoji回退模式';
+                modeIndicator.className = 'mode-indicator mode-emoji';
+                currentMode.textContent = '当前: Emoji模式';
+                faStatus.textContent = 'Font Awesome: 未加载或失败';
+            } else {
+                modeIndicator.textContent = 'Font Awesome模式';
+                modeIndicator.className = 'mode-indicator mode-fa';
+                currentMode.textContent = '当前: Font Awesome模式';
+                faStatus.textContent = 'Font Awesome: 正常加载';
+            }
+        }
+        
+        // 监听图标模式变化
+        document.addEventListener('iconModeChanged', function(event) {
+            updateUI(event.detail.mode, event.detail.fontAwesome);
+        });
+        
+        // 初始化检查
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const hasIconManager = !!window.iconManagerInstance;
+                const isInEmojiMode = document.body.classList.contains('icon-fallback-active');
+                
+                if (hasIconManager) {
+                    // 图标管理器已加载
+                    updateUI(isInEmojiMode ? 'emoji' : 'fontawesome', !isInEmojiMode);
+                } else {
+                    // 图标管理器未加载，检查Font Awesome
+                    const testIcon = document.createElement('i');
+                    testIcon.className = 'fas fa-home';
+                    testIcon.style.cssText = 'position:absolute;left:-9999px;visibility:hidden;';
+                    document.body.appendChild(testIcon);
+                    
+                    setTimeout(() => {
+                        const computed = window.getComputedStyle(testIcon);
+                        const fontFamily = computed.fontFamily;
+                        const hasFontAwesome = fontFamily && fontFamily.toLowerCase().includes('font awesome');
+                        
+                        updateUI(hasFontAwesome ? 'fontawesome' : 'emoji', hasFontAwesome);
+                        document.body.removeChild(testIcon);
+                    }, 100);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

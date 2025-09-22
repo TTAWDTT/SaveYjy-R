@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji强制测试</title>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 我们的CSS -->
+    <link rel="stylesheet" href="/static/css/icon-fix.css">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 20px;
+            background: #f0f8ff;
+        }
+        
+        .test-icon {
+            font-size: 2rem;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+            width: 80px;
+            text-align: center;
+            background: white;
+        }
+        
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body class="icon-fallback-active">
+    <div class="status">
+        Emoji模式: 强制启用
+    </div>
+    
+    <h1>🎯 Emoji强制测试页面</h1>
+    
+    <div class="section">
+        <h2>主要图标测试</h2>
+        <p>这些Font Awesome图标应该显示为emoji：</p>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <div class="test-icon"><i class="fas fa-home"></i></div>
+            <div class="test-icon"><i class="fas fa-user"></i></div>
+            <div class="test-icon"><i class="fas fa-heart"></i></div>
+            <div class="test-icon"><i class="fas fa-star"></i></div>
+            <div class="test-icon"><i class="fas fa-cog"></i></div>
+            <div class="test-icon"><i class="fas fa-search"></i></div>
+            <div class="test-icon"><i class="fas fa-code"></i></div>
+            <div class="test-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="test-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="test-icon"><i class="fas fa-brain"></i></div>
+            <div class="test-icon"><i class="fas fa-comments"></i></div>
+            <div class="test-icon"><i class="fas fa-magic"></i></div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>预期结果</h2>
+        <p>上面的图标应该显示为:</p>
+        <div style="font-size: 2rem; line-height: 1.5;">
+            🏠 👤 ❤️ ⭐ ⚙️ 🔍 💻 📈 💡 🧠 💬 ✨
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>调试信息</h2>
+        <div id="debug-info">
+            <p>CSS类状态: <span id="css-status">检查中...</span></p>
+            <p>计算样式: <span id="computed-style">检查中...</span></p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查CSS类
+            const hasClass = document.body.classList.contains('icon-fallback-active');
+            document.getElementById('css-status').textContent = hasClass ? '✅ icon-fallback-active 已应用' : '❌ 类未应用';
+            
+            // 检查第一个图标的计算样式
+            const firstIcon = document.querySelector('.fas.fa-home');
+            if (firstIcon) {
+                const afterStyle = window.getComputedStyle(firstIcon, '::after');
+                const content = afterStyle.content;
+                document.getElementById('computed-style').textContent = 
+                    `::after content: ${content}`;
+            }
+            
+            console.log('🔍 调试信息:');
+            console.log('Body classes:', document.body.className);
+            console.log('icon-fallback-active存在:', document.body.classList.contains('icon-fallback-active'));
+        });
+    </script>
+</body>
+</html>

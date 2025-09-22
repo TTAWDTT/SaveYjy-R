@@ -1,0 +1,15 @@
+<!-- 模板页脚片段 - 引入项目 JS -->
+<script src="{% static 'js/modules/enhanced-ui.js' %}"></script>
+<script src="{% static 'js/modules/interaction-enhancer.js' %}"></script>
+<script src="{% static 'js/modules/performance-optimizer.js' %}" defer></script>
+<script src="{% static 'js/modules/ux-enhancer.js' %}" defer></script>
+<script src="{% static 'js/lib/theme-manager.js' %}" defer></script>
+<script src="{% static 'js/modules/icon-manager-final.js' %}" defer></script>
+
+<!-- 全局脚本和错误处理 -->
+<script>
+    // 设置调试模式（从body data属性读取）
+    window.DEBUG_MODE = document.body.dataset.debug === 'true';
+</script>
+
+{% block extra_scripts %}{% endblock %}

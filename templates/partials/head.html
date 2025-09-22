@@ -1,0 +1,51 @@
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+<meta name="description" content="专业的R语言智能助手，提供代码解释、作业辅导、智能问答等服务">
+<meta name="keywords" content="R语言,数据分析,统计学,代码解释,编程助手">
+<meta name="author" content="R语言助手团队">
+
+<!-- 性能和SEO优化 -->
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#667eea">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<title>{% block title %}R语言助手 - 专业的R语言学习与开发工具{% endblock %}</title>
+
+<!-- 预连接和DNS预取 -->
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- 核心CSS框架 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+<!-- 代码高亮 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css" rel="stylesheet" media="(prefers-color-scheme: dark)">
+
+<!-- Font Awesome 图标库 (为了图标占位和回退) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- 代码字体 -->
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- 自定义样式 -->
+<link rel="stylesheet" href="{% static 'css/base/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/enhanced-ui.css' %}">
+<link rel="stylesheet" href="{% static 'css/themes/themes.css' %}">
+<link rel="stylesheet" href="{% static 'css/icons/icon-fix.css' %}">
+
+<!-- 响应式和无障碍增强 -->
+<style>
+/* 基础响应式重置 */
+* { box-sizing: border-box; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body { font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'SimHei', Roboto, sans-serif; line-height: 1.6; color: #2d3748; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; overflow-x: hidden; }
+
+/* 保留后续内联样式在 base.html 中 */
+</style>

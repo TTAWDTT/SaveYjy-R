@@ -1,6 +1,106 @@
-# R语言智能助手
+# # R 语言智能助手
 
-一个基于Django和DeepSeek AI的高级R语言学习平台，提供智能代码生成、详细解释和友好聊天功能。
+本仓库包含一个基于 Django 的 Web 应用，旨在为 R 语言学习者和开发者提供智能辅助工具。
+
+## 项目结构
+
+```
+/
+├── .vscode/            # VSCode 编辑器配置
+├── docs/               # 项目文档
+│   ├── reports/        # 开发过程中的报告和分析文档
+│   └── test_pages/     # 用于功能测试和调试的静态HTML页面
+├── scripts/            # 启动和部署脚本
+│   ├── start.bat       # Windows 启动脚本
+│   └── start.sh        # Linux/macOS 启动脚本
+├── rcode_helper/       # Django "rcode_helper" 应用核心代码
+│   ├── migrations/     # 数据库迁移文件
+│   ├── static/         # 应用特定的静态文件 (如果有)
+│   ├── templates/      # 应用特定的模板 (如果有)
+│   └── ...             # 模型、视图、URL等
+├── r_assistant/        # Django 项目配置
+│   ├── settings.py     # 项目设置
+│   └── urls.py         # 项目根 URL 配置
+├── static/             # 全局静态文件
+│   ├── css/
+│   │   ├── base/
+│   │   ├── components/
+│   │   ├── icons/
+│   │   └── themes/
+│   └── js/
+│       ├── lib/
+│       └── modules/
+├── templates/          # 全局模板
+│   ├── partials/       # 可重用的模板片段 (页眉, 页脚)
+│   └── rcode_helper/   # "rcode_helper" 应用的页面模板
+├── .env.example        # 环境变量示例文件
+├── .gitignore          # Git 忽略文件配置
+├── db.sqlite3          # SQLite 数据库文件 (开发用)
+├── manage.py           # Django 管理脚本
+├── readme.md           # 项目说明 (本文档)
+├── requirements.txt    # Python 依赖项
+└── 前言.md             # 项目介绍
+```
+
+## 主要功能
+
+- **智能问答**: 解答关于 R 语言的各种问题。
+- **代码解释**: 详细解释 R 代码的功能和逻辑。
+- **作业辅导**: 帮助学生完成 R 语言相关的课程作业。
+
+## 安装与启动
+
+1.  **克隆仓库**
+    ```bash
+    git clone <repository-url>
+    cd <repository-directory>
+    ```
+
+2.  **创建并激活虚拟环境**
+    ```bash
+    python -m venv venv
+    # Windows
+    .\venv\Scripts\activate
+    # Linux/macOS
+    source venv/bin/activate
+    ```
+
+3.  **安装依赖**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **配置环境变量**
+    复制 `.env.example` 文件为 `.env`，并根据需要填写其中的配置项（如 `SECRET_KEY`, `DEBUG` 等）。
+
+5.  **数据库迁移**
+    ```bash
+    python manage.py migrate
+    ```
+
+6.  **启动开发服务器**
+    -   使用 Django 原生命令:
+        ```bash
+        python manage.py runserver
+        ```
+    -   或使用项目提供的脚本:
+        ```bash
+        # Windows
+        .\scripts\start.bat
+        # Linux/macOS
+        chmod +x ./scripts/start.sh
+        ./scripts/start.sh
+        ```
+
+    服务器将运行在 `http://127.0.0.1:8000`。
+
+## 技术栈
+
+- **后端**: Django
+- **前端**: Bootstrap, jQuery, Prism.js
+- **数据库**: SQLite (开发), 可配置为 PostgreSQL 等
+- **部署**: (待定)
+
 
 ## ✨ 主要功能
 

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图标管理器测试</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 我们的CSS文件 -->
+    <link rel="stylesheet" href="/static/css/icon-fix.css">
+    
+    <style>
+        body {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .icon-test {
+            font-size: 24px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: inline-block;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .status-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            z-index: 9999;
+        }
+        
+        .btn-group {
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-white mb-4">🎯 图标管理器 v3.0 测试页面</h1>
+        
+        <!-- 快速控制 -->
+        <div class="test-section">
+            <h3>快速控制</h3>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="toggleEmojiMode()">切换 Emoji/Font Awesome</button>
+                <button class="btn btn-info" onclick="showDebugPanel()">显示调试面板</button>
+                <button class="btn btn-warning" onclick="forceCheck()">强制检查</button>
+            </div>
+            <p><small class="text-muted">快捷键：Ctrl+Shift+I 显示/隐藏调试面板</small></p>
+        </div>
+        
+        <!-- 图标测试区域 -->
+        <div class="test-section">
+            <h3>Font Awesome 图标测试</h3>
+            <p>这些应该显示为Font Awesome图标（如果加载成功）或emoji回退：</p>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>常用图标</h5>
+                    <div class="icon-test"><i class="fas fa-home"></i><br><small>fa-home</small></div>
+                    <div class="icon-test"><i class="fas fa-user"></i><br><small>fa-user</small></div>
+                    <div class="icon-test"><i class="fas fa-heart"></i><br><small>fa-heart</small></div>
+                    <div class="icon-test"><i class="fas fa-star"></i><br><small>fa-star</small></div>
+                    <div class="icon-test"><i class="fas fa-cog"></i><br><small>fa-cog</small></div>
+                    <div class="icon-test"><i class="fas fa-search"></i><br><small>fa-search</small></div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5>功能图标</h5>
+                    <div class="icon-test"><i class="fas fa-code"></i><br><small>fa-code</small></div>
+                    <div class="icon-test"><i class="fas fa-chart-line"></i><br><small>fa-chart-line</small></div>
+                    <div class="icon-test"><i class="fas fa-lightbulb"></i><br><small>fa-lightbulb</small></div>
+                    <div class="icon-test"><i class="fas fa-brain"></i><br><small>fa-brain</small></div>
+                    <div class="icon-test"><i class="fas fa-comments"></i><br><small>fa-comments</small></div>
+                    <div class="icon-test"><i class="fas fa-magic"></i><br><small>fa-magic</small></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 状态显示 -->
+        <div class="test-section">
+            <h3>当前状态</h3>
+            <div id="status-display">
+                <p>🔄 正在加载图标管理器...</p>
+            </div>
+        </div>
+        
+        <!-- 纯Emoji对比 -->
+        <div class="test-section">
+            <h3>纯Emoji对比（用于验证）</h3>
+            <p>这些是纯emoji，不会被图标管理器影响：</p>
+            <div style="font-size: 24px;">
+                🏠 👤 ❤️ ⭐ ⚙️ 🔍 💻 📈 💡 🧠 💬 ✨
+            </div>
+        </div>
+    </div>
+    
+    <!-- 状态指示器 -->
+    <div class="status-indicator" id="status-indicator">
+        状态：初始化中...
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="/static/js/icon-manager-final.js"></script>
+    
+    <script>
+        // 页面控制函数
+        function toggleEmojiMode() {
+            if (window.iconManagerInstance) {
+                window.iconManagerInstance.toggleEmojiMode();
+            }
+        }
+        
+        function showDebugPanel() {
+            const panel = document.getElementById('icon-control-panel');
+            if (panel) {
+                panel.style.display = 'block';
+            }
+            if (window.iconManagerInstance) {
+                window.iconManagerInstance.debugMode = true;
+            }
+        }
+        
+        function forceCheck() {
+            if (window.iconManagerInstance) {
+                window.iconManagerInstance.forceCheck();
+            }
+        }
+        
+        // 监听图标模式变化
+        document.addEventListener('iconModeChanged', function(event) {
+            const statusDisplay = document.getElementById('status-display');
+            const statusIndicator = document.getElementById('status-indicator');
+            
+            if (event.detail.mode === 'emoji') {
+                statusDisplay.innerHTML = `
+                    <p>🚀 <strong>Emoji模式</strong> - Font Awesome未加载，使用emoji回退</p>
+                    <p>CSS类: <code>icon-fallback-active</code></p>
+                `;
+                statusIndicator.textContent = '状态：Emoji模式激活';
+                statusIndicator.style.background = 'rgba(255, 165, 0, 0.9)';
+            } else {
+                statusDisplay.innerHTML = `
+                    <p>✨ <strong>Font Awesome模式</strong> - 图标正常加载</p>
+                    <p>CSS类: 无回退类</p>
+                `;
+                statusIndicator.textContent = '状态：Font Awesome正常';
+                statusIndicator.style.background = 'rgba(40, 167, 69, 0.9)';
+            }
+        });
+        
+        // 页面加载完成后的状态检查
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const hasIconManager = !!window.iconManagerInstance;
+                const hasFA = document.body.classList.contains('icon-fallback-active');
+                
+                if (!hasIconManager) {
+                    document.getElementById('status-display').innerHTML = `
+                        <p>❌ <strong>图标管理器未加载</strong></p>
+                        <p>请检查JavaScript文件是否正确加载</p>
+                    `;
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

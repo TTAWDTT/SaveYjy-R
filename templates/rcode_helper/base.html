@@ -28,8 +28,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css" rel="stylesheet" media="(prefers-color-scheme: dark)">
     
-    <!-- 图标字体 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     
     <!-- 代码字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -39,6 +38,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/enhanced-ui.css' %}">
     <link rel="stylesheet" href="{% static 'css/themes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/icon-fix.css' %}">
     
     <!-- 响应式和无障碍增强 -->
     <style>
@@ -172,11 +172,24 @@
                 color: black !important;
             }
         }
+        
+        /* Emoji图标样式 */
+        .emoji-icon {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif !important;
+            font-weight: normal !important;
+            font-style: normal !important;
+            font-size: 1em !important;
+            display: inline-block !important;
+            text-decoration: none !important;
+            line-height: 1 !important;
+            vertical-align: middle;
+        }
+    </style>
     </style>
     
     {% block extra_head %}{% endblock %}
 </head>
-<body data-debug="{% if debug %}true{% else %}false{% endif %}">
+<body data-debug="{% if debug %}true{% else %}false{% endif %}" class="icon-fallback-active">
     <!-- 无障碍跳过链接 -->
     <a href="#main-content" class="skip-link">跳转到主要内容</a>
     
@@ -187,7 +200,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark glass-effect" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));" role="navigation" aria-label="主要导航">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{% url 'rcode_helper:home' %}" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);" aria-label="返回首页">
-                <i class="fas fa-chart-line me-2 icon-glow" aria-hidden="true"></i>R语言智能助手
+                <span class="emoji-icon me-2" aria-hidden="true">📈</span>R语言智能助手
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="切换导航菜单">
                 <span class="navbar-toggler-icon"></span>
@@ -199,7 +212,7 @@
                            href="{% url 'rcode_helper:home' %}" 
                            style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
                            {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>
-                            <i class="fas fa-home me-1" aria-hidden="true"></i>首页
+                            <span class="emoji-icon me-1" aria-hidden="true">🏠</span>首页
                         </a>
                     </li>
                     <li class="nav-item">
@@ -207,7 +220,7 @@
                            href="{% url 'rcode_helper:history' %}" 
                            style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
                            {% if request.resolver_match.url_name == 'history' %}aria-current="page"{% endif %}>
-                            <i class="fas fa-history me-1" aria-hidden="true"></i>历史记录
+                            <span class="emoji-icon me-1" aria-hidden="true">📋</span>历史记录
                         </a>
                     </li>
                     <li class="nav-item">
@@ -215,7 +228,7 @@
                            href="{% url 'rcode_helper:monitoring_dashboard' %}" 
                            style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
                            {% if request.resolver_match.url_name == 'monitoring_dashboard' %}aria-current="page"{% endif %}>
-                            <i class="fas fa-chart-line me-1" aria-hidden="true"></i>系统监控
+                            <span class="emoji-icon me-1" aria-hidden="true">📈</span>系统监控
                         </a>
                     </li>
                     <li class="nav-item">
@@ -223,7 +236,7 @@
                            href="{% url 'rcode_helper:dashboard' %}" 
                            style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
                            {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>
-                            <i class="fas fa-tachometer-alt me-1" aria-hidden="true"></i>仪表板
+                            <span class="emoji-icon me-1" aria-hidden="true">📊</span>仪表板
                         </a>
                     </li>
                     <li class="nav-item">
@@ -231,7 +244,7 @@
                            href="{% url 'rcode_helper:test_features' %}" 
                            style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
                            {% if request.resolver_match.url_name == 'test_features' %}aria-current="page"{% endif %}>
-                            <i class="fas fa-vial me-1" aria-hidden="true"></i>功能测试
+                            <span class="emoji-icon me-1" aria-hidden="true">🧪</span>功能测试
                         </a>
                     </li>
                     <!-- 主题选择器 -->
@@ -242,6 +255,41 @@
             </div>
         </div>
     </nav>
+
+    <!-- 强制 Emoji 覆盖规则（内联以保证最高优先级） -->
+    <style>
+    /* 隐藏 Font Awesome ::before 并用 ::after 显示 emoji */
+    body.icon-fallback-active i[class*="fa-"]::before,
+    body.icon-fallback-active span[class*="fa-"]::before {
+        content: none !important;
+        display: none !important;
+    }
+    body.icon-fallback-active i[class*="fa-"]::after,
+    body.icon-fallback-active span[class*="fa-"]::after {
+        font-family: "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji",sans-serif !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+        display: inline-block !important;
+        line-height: 1 !important;
+        text-decoration: none !important;
+    }
+
+    /* 常见图标映射 */
+    body.icon-fallback-active i.fa-home::after { content: "🏠" !important; }
+    body.icon-fallback-active i.fa-user::after { content: "👤" !important; }
+    body.icon-fallback-active i.fa-cog::after { content: "⚙️" !important; }
+    body.icon-fallback-active i.fa-heart::after { content: "❤️" !important; }
+    body.icon-fallback-active i.fa-star::after { content: "⭐" !important; }
+    body.icon-fallback-active i.fa-search::after { content: "🔍" !important; }
+    body.icon-fallback-active i.fa-bell::after { content: "🔔" !important; }
+    body.icon-fallback-active i.fa-envelope::after { content: "✉️" !important; }
+    body.icon-fallback-active i.fa-chart-line::after { content: "📈" !important; }
+    body.icon-fallback-active i.fa-smile::after { content: "😊" !important; }
+    body.icon-fallback-active i.fa-exclamation-triangle::after { content: "⚠️" !important; }
+    body.icon-fallback-active i.fa-history::after { content: "🕘" !important; }
+    body.icon-fallback-active i.fa-code::after { content: "💻" !important; }
+    body.icon-fallback-active i.fa-database::after { content: "🗄️" !important; }
+    </style>
 
     <!-- 主要内容 -->
     <main id="main-content" class="container mt-4" role="main">
@@ -265,9 +313,9 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <p class="mb-0 text-center text-md-start">
-                        <i class="fas fa-heart text-danger me-2" aria-hidden="true"></i>
-                        &copy; 2024 R语言助手 | 基于 DeepSeek Chat API 提供智能R语言学习服务
-                        <i class="fas fa-code ms-2" aria-hidden="true"></i>
+                        <span class="emoji-icon text-danger me-2" aria-hidden="true">❤️</span>
+                        © 2024 R语言助手 | 基于 DeepSeek Chat API 提供智能R语言学习服务
+                        <span class="emoji-icon ms-2" aria-hidden="true">💻</span>
                     </p>
                 </div>
                 <div class="col-md-6">
@@ -446,7 +494,7 @@
     <script src="{% static 'js/theme-manager.js' %}" defer></script>
     
     <!-- 图标管理器 -->
-    <script src="{% static 'js/icon-manager.js' %}" defer></script>
+    <script src="{% static 'js/icon-manager-final.js' %}" defer></script>
     
     <!-- 全局脚本和错误处理 -->
     <script>
@@ -537,7 +585,7 @@
                             performanceHint.style.cssText = 'position: fixed; bottom: 20px; left: 20px; z-index: 9999; max-width: 350px;';
                             performanceHint.innerHTML = `
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-rocket me-2"></i>
+                                    <span class="emoji-icon me-2">🚀</span>
                                     <div>
                                         <strong>性能提示：</strong> 网络较慢时，可启用数据节省模式获得更好体验。
                                         <br><button class="btn btn-sm btn-primary mt-1" onclick="if(window.performanceOptimizer) window.performanceOptimizer.enableDataSavingMode(); this.closest('.alert').remove();">启用数据节省模式</button>
@@ -570,7 +618,7 @@
             notification.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999;';
             notification.innerHTML = `
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-wifi me-2"></i>
+                    <span class="emoji-icon me-2">📶</span>
                     <span>网络连接已恢复</span>
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
                 </div>
@@ -590,7 +638,7 @@
             notification.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999;';
             notification.innerHTML = `
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-wifi me-2" style="text-decoration: line-through;"></i>
+                    <span class="emoji-icon me-2" style="text-decoration: line-through;">📶</span>
                     <span>网络连接已断开，部分功能可能不可用</span>
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
                 </div>

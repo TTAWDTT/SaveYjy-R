@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 图标问题诊断</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .icon-test {
+            font-size: 2rem;
+            margin: 10px;
+            display: inline-block;
+        }
+        .debug-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        .status-good { color: #28a745; }
+        .status-bad { color: #dc3545; }
+        .status-warning { color: #ffc107; }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 图标显示问题诊断</h1>
+        
+        <div class="section">
+            <h2>📊 当前状态检测</h2>
+            <div id="status-info">正在检测...</div>
+            <button class="btn" onclick="runFullDiagnosis()">🔧 完整诊断</button>
+            <button class="btn" onclick="testFontAwesome()">🔍 测试Font Awesome</button>
+            <button class="btn" onclick="toggleIconMode()">🔄 切换图标模式</button>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Font Awesome 图标测试</h2>
+            <div class="icon-test">
+                <i class="fas fa-home" title="首页"></i>
+                <i class="fas fa-chart-line" title="图表"></i>
+                <i class="fas fa-lightbulb" title="灯泡"></i>
+                <i class="fas fa-code" title="代码"></i>
+                <i class="fas fa-heart" title="心形"></i>
+                <i class="fas fa-user" title="用户"></i>
+                <i class="fas fa-cog" title="设置"></i>
+                <i class="fas fa-bell" title="通知"></i>
+            </div>
+            <div id="fontawesome-status" class="debug-info">等待检测...</div>
+        </div>
+
+        <div class="section">
+            <h2>😀 Emoji显示测试</h2>
+            <div class="icon-test">
+                🏠 📈 💡 💻 ❤️ 👤 ⚙️ 🔔
+            </div>
+            <div id="emoji-status" class="debug-info">等待检测...</div>
+        </div>
+
+        <div class="section">
+            <h2>🔬 详细技术信息</h2>
+            <div id="tech-details" class="debug-info">收集信息中...</div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 问题解决方案</h2>
+            <div id="solutions">
+                <p>基于检测结果，将显示相应的解决方案...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let iconFallbackActive = false;
+
+        function checkFontAwesome() {
+            // 检查CSS链接
+            const faLinks = document.querySelectorAll('link[href*="font-awesome"]');
+            
+            // 检查图标渲染
+            const testIcon = document.createElement('i');
+            testIcon.className = 'fas fa-home';
+            testIcon.style.cssText = 'position: absolute; opacity: 0;';
+            document.body.appendChild(testIcon);
+            
+            const computed = window.getComputedStyle(testIcon, ':before');
+            const content = computed.getPropertyValue('content');
+            const fontFamily = computed.getPropertyValue('font-family');
+            
+            document.body.removeChild(testIcon);
+            
+            return {
+                linksFound: faLinks.length,
+                hasContent: content && content !== 'none' && content !== '""',
+                content: content,
+                fontFamily: fontFamily,
+                isWorking: content && content !== 'none' && content !== '""'
+            };
+        }
+
+        function checkEmoji() {
+            // Canvas测试
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 40;
+            canvas.height = 40;
+            
+            ctx.font = '30px Arial';
+            ctx.fillText('📈', 5, 30);
+            
+            const imageData = ctx.getImageData(0, 0, 40, 40);
+            let hasPixels = false;
+            
+            for (let i = 3; i < imageData.data.length; i += 4) {
+                if (imageData.data[i] > 0) {
+                    hasPixels = true;
+                    break;
+                }
+            }
+            
+            // DOM测试
+            const testEmoji = document.createElement('span');
+            testEmoji.innerHTML = '📈';
+            testEmoji.style.cssText = 'position: absolute; top: -9999px; font-size: 50px;';
+            document.body.appendChild(testEmoji);
+            
+            const emojiWidth = testEmoji.offsetWidth;
+            const emojiHeight = testEmoji.offsetHeight;
+            
+            document.body.removeChild(testEmoji);
+            
+            return {
+                canvasSupport: hasPixels,
+                domWidth: emojiWidth,
+                domHeight: emojiHeight,
+                domSupport: emojiWidth > 30 && emojiHeight > 30
+            };
+        }
+
+        function updateStatus() {
+            const faCheck = checkFontAwesome();
+            const emojiCheck = checkEmoji();
+            
+            // 更新Font Awesome状态
+            const faStatusHtml = `
+                <strong>Font Awesome 检测结果:</strong><br>
+                CSS链接数量: ${faCheck.linksFound}<br>
+                图标内容: ${faCheck.content || '无'}<br>
+                字体族: ${faCheck.fontFamily}<br>
+                工作状态: <span class="${faCheck.isWorking ? 'status-good' : 'status-bad'}">
+                    ${faCheck.isWorking ? '✅ 正常' : '❌ 异常'}
+                </span>
+            `;
+            document.getElementById('fontawesome-status').innerHTML = faStatusHtml;
+            
+            // 更新Emoji状态
+            const emojiStatusHtml = `
+                <strong>Emoji 检测结果:</strong><br>
+                Canvas支持: <span class="${emojiCheck.canvasSupport ? 'status-good' : 'status-bad'}">
+                    ${emojiCheck.canvasSupport ? '✅ 支持' : '❌ 不支持'}
+                </span><br>
+                DOM渲染: ${emojiCheck.domWidth}x${emojiCheck.domHeight}px<br>
+                DOM支持: <span class="${emojiCheck.domSupport ? 'status-good' : 'status-bad'}">
+                    ${emojiCheck.domSupport ? '✅ 正常' : '❌ 异常'}
+                </span>
+            `;
+            document.getElementById('emoji-status').innerHTML = emojiStatusHtml;
+            
+            // 更新总体状态
+            const hasIconFallback = document.body.classList.contains('icon-fallback-active');
+            const statusHtml = `
+                <p><strong>图标回退模式:</strong> <span class="${hasIconFallback ? 'status-warning' : 'status-good'}">
+                    ${hasIconFallback ? '⚠️ 已激活' : '✅ 未激活'}
+                </span></p>
+                <p><strong>Font Awesome:</strong> <span class="${faCheck.isWorking ? 'status-good' : 'status-bad'}">
+                    ${faCheck.isWorking ? '✅ 正常' : '❌ 异常'}
+                </span></p>
+                <p><strong>Emoji支持:</strong> <span class="${emojiCheck.domSupport ? 'status-good' : 'status-bad'}">
+                    ${emojiCheck.domSupport ? '✅ 正常' : '❌ 异常'}
+                </span></p>
+                <p><strong>浏览器:</strong> ${navigator.userAgent.split(' ').pop()}</p>
+                <p><strong>平台:</strong> ${navigator.platform}</p>
+            `;
+            document.getElementById('status-info').innerHTML = statusHtml;
+            
+            // 更新技术详情
+            const techHtml = `
+                <strong>详细技术信息:</strong><br>
+                User Agent: ${navigator.userAgent}<br>
+                Character Set: ${document.characterSet}<br>
+                Font Awesome Links: ${faCheck.linksFound}<br>
+                FA Content: ${faCheck.content}<br>
+                FA Font Family: ${faCheck.fontFamily}<br>
+                Body Classes: ${document.body.className}<br>
+                Emoji Canvas: ${emojiCheck.canvasSupport}<br>
+                Emoji DOM Size: ${emojiCheck.domWidth}x${emojiCheck.domHeight}<br>
+            `;
+            document.getElementById('tech-details').innerHTML = techHtml;
+            
+            // 更新解决方案
+            generateSolutions(faCheck, emojiCheck, hasIconFallback);
+        }
+
+        function generateSolutions(faCheck, emojiCheck, hasIconFallback) {
+            let solutions = [];
+            
+            if (!faCheck.isWorking && !emojiCheck.domSupport) {
+                solutions.push('❌ 严重问题：Font Awesome和Emoji都无法正常显示');
+                solutions.push('💡 解决方案：检查网络连接，清除浏览器缓存，更新浏览器');
+            } else if (!faCheck.isWorking && emojiCheck.domSupport) {
+                solutions.push('⚠️ Font Awesome加载失败，但Emoji正常');
+                solutions.push('💡 解决方案：检查Font Awesome CDN链接，或继续使用Emoji回退');
+            } else if (faCheck.isWorking && !emojiCheck.domSupport) {
+                solutions.push('⚠️ Font Awesome正常，但Emoji显示异常');
+                solutions.push('💡 解决方案：安装Emoji字体包，或禁用图标回退模式');
+            } else if (faCheck.isWorking && emojiCheck.domSupport) {
+                if (hasIconFallback) {
+                    solutions.push('✅ 两种显示方式都正常，但当前处于回退模式');
+                    solutions.push('💡 建议：可以切换回Font Awesome模式以获得更好的视觉效果');
+                } else {
+                    solutions.push('✅ 一切正常！Font Awesome和Emoji都能正常显示');
+                }
+            }
+            
+            document.getElementById('solutions').innerHTML = 
+                solutions.map(s => `<p>${s}</p>`).join('');
+        }
+
+        function runFullDiagnosis() {
+            console.log('🔍 运行完整诊断...');
+            updateStatus();
+        }
+
+        function testFontAwesome() {
+            const result = checkFontAwesome();
+            alert(`Font Awesome检测结果：\n链接数量: ${result.linksFound}\n工作状态: ${result.isWorking ? '正常' : '异常'}\n内容: ${result.content}`);
+        }
+
+        function toggleIconMode() {
+            const hasClass = document.body.classList.contains('icon-fallback-active');
+            if (hasClass) {
+                document.body.classList.remove('icon-fallback-active');
+                console.log('已移除图标回退模式');
+            } else {
+                document.body.classList.add('icon-fallback-active');
+                console.log('已启用图标回退模式');
+            }
+            
+            // 添加CSS回退规则
+            if (!document.getElementById('icon-fallback-css')) {
+                const style = document.createElement('style');
+                style.id = 'icon-fallback-css';
+                style.innerHTML = `
+                    .icon-fallback-active i.fas::before,
+                    .icon-fallback-active i.fa::before {
+                        content: "" !important;
+                        display: none !important;
+                    }
+                    .icon-fallback-active i.fas::after,
+                    .icon-fallback-active i.fa::after {
+                        font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif !important;
+                        display: inline-block !important;
+                    }
+                    .icon-fallback-active i.fa-home::after { content: "🏠"; }
+                    .icon-fallback-active i.fa-chart-line::after { content: "📈"; }
+                    .icon-fallback-active i.fa-lightbulb::after { content: "💡"; }
+                    .icon-fallback-active i.fa-code::after { content: "💻"; }
+                    .icon-fallback-active i.fa-heart::after { content: "❤️"; }
+                    .icon-fallback-active i.fa-user::after { content: "👤"; }
+                    .icon-fallback-active i.fa-cog::after { content: "⚙️"; }
+                    .icon-fallback-active i.fa-bell::after { content: "🔔"; }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            setTimeout(updateStatus, 200);
+        }
+
+        // 页面加载时运行诊断
+        window.addEventListener('load', function() {
+            setTimeout(updateStatus, 1000);
+        });
+    </script>
+</body>
+</html>

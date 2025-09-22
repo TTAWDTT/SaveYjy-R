@@ -9,7 +9,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% load static %}
-    <link href="{% static 'css/themes.css' %}" rel="stylesheet">
+    <!-- 使用模块化后的主题样式路径 -->
+    <link href="{% static 'css/themes/themes.css' %}" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -2422,8 +2423,9 @@ print("示例代码执行完成！")`;
     
     <!-- 高级代码编辑器资源 -->
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
-    <link rel="stylesheet" href="{% static 'css/advanced-code-editor.css' %}">
-    <script src="{% static 'js/advanced-code-editor.js' %}"></script>
+    <!-- 高级代码编辑器模块化路径 -->
+    <link rel="stylesheet" href="{% static 'css/components/advanced-code-editor.css' %}">
+    <script src="{% static 'js/modules/advanced-code-editor.js' %}"></script>
     
     <!-- Dashboard编辑器样式 -->
     <style>
@@ -2479,6 +2481,7 @@ print("示例代码执行完成！")`;
     </script>
     
     <!-- 主题系统脚本 -->
-    <script src="{% static 'js/themes.js' %}"></script>
+    <!-- 主题脚本新路径 -->
+    <script src="{% static 'js/lib/themes.js' %}"></script>
 </body>
 </html>

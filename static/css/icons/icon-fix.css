@@ -1,0 +1,176 @@
+/* ========== 图标系统 v3.2 - Emoji 强制覆盖 ========== */
+
+/* 
+  当 .icon-fallback-active 应用于 body 时，
+  此样式表将强制所有 Font Awesome 图标显示为 Emoji。
+*/
+
+/* 强制隐藏 Font Awesome 的 ::before 伪元素 */
+.icon-fallback-active [class*="fa-"]::before {
+    display: none !important;
+    content: "" !important;
+}
+
+/* 强制显示我们自定义的 ::after 伪元素 (Emoji) */
+.icon-fallback-active [class*="fa-"]::after {
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    font-size: 1em !important; /* 继承父级字体大小 */
+    display: inline-block !important;
+    line-height: 1 !important;
+    vertical-align: middle;
+    content: "❓"; /* 默认回退 emoji */
+}
+
+/* 基础 Emoji 图标样式 (用于非 FA 元素) */
+.emoji-icon {
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    font-size: 1em !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+    vertical-align: middle;
+}
+
+/* --- 图标映射 --- */
+/* 在这里添加所有需要的 Font Awesome class 到 Emoji 的映射 */
+
+.icon-fallback-active .fa-home::after,
+.icon-fallback-active .fa-house::after { content: "🏠" !important; }
+.icon-fallback-active .fa-user::after { content: "👤" !important; }
+.icon-fallback-active .fa-cog::after,
+.icon-fallback-active .fa-gear::after { content: "⚙️" !important; }
+.icon-fallback-active .fa-heart::after { content: "❤️" !important; }
+.icon-fallback-active .fa-star::after { content: "⭐" !important; }
+.icon-fallback-active .fa-search::after,
+.icon-fallback-active .fa-magnifying-glass::after { content: "🔍" !important; }
+.icon-fallback-active .fa-bell::after { content: "🔔" !important; }
+.icon-fallback-active .fa-envelope::after { content: "✉️" !important; }
+.icon-fallback-active .fa-lightbulb::after { content: "💡" !important; }
+.icon-fallback-active .fa-brain::after { content: "🧠" !important; }
+.icon-fallback-active .fa-code::after { content: "💻" !important; }
+.icon-fallback-active .fa-palette::after { content: "🎨" !important; }
+.icon-fallback-active .fa-smile::after { content: "😊" !important; }
+.icon-fallback-active .fa-sad::after,
+.icon-fallback-active .fa-face-sad-tear::after { content: "😢" !important; }
+.icon-fallback-active .fa-meh::after,
+.icon-fallback-active .fa-face-meh::after { content: "😐" !important; }
+.icon-fallback-active .fa-chart-line::after { content: "📈" !important; }
+.icon-fallback-active .fa-history::after,
+.icon-fallback-active .fa-clock-rotate-left::after { content: "📜" !important; }
+.icon-fallback-active .fa-tachometer-alt::after,
+.icon-fallback-active .fa-gauge-high::after { content: "🚀" !important; }
+.icon-fallback-active .fa-vial::after { content: "🧪" !important; }
+.icon-fallback-active .fa-check-circle::after,
+.icon-fallback-active .fa-circle-check::after { content: "✅" !important; }
+.icon-fallback-active .fa-exclamation-triangle::after,
+.icon-fallback-active .fa-triangle-exclamation::after { content: "⚠️" !important; }
+.icon-fallback-active .fa-swatchbook::after { content: "📚" !important; }
+.icon-fallback-active .fa-icons::after { content: "🎨" !important; }
+.icon-fallback-active .fa-database::after { content: "🗃️" !important; }
+.icon-fallback-active .fa-trash::after,
+.icon-fallback-active .fa-trash-can::after { content: "🗑️" !important; }
+.icon-fallback-active .fa-copy::after { content: "📋" !important; }
+.icon-fallback-active .fa-paper-plane::after,
+.icon-fallback-active .fa-paper-plane-o::after { content: "➡️" !important; }
+.icon-fallback-active .fa-sync::after,
+.icon-fallback-active .fa-refresh::after,
+.icon-fallback-active .fa-rotate::after { content: "🔄" !important; }
+.icon-fallback-active .fa-upload::after { content: "📤" !important; }
+.icon-fallback-active .fa-download::after { content: "📥" !important; }
+.icon-fallback-active .fa-info-circle::after,
+.icon-fallback-active .fa-circle-info::after { content: "ℹ️" !important; }
+.icon-fallback-active .fa-question-circle::after,
+.icon-fallback-active .fa-circle-question::after { content: "❓" !important; }
+.icon-fallback-active .fa-edit::after,
+.icon-fallback-active .fa-pencil::after,
+.icon-fallback-active .fa-pen::after { content: "✏️" !important; }
+.icon-fallback-active .fa-plus::after,
+.icon-fallback-active .fa-add::after { content: "➕" !important; }
+.icon-fallback-active .fa-minus::after,
+.icon-fallback-active .fa-subtract::after { content: "➖" !important; }
+.icon-fallback-active .fa-times::after,
+.icon-fallback-active .fa-remove::after,
+.icon-fallback-active .fa-close::after { content: "❌" !important; }
+.icon-fallback-active .fa-folder::after { content: "📁" !important; }
+.icon-fallback-active .fa-folder-open::after { content: "📂" !important; }
+.icon-fallback-active .fa-file::after { content: "📄" !important; }
+.icon-fallback-active .fa-file-code::after { content: "👨‍💻" !important; }
+.icon-fallback-active .fa-file-excel::after { content: "📊" !important; }
+.icon-fallback-active .fa-file-pdf::after { content: "📑" !important; }
+.icon-fallback-active .fa-file-word::after { content: "📝" !important; }
+.icon-fallback-active .fa-file-powerpoint::after { content: "📽️" !important; }
+.icon-fallback-active .fa-file-archive::after,
+.icon-fallback-active .fa-file-zipper::after { content: "🗜️" !important; }
+.icon-fallback-active .fa-file-audio::after { content: "🎵" !important; }
+.icon-fallback-active .fa-file-video::after { content: "🎞️" !important; }
+.icon-fallback-active .fa-file-image::after { content: "🖼️" !important; }
+.icon-fallback-active .fa-book::after { content: "📖" !important; }
+.icon-fallback-active .fa-graduation-cap::after { content: "🎓" !important; }
+.icon-fallback-active .fa-comment::after { content: "💬" !important; }
+.icon-fallback-active .fa-comments::after { content: "🗣️" !important; }
+.icon-fallback-active .fa-thumbs-up::after { content: "👍" !important; }
+.icon-fallback-active .fa-thumbs-down::after { content: "👎" !important; }
+.icon-fallback-active .fa-arrow-left::after { content: "⬅️" !important; }
+.icon-fallback-active .fa-arrow-right::after { content: "➡️" !important; }
+.icon-fallback-active .fa-arrow-up::after { content: "⬆️" !important; }
+.icon-fallback-active .fa-arrow-down::after { content: "⬇️" !important; }
+.icon-fallback-active .fa-external-link::after,
+.icon-fallback-active .fa-up-right-from-square::after { content: "↗️" !important; }
+.icon-fallback-active .fa-sun::after { content: "☀️" !important; }
+.icon-fallback-active .fa-moon::after { content: "🌙" !important; }
+.icon-fallback-active .fa-desktop::after { content: "🖥️" !important; }
+.icon-fallback-active .fa-laptop::after { content: "💻" !important; }
+.icon-fallback-active .fa-tablet::after { content: "📱" !important; }
+.icon-fallback-active .fa-mobile::after { content: "📱" !important; }
+.icon-fallback-active .fa-spinner::after { content: "⏳" !important; animation: spin 1s linear infinite; }
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ========== Font Awesome -> Emoji 映射与覆盖（高优先级） ========== */
+/* 隐藏 Font Awesome 提供的 ::before 字符并用 ::after 插入 emoji */
+.icon-fallback-active i[class*="fa-"]::before,
+.icon-fallback-active span[class*="fa-"]::before {
+    content: none !important;
+    display: none !important;
+}
+
+.icon-fallback-active i[class*="fa-"],
+.icon-fallback-active span[class*="fa-"] {
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif !important;
+}
+
+/* 通用样式，确保 ::after 显示为 emoji */
+.icon-fallback-active i[class*="fa-"]::after,
+.icon-fallback-active span[class*="fa-"]::after {
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    display: inline-block !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    text-rendering: optimizeLegibility !important;
+}
+
+/* 常用图标映射：根据页面中使用最频繁的fa类做映射，按需补充 */
+.icon-fallback-active i.fa-home::after { content: "🏠" !important; }
+.icon-fallback-active i.fa-user::after { content: "👤" !important; }
+.icon-fallback-active i.fa-cog::after { content: "⚙️" !important; }
+.icon-fallback-active i.fa-heart::after { content: "❤️" !important; }
+.icon-fallback-active i.fa-star::after { content: "⭐" !important; }
+.icon-fallback-active i.fa-search::after { content: "🔍" !important; }
+.icon-fallback-active i.fa-bell::after { content: "🔔" !important; }
+.icon-fallback-active i.fa-envelope::after { content: "✉️" !important; }
+.icon-fallback-active i.fa-chart-line::after { content: "📈" !important; }
+.icon-fallback-active i.fa-smile::after { content: "😊" !important; }
+.icon-fallback-active i.fa-exclamation-triangle::after { content: "⚠️" !important; }
+.icon-fallback-active i.fa-history::after { content: "🕘" !important; }
+.icon-fallback-active i.fa-code::after { content: "💻" !important; }
+.icon-fallback-active i.fa-heart::after { content: "❤️" !important; }
+.icon-fallback-active i.fa-database::after { content: "🗄️" !important; }
