@@ -304,16 +304,3 @@ window.addEventListener('load', () => {
 
 // 导出给其他脚本使用
 window.IconManager = IconManager;
-
-// 创建全局图标管理器实例
-window.iconManager = new IconManager();
-
-// 当页面加载完成后再次检查
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        window.iconManager.refreshIcons();
-    }, 1000);
-});
-
-// 导出给其他脚本使用
-window.IconManager = IconManager;

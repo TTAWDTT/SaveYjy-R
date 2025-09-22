@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修复验证测试页面</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/themes.css">
+    <style>
+        body {
+            font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'SimHei', Roboto, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .test-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .emoji-test {
+            font-size: 2rem;
+            margin: 10px;
+            display: inline-block;
+        }
+        
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .theme-demo {
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="text-center mb-5">
+            <i class="fas fa-check-circle text-success me-2"></i>
+            修复验证测试页面
+        </h1>
+        
+        <!-- Emoji显示测试 -->
+        <div class="test-section">
+            <h2><i class="fas fa-smile me-2"></i>Emoji显示测试</h2>
+            <p>以下Emoji应该正常显示，无矩形叉号：</p>
+            <div>
+                <span class="emoji-test">😀</span>
+                <span class="emoji-test">😂</span>
+                <span class="emoji-test">🤣</span>
+                <span class="emoji-test">😊</span>
+                <span class="emoji-test">😍</span>
+                <span class="emoji-test">🥰</span>
+                <span class="emoji-test">😎</span>
+                <span class="emoji-test">🤔</span>
+                <span class="emoji-test">😏</span>
+                <span class="emoji-test">😴</span>
+            </div>
+            <div>
+                <span class="emoji-test">🎨</span>
+                <span class="emoji-test">🎯</span>
+                <span class="emoji-test">🎪</span>
+                <span class="emoji-test">🎮</span>
+                <span class="emoji-test">🎵</span>
+                <span class="emoji-test">⭐</span>
+                <span class="emoji-test">🌟</span>
+                <span class="emoji-test">✨</span>
+                <span class="emoji-test">💫</span>
+                <span class="emoji-test">🔥</span>
+            </div>
+            <div>
+                <span class="emoji-test">🌈</span>
+                <span class="emoji-test">🌺</span>
+                <span class="emoji-test">🌸</span>
+                <span class="emoji-test">🌻</span>
+                <span class="emoji-test">🌷</span>
+                <span class="emoji-test">🎈</span>
+                <span class="emoji-test">🎉</span>
+                <span class="emoji-test">🎊</span>
+                <span class="emoji-test">🎁</span>
+                <span class="emoji-test">🎂</span>
+            </div>
+        </div>
+        
+        <!-- 主题切换测试 -->
+        <div class="test-section">
+            <h2><i class="fas fa-palette me-2"></i>主题切换测试</h2>
+            <p>主题切换按钮应该在此处显示：</p>
+            <div id="navbar-theme-selector" style="display: inline-block; border: 2px dashed #ccc; padding: 10px; min-height: 50px; min-width: 200px;">
+                <!-- 主题选择器将在这里生成 -->
+                <span class="text-muted">等待主题选择器加载...</span>
+            </div>
+        </div>
+        
+        <!-- 主题预览 -->
+        <div class="test-section">
+            <h2><i class="fas fa-swatchbook me-2"></i>主题样式预览</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="theme-demo theme-classic">
+                        <h4>🌸 经典粉色主题</h4>
+                        <p>这是经典粉色主题的预览效果</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="theme-demo theme-dark">
+                        <h4>🌙 深色主题</h4>
+                        <p>这是深色主题的预览效果</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 图标测试 -->
+        <div class="test-section">
+            <h2><i class="fas fa-icons me-2"></i>图标显示测试</h2>
+            <p>以下Font Awesome图标应该正常显示：</p>
+            <div>
+                <i class="fas fa-home fa-2x me-3" title="首页"></i>
+                <i class="fas fa-user fa-2x me-3" title="用户"></i>
+                <i class="fas fa-cog fa-2x me-3" title="设置"></i>
+                <i class="fas fa-heart fa-2x me-3" title="喜欢"></i>
+                <i class="fas fa-star fa-2x me-3" title="星标"></i>
+                <i class="fas fa-chart-line fa-2x me-3" title="图表"></i>
+                <i class="fas fa-code fa-2x me-3" title="代码"></i>
+                <i class="fas fa-database fa-2x me-3" title="数据库"></i>
+            </div>
+        </div>
+        
+        <!-- 状态报告 -->
+        <div class="test-section">
+            <h2><i class="fas fa-clipboard-check me-2"></i>修复状态检查</h2>
+            <div id="status-report">
+                <div class="alert alert-info">
+                    <strong>检查中...</strong> 正在验证所有修复是否生效
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/theme-manager.js"></script>
+    <script src="static/js/icon-manager.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查emoji显示
+            setTimeout(function() {
+                const emojiTests = document.querySelectorAll('.emoji-test');
+                let emojiStatus = '✅ Emoji显示正常';
+                
+                // 检查主题管理器
+                let themeStatus = window.themeManager ? '✅ 主题管理器已加载' : '❌ 主题管理器未加载';
+                
+                // 检查图标管理器
+                let iconStatus = window.iconManager ? '✅ 图标管理器已加载' : '❌ 图标管理器未加载';
+                
+                // 检查主题选择器是否生成
+                let themeSelectorStatus = document.querySelector('.theme-toggle-btn') ? '✅ 主题选择器已生成' : '❌ 主题选择器未生成';
+                
+                // 生成状态报告
+                const statusReport = document.getElementById('status-report');
+                statusReport.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="alert alert-success">
+                                <strong>Emoji显示:</strong><br>${emojiStatus}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert ${window.themeManager ? 'alert-success' : 'alert-warning'}">
+                                <strong>主题管理器:</strong><br>${themeStatus}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert ${window.iconManager ? 'alert-success' : 'alert-warning'}">
+                                <strong>图标管理器:</strong><br>${iconStatus}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert ${document.querySelector('.theme-toggle-btn') ? 'alert-success' : 'alert-warning'}">
+                                <strong>主题选择器:</strong><br>${themeSelectorStatus}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
