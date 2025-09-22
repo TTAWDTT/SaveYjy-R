@@ -35,10 +35,13 @@
     
     <!-- 自定义样式 -->
     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/modern-theme.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/enhanced-ui.css' %}">
     <link rel="stylesheet" href="{% static 'css/themes.css' %}">
     <link rel="stylesheet" href="{% static 'css/icon-fix.css' %}">
+    
+    {% block extra_css %}{% endblock %}
     
     <!-- 响应式和无障碍增强 -->
     <style>
@@ -336,8 +339,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     
     <!-- 增强UI功能 -->
+    <script src="{% static 'js/modern-ui.js' %}"></script>
     <script src="{% static 'js/enhanced-ui.js' %}"></script>
     <script src="{% static 'js/interaction-enhancer.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
     
     <!-- 基础功能脚本 -->
     <script>
