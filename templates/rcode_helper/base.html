@@ -1,53 +1,224 @@
-<!DOCTYP    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="description" content="专业的R语言智能助手，提供代码解释、作业辅导、智能问答等服务">
+    <meta name="keywords" content="R语言,数据分析,统计学,代码解释,编程助手">
+    <meta name="author" content="R语言助手团队">
+    
+    <!-- 性能和SEO优化 -->
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#667eea">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    
+    <title>{% block title %}R语言助手 - 专业的R语言学习与开发工具{% endblock %}</title>
+    
+    <!-- 预连接和DNS预取 -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- 核心CSS框架 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+    <!-- 代码高亮 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css" rel="stylesheet" media="(prefers-color-scheme: dark)">
+    
+    <!-- 图标字体 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 代码字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 自定义样式 -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/enhanced-ui.css' %}">
     
-    <!-- 性能监控和预连接优化 -->
-    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>ml>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}R语言助手{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- 响应式和无障碍增强 -->
+    <style>
+        /* 基础响应式重置 */
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 响应式字体缩放 */
+        @media (max-width: 480px) {
+            html { font-size: 14px; }
+        }
+        
+        @media (min-width: 1200px) {
+            html { font-size: 18px; }
+        }
+        
+        /* 焦点样式优化 */
+        *:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+        
+        /* 改进的跳过链接 */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #667eea;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 10000;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* 响应式导航 */
+        .navbar {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: rgba(102, 126, 234, 0.95);
+                margin: 1rem -1rem -1rem;
+                padding: 1rem;
+                border-radius: 0 0 8px 8px;
+            }
+        }
+        
+        /* 无障碍增强 */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* 高对比度模式支持 */
+        @media (prefers-contrast: high) {
+            body {
+                background: #000000;
+                color: #ffffff;
+            }
+            
+            .card {
+                border: 2px solid #ffffff;
+                background: #000000;
+            }
+            
+            .btn {
+                border: 2px solid #ffffff;
+            }
+        }
+        
+        /* 减少动画偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+        
+        /* 打印样式 */
+        @media print {
+            .navbar, .btn, .particles {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+    
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body data-debug="{% if debug %}true{% else %}false{% endif %}">
+    <!-- 无障碍跳过链接 -->
+    <a href="#main-content" class="skip-link">跳转到主要内容</a>
+    
     <!-- 背景粒子效果 -->
-    <div class="particles" id="particles"></div>
+    <div class="particles" id="particles" aria-hidden="true"></div>
+    
     <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-dark glass-effect" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)); backdrop-filter: blur(20px);">
+    <nav class="navbar navbar-expand-lg navbar-dark glass-effect" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));" role="navigation" aria-label="主要导航">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'rcode_helper:home' %}" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                <i class="fas fa-chart-line me-2 icon-glow"></i>R语言智能助手
+            <a class="navbar-brand fw-bold" href="{% url 'rcode_helper:home' %}" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);" aria-label="返回首页">
+                <i class="fas fa-chart-line me-2 icon-glow" aria-hidden="true"></i>R语言智能助手
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="切换导航菜单">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{% url 'rcode_helper:home' %}" style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
-                            <i class="fas fa-home me-1"></i>首页
+                        <a class="nav-link fw-semibold{% if request.resolver_match.url_name == 'home' %} active{% endif %}" 
+                           href="{% url 'rcode_helper:home' %}" 
+                           style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
+                           {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>
+                            <i class="fas fa-home me-1" aria-hidden="true"></i>首页
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{% url 'rcode_helper:history' %}" style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
-                            <i class="fas fa-history me-1"></i>历史记录
+                        <a class="nav-link fw-semibold{% if request.resolver_match.url_name == 'history' %} active{% endif %}" 
+                           href="{% url 'rcode_helper:history' %}" 
+                           style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
+                           {% if request.resolver_match.url_name == 'history' %}aria-current="page"{% endif %}>
+                            <i class="fas fa-history me-1" aria-hidden="true"></i>历史记录
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{% url 'rcode_helper:monitoring_dashboard' %}" style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
-                            <i class="fas fa-chart-line me-1"></i>系统监控
+                        <a class="nav-link fw-semibold{% if request.resolver_match.url_name == 'monitoring_dashboard' %} active{% endif %}" 
+                           href="{% url 'rcode_helper:monitoring_dashboard' %}" 
+                           style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
+                           {% if request.resolver_match.url_name == 'monitoring_dashboard' %}aria-current="page"{% endif %}>
+                            <i class="fas fa-chart-line me-1" aria-hidden="true"></i>系统监控
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}" 
+                           href="{% url 'rcode_helper:dashboard' %}" 
+                           style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
+                           {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>
+                            <i class="fas fa-tachometer-alt me-1" aria-hidden="true"></i>仪表板
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold{% if request.resolver_match.url_name == 'test_features' %} active{% endif %}" 
+                           href="{% url 'rcode_helper:test_features' %}" 
+                           style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);"
+                           {% if request.resolver_match.url_name == 'test_features' %}aria-current="page"{% endif %}>
+                            <i class="fas fa-vial me-1" aria-hidden="true"></i>功能测试
                         </a>
                     </li>
                 </ul>
@@ -56,7 +227,7 @@
     </nav>
 
     <!-- 主要内容 -->
-    <main class="container mt-4">
+    <main id="main-content" class="container mt-4" role="main">
         <!-- 消息提示 -->
         {% if messages %}
             {% for message in messages %}
@@ -72,30 +243,81 @@
     </main>
 
     <!-- 页脚 -->
-    <footer>
+    <footer class="footer mt-5 py-4" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1);" role="contentinfo">
         <div class="container">
-            <p class="mb-0">
-                <i class="fas fa-heart text-danger me-2"></i>
-                &copy; 2024 R语言助手 | 基于 DeepSeek Chat API 提供智能R语言学习服务
-                <i class="fas fa-code ms-2"></i>
-            </p>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-center text-md-start">
+                        <i class="fas fa-heart text-danger me-2" aria-hidden="true"></i>
+                        &copy; 2024 R语言助手 | 基于 DeepSeek Chat API 提供智能R语言学习服务
+                        <i class="fas fa-code ms-2" aria-hidden="true"></i>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-center text-md-end">
+                        <small class="text-muted">
+                            <span id="current-time"></span> | 
+                            <span id="page-load-time"></span>
+                        </small>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     
     <!-- 增强UI功能 -->
     <script src="{% static 'js/enhanced-ui.js' %}"></script>
+    <script src="{% static 'js/interaction-enhancer.js' %}"></script>
     
-    <!-- 粒子效果脚本 -->
+    <!-- 基础功能脚本 -->
     <script>
-        // 创建浮动粒子
+        // 页面加载时间统计
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadTime = performance.now();
+            const pageLoadTimeEl = document.getElementById('page-load-time');
+            if (pageLoadTimeEl) {
+                pageLoadTimeEl.textContent = `页面加载: ${Math.round(loadTime)}ms`;
+            }
+            
+            // 更新时间显示
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            
+            // 初始化粒子效果
+            if (window.innerWidth > 768) { // 仅在桌面设备上显示
+                createParticles();
+            }
+            
+            // 初始化性能监控
+            if (typeof PerformanceMonitor !== 'undefined') {
+                PerformanceMonitor.init();
+            }
+        });
+        
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            const currentTimeEl = document.getElementById('current-time');
+            if (currentTimeEl) {
+                currentTimeEl.textContent = timeStr;
+            }
+        }
+        
+        // 创建浮动粒子效果
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+            if (!particlesContainer) return;
+            
+            const particleCount = Math.min(30, Math.floor(window.innerWidth / 40));
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
@@ -103,24 +325,300 @@
                 
                 // 随机大小和位置
                 const size = Math.random() * 4 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const duration = Math.random() * 20 + 10;
                 
-                // 随机动画延迟
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particle.style.cssText = `
+                    position: fixed;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2});
+                    border-radius: 50%;
+                    left: ${x}px;
+                    top: ${y}px;
+                    pointer-events: none;
+                    z-index: -1;
+                    animation: float ${duration}s infinite linear;
+                `;
                 
                 particlesContainer.appendChild(particle);
             }
         }
         
-        // 页面加载后创建粒子
-        document.addEventListener('DOMContentLoaded', createParticles);
+        // 错误处理
+        window.addEventListener('error', function(e) {
+            console.error('页面错误:', e.error);
+            
+            // 发送错误到监控系统（如果有）
+            if (typeof PerformanceMonitor !== 'undefined' && PerformanceMonitor.reportError) {
+                PerformanceMonitor.reportError(e.error);
+            }
+        });
+        
+        // 未处理的Promise错误
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('未处理的Promise错误:', e.reason);
+            
+            if (typeof PerformanceMonitor !== 'undefined' && PerformanceMonitor.reportError) {
+                PerformanceMonitor.reportError(e.reason);
+            }
+        });
+        
+        // 页面可见性变化处理
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // 页面不可见时暂停动画
+                document.body.classList.add('page-hidden');
+            } else {
+                // 页面可见时恢复动画
+                document.body.classList.remove('page-hidden');
+            }
+        });
     </script>
     
-    {% block scripts %}
-    {% endblock %}
+    <!-- 动画样式 -->
+    <style>
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .particle {
+            will-change: transform, opacity;
+        }
+        
+        /* 页面隐藏时停止动画 */
+        .page-hidden .particle {
+            animation-play-state: paused;
+        }
+        
+        /* 响应式粒子 */
+        @media (max-width: 768px) {
+            .particles {
+                display: none;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .particle {
+                animation: none !important;
+            }
+        }
+    </style>
+    
+    <!-- 性能优化器 -->
+    <script src="{% static 'js/performance-optimizer.js' %}" defer></script>
+    
+    <!-- 用户体验增强器 -->
+    <script src="{% static 'js/ux-enhancer.js' %}" defer></script>
+    
+    <!-- 全局脚本和错误处理 -->
+    <script>
+        // 设置调试模式（从body data属性读取）
+        window.DEBUG_MODE = document.body.dataset.debug === 'true';
+        
+        // 全局错误处理
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript错误:', e.error);
+            
+            // 记录错误到性能分析器
+            if (window.uxEnhancer && window.uxEnhancer.analytics) {
+                window.uxEnhancer.analytics.errors.push({
+                    message: e.message,
+                    filename: e.filename,
+                    lineno: e.lineno,
+                    timestamp: Date.now()
+                });
+            }
+            
+            // 显示用户友好的错误信息
+            const errorNotification = document.createElement('div');
+            errorNotification.className = 'alert alert-warning alert-dismissible fade show error-notification';
+            errorNotification.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 400px;';
+            errorNotification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <div>
+                        <strong>温馨提示：</strong> 页面遇到了一些小问题，但不影响正常使用。
+                        <br><small class="text-muted">如果问题持续，请刷新页面或联系支持。</small>
+                    </div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(errorNotification);
+            
+            // 5秒后自动消失
+            setTimeout(() => {
+                if (errorNotification.parentNode) {
+                    errorNotification.remove();
+                }
+            }, 5000);
+        });
+        
+        // Promise 错误处理
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('未处理的Promise错误:', e.reason);
+            
+            if (window.uxEnhancer && window.uxEnhancer.analytics) {
+                window.uxEnhancer.analytics.errors.push({
+                    type: 'unhandledrejection',
+                    reason: e.reason,
+                    timestamp: Date.now()
+                });
+            }
+        });
+        
+        // 性能监控
+        window.addEventListener('load', function() {
+            if (window.performance && window.performance.timing) {
+                const timing = window.performance.timing;
+                const loadTime = timing.loadEventEnd - timing.navigationStart;
+                const dnsTime = timing.domainLookupEnd - timing.domainLookupStart;
+                const connectTime = timing.connectEnd - timing.connectStart;
+                const renderTime = timing.domComplete - timing.domLoading;
+                
+                // 性能指标记录
+                const performanceData = {
+                    loadTime,
+                    dnsTime,
+                    connectTime,
+                    renderTime,
+                    timestamp: Date.now()
+                };
+                
+                console.log('页面性能指标:', performanceData);
+                
+                // 性能警告
+                if (loadTime > 3000) {
+                    console.warn(`页面加载时间较长: ${loadTime}ms`);
+                    
+                    // 显示性能提示
+                    if (loadTime > 5000) {
+                        setTimeout(() => {
+                            const performanceHint = document.createElement('div');
+                            performanceHint.className = 'alert alert-info alert-dismissible fade show performance-hint';
+                            performanceHint.style.cssText = 'position: fixed; bottom: 20px; left: 20px; z-index: 9999; max-width: 350px;';
+                            performanceHint.innerHTML = `
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-rocket me-2"></i>
+                                    <div>
+                                        <strong>性能提示：</strong> 网络较慢时，可启用数据节省模式获得更好体验。
+                                        <br><button class="btn btn-sm btn-primary mt-1" onclick="if(window.performanceOptimizer) window.performanceOptimizer.enableDataSavingMode(); this.closest('.alert').remove();">启用数据节省模式</button>
+                                    </div>
+                                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+                                </div>
+                            `;
+                            document.body.appendChild(performanceHint);
+                            
+                            setTimeout(() => {
+                                if (performanceHint.parentNode) {
+                                    performanceHint.remove();
+                                }
+                            }, 10000);
+                        }, 2000);
+                    }
+                }
+                
+                // 存储性能数据
+                if (window.performanceOptimizer) {
+                    window.performanceOptimizer.cacheInLocalStorage('performance_metrics', performanceData);
+                }
+            }
+        });
+        
+        // 网络状态监控
+        window.addEventListener('online', function() {
+            const notification = document.createElement('div');
+            notification.className = 'alert alert-success alert-dismissible fade show network-notification';
+            notification.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999;';
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-wifi me-2"></i>
+                    <span>网络连接已恢复</span>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
+        });
+        
+        window.addEventListener('offline', function() {
+            const notification = document.createElement('div');
+            notification.className = 'alert alert-warning alert-dismissible fade show network-notification';
+            notification.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999;';
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-wifi me-2" style="text-decoration: line-through;"></i>
+                    <span>网络连接已断开，部分功能可能不可用</span>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            document.body.appendChild(notification);
+        });
+        
+        // 初始化完成回调
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置全局配置
+            window.R_HELPER_CONFIG = {
+                version: '1.0.0',
+                features: {
+                    advancedEditor: true,
+                    performanceOptimization: true,
+                    userExperienceEnhancement: true,
+                    accessibilitySupport: true
+                },
+                debug: window.DEBUG_MODE || false
+            };
+            
+            // 延迟加载非关键资源
+            setTimeout(() => {
+                // 预加载下一页可能需要的资源
+                if (window.performanceOptimizer) {
+                    window.performanceOptimizer.preloadIdleResources();
+                }
+            }, 1000);
+        });
+        
+        // 页面卸载时的清理
+        window.addEventListener('beforeunload', function() {
+            // 保存用户状态
+            if (window.uxEnhancer) {
+                window.uxEnhancer.savePreferences();
+            }
+            
+            // 性能数据上报
+            if (window.performanceOptimizer && navigator.sendBeacon) {
+                const performanceData = {
+                    sessionTime: Date.now() - (window.uxEnhancer?.analytics?.session_start || Date.now()),
+                    interactionCount: window.uxEnhancer?.analytics?.interactions || 0,
+                    featuresUsed: window.uxEnhancer?.analytics?.features_used?.size || 0,
+                    errors: window.uxEnhancer?.analytics?.errors?.length || 0
+                };
+                
+                navigator.sendBeacon('/api/analytics/', JSON.stringify(performanceData));
+            }
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
 </body>
 </html>

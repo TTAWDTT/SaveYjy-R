@@ -19,6 +19,12 @@ urlpatterns = [
     path('request/<int:request_id>/', views.RequestDetailView.as_view(), name='request_detail'),
     path('monitoring/', views.MonitoringDashboardView.as_view(), name='monitoring_dashboard'),
     
+    # 功能测试页面
+    path('test/', views.test_features_view, name='test_features'),
+    
+    # 分析数据收集API
+    path('api/analytics/', views.api_analytics, name='api_analytics'),
+    
     # 新的增强API端点
     path('api/code-quality/', CodeQualityAnalysisView.as_view(), name='api_code_quality'),
     path('api/test-cases/', TestCaseGenerationView.as_view(), name='api_test_cases'),

@@ -18,13 +18,18 @@
                 <h5 class="mb-0">
                     <i class="fas fa-code text-success me-2"></i>您的R语言代码
                 </h5>
-                <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyCode('original-code')">
-                    <i class="fas fa-copy me-1"></i>复制代码
-                </button>
+                <div class="header-actions">
+                    <button class="btn btn-sm btn-outline-primary me-2" onclick="toggleSymbolDisplay()">
+                        <i class="fas fa-font me-1"></i><span id="symbol-toggle-text">显示符号</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyCode('original-code')">
+                        <i class="fas fa-copy me-1"></i>复制代码
+                    </button>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="code-container">
-                    <pre><code id="original-code" class="language-r">{{ r_code }}</code></pre>
+            <div class="card-body p-0">
+                <div class="enhanced-code-display" id="code-display-container">
+                    <div class="code-editor-readonly" id="readonly-editor"></div>
                 </div>
             </div>
         </div>
@@ -68,35 +73,318 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-    function copyCode(elementId) {
-        const codeElement = document.getElementById(elementId);
-        const text = codeElement.textContent;
-        
-        navigator.clipboard.writeText(text).then(function() {
-            // 显示复制成功提示
-            const btn = event.target.closest('button');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check me-1"></i>已复制';
-            btn.classList.add('btn-success');
-            btn.classList.remove('btn-outline-secondary');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-outline-secondary');
-            }, 2000);
-        }).catch(function(err) {
-            console.error('复制失败: ', err);
-            alert('复制失败，请手动复制代码');
-        });
-    }
+<!-- Monaco Editor -->
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
 
-    // 代码高亮
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof Prism !== 'undefined') {
-            Prism.highlightAll();
+<!-- Advanced Code Editor -->
+<link rel="stylesheet" href="{% static 'css/advanced-code-editor.css' %}">
+<script src="{% static 'js/advanced-code-editor.js' %}"></script>
+
+<style>
+.enhanced-code-display {
+    position: relative;
+    min-height: 200px;
+    background: #1e1e1e;
+    border-radius: 0 0 8px 8px;
+}
+
+.code-editor-readonly {
+    height: 100%;
+    min-height: 200px;
+}
+
+.symbol-overlay-active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 10;
+    background: rgba(0, 122, 204, 0.05);
+    border: 1px dashed rgba(0, 122, 204, 0.3);
+}
+
+.header-actions .btn {
+    transition: all 0.2s ease;
+}
+
+.header-actions .btn:hover {
+    transform: translateY(-1px);
+}
+
+.explanation-content {
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.explanation-content h1, .explanation-content h2, .explanation-content h3 {
+    color: #28a745;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.explanation-content code {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: 'Monaco', 'Cascadia Code', 'Consolas', monospace;
+    color: #d63384;
+}
+
+.explanation-content pre {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+.explanation-content ul, .explanation-content ol {
+    padding-left: 2rem;
+}
+
+.explanation-content blockquote {
+    border-left: 4px solid #28a745;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    background: rgba(40, 167, 69, 0.1);
+    border-radius: 0 4px 4px 0;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .header-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .explanation-content {
+        font-size: 14px;
+    }
+    
+    .code-editor-readonly {
+        min-height: 150px;
+    }
+}
+</style>
+
+<script>
+let readonlyEditor = null;
+let symbolDisplayActive = false;
+const rCode = `{{ r_code|escapejs }}`;
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeReadonlyEditor();
+});
+
+async function initializeReadonlyEditor() {
+    try {
+        // 创建只读代码编辑器
+        readonlyEditor = new AdvancedCodeEditor('#readonly-editor', {
+            language: 'r',
+            theme: 'vs-dark',
+            readOnly: true,
+            lineNumbers: true,
+            wordWrap: false,
+            minimap: false,
+            fontSize: 14,
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            renderWhitespace: 'selection',
+            renderControlCharacters: false,
+            enableSymbolReplacement: false
+        });
+        
+        // 设置代码内容
+        readonlyEditor.setValue(rCode);
+        
+        // 优化显示
+        setTimeout(() => {
+            if (readonlyEditor.editor) {
+                readonlyEditor.editor.getAction('editor.action.formatDocument')?.run();
+            }
+        }, 500);
+        
+    } catch (error) {
+        console.warn('Monaco Editor初始化失败，使用备用显示方案');
+        createFallbackDisplay();
+    }
+}
+
+function createFallbackDisplay() {
+    const container = document.getElementById('readonly-editor');
+    container.innerHTML = `
+        <div class="fallback-code-container">
+            <div class="code-header">
+                <div class="language-indicator">R</div>
+                <div class="line-count">${rCode.split('\n').length} lines</div>
+            </div>
+            <div class="code-content">
+                <div class="line-numbers">
+                    ${rCode.split('\n').map((_, i) => `<span class="line-number">${i + 1}</span>`).join('')}
+                </div>
+                <pre class="code-text"><code class="language-r">${escapeHtml(rCode)}</code></pre>
+            </div>
+        </div>
+    `;
+    
+    // 应用语法高亮
+    if (typeof Prism !== 'undefined') {
+        Prism.highlightAll();
+    }
+}
+
+function toggleSymbolDisplay() {
+    symbolDisplayActive = !symbolDisplayActive;
+    const toggleText = document.getElementById('symbol-toggle-text');
+    const toggleBtn = toggleText.parentElement;
+    
+    if (symbolDisplayActive) {
+        toggleText.textContent = '隐藏符号';
+        toggleBtn.classList.remove('btn-outline-primary');
+        toggleBtn.classList.add('btn-primary');
+        
+        if (readonlyEditor) {
+            applySymbolOverlay();
         }
+    } else {
+        toggleText.textContent = '显示符号';
+        toggleBtn.classList.remove('btn-primary');
+        toggleBtn.classList.add('btn-outline-primary');
+        
+        removeSymbolOverlay();
+    }
+}
+
+function applySymbolOverlay() {
+    const container = document.getElementById('code-display-container');
+    
+    // 创建符号映射
+    const symbolMap = {
+        '<-': '←', '->': '→', '<<-': '⟸', '->>': '⟹',
+        '<=': '≤', '>=': '≥', '!=': '≠', '==': '≡',
+        '%in%': '∈', '%!in%': '∉', '%>%': '▷', '|>': '▶',
+        'Inf': '∞', '-Inf': '-∞', 'pi': 'π',
+        'mean': 'x̄', 'sum': '∑', 'sqrt': '√',
+        '...': '…', 'NULL': '∅', 'NA': '⊘', 'NaN': '⌀'
+    };
+    
+    if (readonlyEditor && readonlyEditor.editor) {
+        let transformedCode = rCode;
+        for (const [original, replacement] of Object.entries(symbolMap)) {
+            transformedCode = transformedCode.replace(new RegExp(escapeRegex(original), 'g'), replacement);
+        }
+        
+        // 临时显示转换后的代码
+        const originalValue = readonlyEditor.getValue();
+        readonlyEditor.setValue(transformedCode);
+        
+        // 添加视觉指示器
+        container.classList.add('symbol-overlay-active');
+        
+        // 保存原始值以便恢复
+        readonlyEditor._originalValue = originalValue;
+    }
+}
+
+function removeSymbolOverlay() {
+    const container = document.getElementById('code-display-container');
+    container.classList.remove('symbol-overlay-active');
+    
+    if (readonlyEditor && readonlyEditor._originalValue) {
+        readonlyEditor.setValue(readonlyEditor._originalValue);
+        delete readonlyEditor._originalValue;
+    }
+}
+
+function copyCode(elementId) {
+    let textToCopy = rCode; // 始终复制原始代码
+    
+    navigator.clipboard.writeText(textToCopy).then(function() {
+        // 显示复制成功提示
+        const btn = event.target.closest('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check me-1"></i>已复制';
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-outline-secondary');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-secondary');
+        }, 2000);
+        
+        // 显示成功通知
+        showNotification('代码已复制到剪贴板', 'success');
+    }).catch(function(err) {
+        console.error('复制失败: ', err);
+        showNotification('复制失败，请手动复制代码', 'error');
     });
+}
+
+function showNotification(message, type = 'info') {
+    // 创建通知元素
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} notification-toast`;
+    notification.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+            ${message}
+        </div>
+    `;
+    
+    // 添加样式
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 300px;
+        animation: slideInRight 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 自动移除
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function escapeRegex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// 添加动画样式
+const animationStyles = document.createElement('style');
+animationStyles.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    .notification-toast {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: none;
+        border-radius: 8px;
+    }
+`;
+document.head.appendChild(animationStyles);
 </script>
 {% endblock %}

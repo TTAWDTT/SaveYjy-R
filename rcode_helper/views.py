@@ -17,6 +17,48 @@ import asyncio
 import time
 
 
+def test_features_view(request):
+    """功能测试页面视图"""
+    return render(request, 'rcode_helper/test_features.html', {
+        'title': '功能测试中心'
+    })
+
+
+@require_http_methods(["POST"])
+def api_analytics(request):
+    """接收性能分析数据的API端点"""
+    try:
+        data = json.loads(request.body)
+        
+        # 记录性能数据（这里可以存储到数据库或日志文件）
+        performance_data = {
+            'timestamp': time.time(),
+            'session_time': data.get('sessionTime', 0),
+            'interaction_count': data.get('interactionCount', 0),
+            'features_used': data.get('featuresUsed', 0),
+            'errors': data.get('errors', 0),
+            'user_agent': request.META.get('HTTP_USER_AGENT', ''),
+            'ip_address': request.META.get('REMOTE_ADDR', ''),
+        }
+        
+        # 这里可以存储到数据库
+        # PerformanceMetrics.objects.create(**performance_data)
+        
+        # 暂时记录到控制台
+        print(f"性能数据收集: {performance_data}")
+        
+        return JsonResponse({
+            'status': 'success',
+            'message': '性能数据已记录'
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=400)
+
+
 class LoginView(View):
     """用户登录视图"""
     template_name = 'rcode_helper/login.html'

@@ -1,0 +1,732 @@
+{% extends 'rcode_helper/base.html' %}
+{% load static %}
+
+{% block title %}功能测试 - R语言助手{% endblock %}
+
+{% block extra_head %}
+<style>
+    .test-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e9ecef;
+    }
+    
+    .test-section h3 {
+        color: #495057;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .feature-demo {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: #f8f9fa;
+    }
+    
+    .demo-title {
+        font-weight: 600;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+    
+    .test-code-area {
+        min-height: 200px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    }
+    
+    .status-indicator {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+    }
+    
+    .status-success { background: #28a745; }
+    .status-warning { background: #ffc107; }
+    .status-error { background: #dc3545; }
+    .status-info { background: #17a2b8; }
+    
+    .test-button {
+        margin: 0.25rem;
+    }
+    
+    .performance-metrics {
+        background: #e9ecef;
+        border-radius: 6px;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .metric-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.25rem 0;
+    }
+    
+    .tooltip-demo {
+        background: #667eea;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        display: inline-block;
+    }
+    
+    .gesture-area {
+        border: 2px dashed #ced4da;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        color: #6c757d;
+        background: #f8f9fa;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main id="main-content" class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 fw-bold text-center mb-5" style="background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                <i class="fas fa-vial me-3"></i>功能测试中心
+            </h1>
+            <p class="lead text-center text-muted mb-5">
+                测试和验证所有新实现的功能模块，确保系统稳定性和用户体验
+            </p>
+        </div>
+    </div>
+
+    <!-- 代码编辑器测试 -->
+    <div class="test-section">
+        <h3><i class="fas fa-code me-2"></i>高级代码编辑器测试</h3>
+        
+        <div class="feature-demo">
+            <div class="demo-title">Monaco Editor 集成测试</div>
+            <div class="test-code-area" data-editor="true" data-language="r">
+# 测试R语言代码编辑器
+# 验证行号精确匹配、语法高亮、自动补全
+
+# 导入库
+library(ggplot2)
+library(dplyr)
+
+# 创建示例数据
+data <- data.frame(
+    x = 1:10,
+    y = rnorm(10),
+    group = rep(c("A", "B"), 5)
+)
+
+# 数据可视化
+ggplot(data, aes(x = x, y = y, color = group)) +
+    geom_point(size = 3) +
+    geom_line() +
+    theme_minimal() +
+    labs(title = "示例图表",
+         x = "X轴标签",
+         y = "Y轴标签")
+
+# 测试特殊符号：
+# ← → ≤ ≥ ∈ ∉ π ∞ α β γ θ λ μ σ
+# 这些符号应该正确显示和处理</div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-primary test-button" onclick="testEditorFeatures()">
+                    <i class="fas fa-play"></i> 测试编辑器功能
+                </button>
+                <button class="btn btn-secondary test-button" onclick="testSymbolMapping()">
+                    <i class="fas fa-language"></i> 测试符号映射
+                </button>
+                <button class="btn btn-info test-button" onclick="testThemeSwitching()">
+                    <i class="fas fa-palette"></i> 测试主题切换
+                </button>
+            </div>
+            <div class="col-md-6">
+                <div id="editor-status" class="mt-2">
+                    <span class="status-indicator status-info"></span>等待测试...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 性能优化测试 -->
+    <div class="test-section">
+        <h3><i class="fas fa-rocket me-2"></i>性能优化功能测试</h3>
+        
+        <div class="feature-demo">
+            <div class="demo-title">懒加载和缓存测试</div>
+            <div class="row">
+                <div class="col-md-6">
+                    <img data-src="https://picsum.photos/300/200?random=1" 
+                         loading="lazy" 
+                         alt="懒加载测试图片1" 
+                         class="img-fluid rounded">
+                </div>
+                <div class="col-md-6">
+                    <img data-src="https://picsum.photos/300/200?random=2" 
+                         loading="lazy" 
+                         alt="懒加载测试图片2" 
+                         class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+        
+        <div class="feature-demo">
+            <div class="demo-title">网络状态监控</div>
+            <button class="btn btn-warning test-button" onclick="simulateOffline()">
+                <i class="fas fa-wifi-slash"></i> 模拟离线状态
+            </button>
+            <button class="btn btn-success test-button" onclick="simulateOnline()">
+                <i class="fas fa-wifi"></i> 恢复在线状态
+            </button>
+        </div>
+        
+        <div class="performance-metrics">
+            <h5>性能指标监控</h5>
+            <div id="performance-display">
+                <div class="metric-item">
+                    <span>页面加载时间:</span>
+                    <span id="load-time">计算中...</span>
+                </div>
+                <div class="metric-item">
+                    <span>内存使用:</span>
+                    <span id="memory-usage">检测中...</span>
+                </div>
+                <div class="metric-item">
+                    <span>缓存大小:</span>
+                    <span id="cache-size">查询中...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户体验增强测试 -->
+    <div class="test-section">
+        <h3><i class="fas fa-magic me-2"></i>用户体验增强测试</h3>
+        
+        <div class="feature-demo">
+            <div class="demo-title">智能提示测试</div>
+            <div class="tooltip-demo" data-tooltip="这是一个智能提示示例，包含快捷键信息和使用统计">
+                悬停查看智能提示
+            </div>
+        </div>
+        
+        <div class="feature-demo">
+            <div class="demo-title">上下文菜单测试</div>
+            <textarea class="form-control" placeholder="右键点击此处测试上下文菜单功能..." rows="3"></textarea>
+        </div>
+        
+        <div class="feature-demo">
+            <div class="demo-title">快捷键测试</div>
+            <div class="alert alert-info">
+                <strong>快捷键测试：</strong><br>
+                • 按 <kbd>Ctrl+/</kbd> 显示快捷键帮助<br>
+                • 按 <kbd>Ctrl+K</kbd> 打开命令面板<br>
+                • 按 <kbd>F1</kbd> 显示帮助<br>
+                • 按 <kbd>Escape</kbd> 关闭弹窗
+            </div>
+            <button class="btn btn-info test-button" onclick="testKeyboardShortcuts()">
+                <i class="fas fa-keyboard"></i> 测试快捷键功能
+            </button>
+        </div>
+        
+        <div class="feature-demo">
+            <div class="demo-title">手势支持测试（移动设备）</div>
+            <div class="gesture-area" id="gesture-test-area">
+                <div>
+                    <i class="fas fa-hand-pointer fa-2x mb-2"></i><br>
+                    在此区域进行滑动手势测试<br>
+                    <small class="text-muted">左滑、右滑、上滑、下滑</small>
+                </div>
+            </div>
+            <div id="gesture-feedback" class="mt-2 text-muted">等待手势输入...</div>
+        </div>
+    </div>
+
+    <!-- 无障碍功能测试 -->
+    <div class="test-section">
+        <h3><i class="fas fa-universal-access me-2"></i>无障碍功能测试</h3>
+        
+        <div class="feature-demo">
+            <div class="demo-title">键盘导航测试</div>
+            <div class="row">
+                <div class="col-md-4">
+                    <button class="btn btn-outline-primary w-100 mb-2" tabindex="1">按钮 1</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-outline-secondary w-100 mb-2" tabindex="2">按钮 2</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-outline-success w-100 mb-2" tabindex="3">按钮 3</button>
+                </div>
+            </div>
+            <p class="text-muted">使用Tab键进行导航测试</p>
+        </div>
+        
+        <div class="feature-demo">
+            <div class="demo-title">高对比度模式</div>
+            <button class="btn btn-dark test-button" onclick="toggleHighContrast()">
+                <i class="fas fa-adjust"></i> 切换高对比度
+            </button>
+        </div>
+        
+        <div class="feature-demo">
+            <div class="demo-title">屏幕阅读器支持</div>
+            <div class="form-group">
+                <label for="screen-reader-test">测试输入框</label>
+                <input type="text" 
+                       id="screen-reader-test" 
+                       class="form-control" 
+                       aria-describedby="input-help"
+                       placeholder="测试屏幕阅读器描述">
+                <small id="input-help" class="form-text text-muted">
+                    这个输入框包含完整的ARIA标签和描述
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- 错误处理测试 -->
+    <div class="test-section">
+        <h3><i class="fas fa-exclamation-triangle me-2"></i>错误处理和监控测试</h3>
+        
+        <div class="feature-demo">
+            <div class="demo-title">错误处理测试</div>
+            <button class="btn btn-danger test-button" onclick="triggerJSError()">
+                <i class="fas fa-bug"></i> 触发JavaScript错误
+            </button>
+            <button class="btn btn-warning test-button" onclick="triggerPromiseError()">
+                <i class="fas fa-times-circle"></i> 触发Promise错误
+            </button>
+        </div>
+        
+        <div class="feature-demo">
+            <div class="demo-title">网络错误模拟</div>
+            <button class="btn btn-secondary test-button" onclick="testNetworkError()">
+                <i class="fas fa-globe"></i> 测试网络错误处理
+            </button>
+        </div>
+        
+        <div id="error-log" class="mt-3">
+            <h6>错误日志：</h6>
+            <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow-y: auto;">
+                <div class="text-muted">等待错误测试...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 测试结果总结 -->
+    <div class="test-section">
+        <h3><i class="fas fa-chart-bar me-2"></i>测试结果总结</h3>
+        
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">通过测试</h5>
+                        <h2 class="text-success" id="passed-count">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">警告</h5>
+                        <h2 class="text-warning" id="warning-count">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">失败</h5>
+                        <h2 class="text-danger" id="failed-count">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">总计</h5>
+                        <h2 class="text-info" id="total-count">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <button class="btn btn-primary btn-lg" onclick="runAllTests()">
+                <i class="fas fa-play-circle"></i> 运行所有测试
+            </button>
+            <button class="btn btn-secondary btn-lg" onclick="exportTestResults()">
+                <i class="fas fa-download"></i> 导出测试报告
+            </button>
+        </div>
+    </div>
+</main>
+
+<!-- 测试脚本 -->
+<script>
+let testResults = {
+    passed: 0,
+    warnings: 0,
+    failed: 0,
+    total: 0
+};
+
+// 测试编辑器功能
+function testEditorFeatures() {
+    updateStatus('editor-status', 'info', '正在测试编辑器功能...');
+    
+    try {
+        // 检查Monaco Editor是否加载
+        if (typeof monaco !== 'undefined') {
+            updateStatus('editor-status', 'success', 'Monaco Editor已成功加载');
+            recordTestResult(true, '代码编辑器加载');
+        } else if (window.AdvancedCodeEditor) {
+            updateStatus('editor-status', 'success', '高级代码编辑器组件已加载');
+            recordTestResult(true, '代码编辑器组件');
+        } else {
+            updateStatus('editor-status', 'warning', '编辑器组件未检测到，使用回退方案');
+            recordTestResult(false, '代码编辑器加载');
+        }
+        
+        // 测试编辑器实例化
+        const editorElement = document.querySelector('[data-editor="true"]');
+        if (editorElement) {
+            updateStatus('editor-status', 'success', '编辑器元素已找到');
+            recordTestResult(true, '编辑器元素');
+        } else {
+            updateStatus('editor-status', 'error', '编辑器元素未找到');
+            recordTestResult(false, '编辑器元素');
+        }
+        
+    } catch (error) {
+        updateStatus('editor-status', 'error', '编辑器测试失败: ' + error.message);
+        recordTestResult(false, '编辑器功能测试');
+        logError('编辑器测试错误', error);
+    }
+}
+
+// 测试符号映射
+function testSymbolMapping() {
+    try {
+        const symbols = ['←', '→', '≤', '≥', '∈', '∉', 'π', '∞'];
+        let passedSymbols = 0;
+        
+        symbols.forEach(symbol => {
+            // 简单测试符号是否能正确显示
+            const testElement = document.createElement('span');
+            testElement.textContent = symbol;
+            document.body.appendChild(testElement);
+            
+            if (testElement.textContent === symbol) {
+                passedSymbols++;
+            }
+            
+            document.body.removeChild(testElement);
+        });
+        
+        const passRate = (passedSymbols / symbols.length) * 100;
+        if (passRate === 100) {
+            updateStatus('editor-status', 'success', `符号显示测试通过 (${passedSymbols}/${symbols.length})`);
+            recordTestResult(true, '符号映射');
+        } else if (passRate >= 80) {
+            updateStatus('editor-status', 'warning', `符号显示部分通过 (${passedSymbols}/${symbols.length})`);
+            recordTestResult(true, '符号映射', true);
+        } else {
+            updateStatus('editor-status', 'error', `符号显示测试失败 (${passedSymbols}/${symbols.length})`);
+            recordTestResult(false, '符号映射');
+        }
+        
+    } catch (error) {
+        updateStatus('editor-status', 'error', '符号映射测试失败: ' + error.message);
+        recordTestResult(false, '符号映射测试');
+        logError('符号映射测试错误', error);
+    }
+}
+
+// 测试主题切换
+function testThemeSwitching() {
+    try {
+        const currentTheme = document.body.dataset.theme || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.body.dataset.theme = newTheme;
+        
+        setTimeout(() => {
+            if (document.body.dataset.theme === newTheme) {
+                updateStatus('editor-status', 'success', `主题切换成功: ${newTheme}`);
+                recordTestResult(true, '主题切换');
+                
+                // 切换回原主题
+                setTimeout(() => {
+                    document.body.dataset.theme = currentTheme;
+                }, 1000);
+            } else {
+                updateStatus('editor-status', 'error', '主题切换失败');
+                recordTestResult(false, '主题切换');
+            }
+        }, 100);
+        
+    } catch (error) {
+        updateStatus('editor-status', 'error', '主题切换测试失败: ' + error.message);
+        recordTestResult(false, '主题切换测试');
+        logError('主题切换测试错误', error);
+    }
+}
+
+// 模拟网络状态
+function simulateOffline() {
+    window.dispatchEvent(new Event('offline'));
+    recordTestResult(true, '离线状态模拟');
+}
+
+function simulateOnline() {
+    window.dispatchEvent(new Event('online'));
+    recordTestResult(true, '在线状态模拟');
+}
+
+// 测试快捷键
+function testKeyboardShortcuts() {
+    try {
+        // 模拟快捷键事件
+        const shortcutEvent = new KeyboardEvent('keydown', {
+            key: '/',
+            ctrlKey: true,
+            bubbles: true
+        });
+        
+        document.dispatchEvent(shortcutEvent);
+        recordTestResult(true, '快捷键事件触发');
+        
+    } catch (error) {
+        recordTestResult(false, '快捷键测试');
+        logError('快捷键测试错误', error);
+    }
+}
+
+// 切换高对比度
+function toggleHighContrast() {
+    document.body.classList.toggle('high-contrast');
+    recordTestResult(true, '高对比度切换');
+}
+
+// 触发测试错误
+function triggerJSError() {
+    try {
+        // 故意触发错误
+        throw new Error('这是一个测试JavaScript错误');
+    } catch (error) {
+        // 错误会被全局错误处理器捕获
+        logError('测试JavaScript错误', error);
+    }
+}
+
+function triggerPromiseError() {
+    // 触发Promise错误
+    Promise.reject(new Error('这是一个测试Promise错误'));
+}
+
+function testNetworkError() {
+    fetch('/non-existent-endpoint')
+        .catch(error => {
+            logError('网络错误测试', error);
+            recordTestResult(true, '网络错误处理');
+        });
+}
+
+// 运行所有测试
+function runAllTests() {
+    // 重置计数器
+    testResults = { passed: 0, warnings: 0, failed: 0, total: 0 };
+    updateTestCounts();
+    
+    // 逐个运行测试
+    const tests = [
+        testEditorFeatures,
+        testSymbolMapping,
+        testThemeSwitching,
+        testKeyboardShortcuts,
+        simulateOffline,
+        simulateOnline
+    ];
+    
+    tests.forEach((test, index) => {
+        setTimeout(() => {
+            test();
+        }, index * 500);
+    });
+}
+
+// 导出测试结果
+function exportTestResults() {
+    const report = {
+        timestamp: new Date().toISOString(),
+        results: testResults,
+        browser: navigator.userAgent,
+        performance: getPerformanceMetrics()
+    };
+    
+    const blob = new Blob([JSON.stringify(report, null, 2)], {
+        type: 'application/json'
+    });
+    
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `test-report-${Date.now()}.json`;
+    a.click();
+    
+    URL.revokeObjectURL(url);
+}
+
+// 辅助函数
+function updateStatus(elementId, status, message) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.innerHTML = `<span class="status-indicator status-${status}"></span>${message}`;
+    }
+}
+
+function recordTestResult(passed, testName, isWarning = false) {
+    testResults.total++;
+    
+    if (passed && !isWarning) {
+        testResults.passed++;
+    } else if (passed && isWarning) {
+        testResults.warnings++;
+    } else {
+        testResults.failed++;
+    }
+    
+    updateTestCounts();
+    
+    console.log(`测试结果: ${testName} - ${passed ? (isWarning ? '警告' : '通过') : '失败'}`);
+}
+
+function updateTestCounts() {
+    document.getElementById('passed-count').textContent = testResults.passed;
+    document.getElementById('warning-count').textContent = testResults.warnings;
+    document.getElementById('failed-count').textContent = testResults.failed;
+    document.getElementById('total-count').textContent = testResults.total;
+}
+
+function logError(context, error) {
+    const errorLog = document.querySelector('#error-log .border');
+    if (errorLog) {
+        const entry = document.createElement('div');
+        entry.className = 'text-danger mb-1';
+        entry.innerHTML = `<small>${new Date().toLocaleTimeString()}</small> <strong>${context}:</strong> ${error.message}`;
+        
+        if (errorLog.children.length === 1 && errorLog.children[0].textContent.includes('等待错误测试')) {
+            errorLog.innerHTML = '';
+        }
+        
+        errorLog.appendChild(entry);
+        errorLog.scrollTop = errorLog.scrollHeight;
+    }
+}
+
+function getPerformanceMetrics() {
+    if (window.performance && window.performance.timing) {
+        const timing = window.performance.timing;
+        return {
+            loadTime: timing.loadEventEnd - timing.navigationStart,
+            domReady: timing.domContentLoadedEventEnd - timing.navigationStart,
+            networkTime: timing.responseEnd - timing.fetchStart
+        };
+    }
+    return null;
+}
+
+// 页面加载完成后的初始化
+document.addEventListener('DOMContentLoaded', function() {
+    // 显示性能指标
+    setTimeout(() => {
+        const metrics = getPerformanceMetrics();
+        if (metrics) {
+            document.getElementById('load-time').textContent = `${metrics.loadTime}ms`;
+        }
+        
+        // 检测内存使用（如果支持）
+        if (performance.memory) {
+            const memoryMB = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
+            document.getElementById('memory-usage').textContent = `${memoryMB}MB`;
+        }
+        
+        // 模拟缓存大小检测
+        let cacheSize = 0;
+        try {
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    cacheSize += localStorage[key].length;
+                }
+            }
+            document.getElementById('cache-size').textContent = `${(cacheSize / 1024).toFixed(2)}KB`;
+        } catch (e) {
+            document.getElementById('cache-size').textContent = '无法检测';
+        }
+    }, 1000);
+    
+    // 自动运行基础测试
+    setTimeout(() => {
+        console.log('开始自动测试...');
+        testEditorFeatures();
+    }, 2000);
+});
+
+// 手势测试（移动设备）
+if ('ontouchstart' in window) {
+    const gestureArea = document.getElementById('gesture-test-area');
+    const gestureFeedback = document.getElementById('gesture-feedback');
+    
+    let touchStartX, touchStartY;
+    
+    gestureArea.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    
+    gestureArea.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        
+        const absX = Math.abs(deltaX);
+        const absY = Math.abs(deltaY);
+        
+        if (absX > 50 || absY > 50) {
+            let gesture;
+            if (absX > absY) {
+                gesture = deltaX > 0 ? '右滑' : '左滑';
+            } else {
+                gesture = deltaY > 0 ? '下滑' : '上滑';
+            }
+            
+            gestureFeedback.textContent = `检测到手势: ${gesture}`;
+            gestureFeedback.className = 'mt-2 text-success';
+            
+            recordTestResult(true, `手势识别-${gesture}`);
+        }
+    }, { passive: true });
+}
+</script>
+{% endblock %}

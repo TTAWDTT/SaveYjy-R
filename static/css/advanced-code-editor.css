@@ -1,0 +1,348 @@
+/**
+ * Advanced Code Editor Styles
+ * VSCode-inspired styling for the code editor
+ */
+
+.advanced-code-editor {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #1e1e1e;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.advanced-code-editor:focus-within {
+    border-color: #007acc;
+    box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
+}
+
+/* 选中行高亮 */
+.selected-line-highlight {
+    background: rgba(0, 122, 204, 0.1) !important;
+}
+
+.selected-line-margin {
+    background: #007acc !important;
+    width: 3px !important;
+}
+
+/* 暗色主题 */
+.advanced-code-editor.theme-dark {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    border-color: #3e3e42;
+}
+
+/* 亮色主题 */
+.advanced-code-editor.theme-light {
+    background: #ffffff;
+    color: #000000;
+    border-color: #e5e5e5;
+}
+
+/* 高对比度主题 */
+.advanced-code-editor.theme-high-contrast {
+    background: #000000;
+    color: #ffffff;
+    border-color: #6fc3df;
+}
+
+/* 错误标记 */
+.monaco-editor .squiggly-error {
+    background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M0 3L3 0L6 3' fill='%23ff0000'/%3e%3c/svg%3e") repeat-x bottom;
+}
+
+/* 警告标记 */
+.monaco-editor .squiggly-warning {
+    background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M0 3L3 0L6 3' fill='%23ff9800'/%3e%3c/svg%3e") repeat-x bottom;
+}
+
+/* 信息标记 */
+.monaco-editor .squiggly-info {
+    background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M0 3L3 0L6 3' fill='%232196f3'/%3e%3c/svg%3e") repeat-x bottom;
+}
+
+/* 提示标记 */
+.monaco-editor .squiggly-hint {
+    background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M0 3L3 0L6 3' fill='%234caf50'/%3e%3c/svg%3e") repeat-x bottom;
+}
+
+/* 代码折叠样式 */
+.monaco-editor .cldr.folded::after {
+    content: '⋯';
+    color: #007acc;
+    font-weight: bold;
+}
+
+/* 选择指示器 */
+.monaco-editor .current-line-margin-both {
+    border-left: 2px solid #007acc;
+}
+
+/* 缩进参考线 */
+.monaco-editor .indent-guide {
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.monaco-editor .indent-guide.active {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 括号匹配高亮 */
+.monaco-editor .bracket-match {
+    background: rgba(0, 122, 204, 0.3);
+    border: 1px solid #007acc;
+}
+
+/* 查找小部件样式 */
+.monaco-editor .find-widget {
+    background: #252526 !important;
+    border: 1px solid #3e3e42 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 建议小部件样式 */
+.monaco-editor .suggest-widget {
+    background: #252526 !important;
+    border: 1px solid #3e3e42 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row.focused {
+    background: #094771 !important;
+}
+
+/* 参数提示样式 */
+.monaco-editor .parameter-hints-widget {
+    background: #252526 !important;
+    border: 1px solid #3e3e42 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 滚动条样式 */
+.monaco-editor .decorationsOverviewRuler {
+    background: #2d2d30 !important;
+}
+
+.monaco-editor .monaco-scrollable-element > .scrollbar > .slider {
+    background: rgba(121, 121, 121, 0.4) !important;
+}
+
+.monaco-editor .monaco-scrollable-element > .scrollbar > .slider:hover {
+    background: rgba(100, 100, 100, 0.7) !important;
+}
+
+.monaco-editor .monaco-scrollable-element > .scrollbar > .slider.active {
+    background: rgba(191, 191, 191, 0.4) !important;
+}
+
+/* 最小化地图样式 */
+.monaco-editor .minimap {
+    background: #1e1e1e !important;
+}
+
+.monaco-editor .minimap-slider {
+    background: rgba(121, 121, 121, 0.2) !important;
+}
+
+.monaco-editor .minimap-slider:hover {
+    background: rgba(121, 121, 121, 0.3) !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .advanced-code-editor {
+        height: 300px;
+        font-size: 12px;
+    }
+    
+    .monaco-editor .monaco-editor-background {
+        font-size: 12px !important;
+    }
+    
+    /* 隐藏迷你地图 */
+    .monaco-editor .minimap {
+        display: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .advanced-code-editor {
+        height: 250px;
+        font-size: 11px;
+    }
+    
+    /* 简化界面 */
+    .monaco-editor .margin-view-overlays {
+        font-size: 10px !important;
+    }
+}
+
+/* 自定义语法高亮 - R语言 */
+.monaco-editor .token.keyword.r { color: #569cd6; }
+.monaco-editor .token.string.r { color: #ce9178; }
+.monaco-editor .token.number.r { color: #b5cea8; }
+.monaco-editor .token.comment.r { color: #6a9955; font-style: italic; }
+.monaco-editor .token.operator.r { color: #d4d4d4; font-weight: bold; }
+.monaco-editor .token.function.r { color: #dcdcaa; }
+.monaco-editor .token.variable.r { color: #9cdcfe; }
+.monaco-editor .token.delimiter.r { color: #d4d4d4; }
+
+/* 特殊符号高亮 */
+.monaco-editor .token.symbol.assignment.r { color: #ff79c6; font-weight: bold; }
+.monaco-editor .token.symbol.pipe.r { color: #8be9fd; font-weight: bold; }
+.monaco-editor .token.symbol.math.r { color: #f1fa8c; }
+.monaco-editor .token.symbol.logic.r { color: #bd93f9; }
+
+/* 错误和警告样式增强 */
+.monaco-editor .margin-view-overlays .line-numbers.has-error {
+    color: #f44747 !important;
+    font-weight: bold;
+}
+
+.monaco-editor .margin-view-overlays .line-numbers.has-warning {
+    color: #ff8c00 !important;
+    font-weight: bold;
+}
+
+.monaco-editor .view-overlays .current-line.has-error {
+    background: rgba(244, 71, 71, 0.1) !important;
+}
+
+.monaco-editor .view-overlays .current-line.has-warning {
+    background: rgba(255, 140, 0, 0.1) !important;
+}
+
+/* 加载动画 */
+.advanced-code-editor.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.advanced-code-editor.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(30, 30, 30, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.advanced-code-editor.loading::after {
+    content: 'Loading editor...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #007acc;
+    font-size: 14px;
+    z-index: 1001;
+}
+
+/* 焦点样式 */
+.advanced-code-editor:focus-within .monaco-editor {
+    outline: none;
+}
+
+.advanced-code-editor:focus-within .monaco-editor .margin {
+    border-left: 2px solid #007acc;
+}
+
+/* 选择区域样式 */
+.monaco-editor .selected-text {
+    background: rgba(0, 122, 204, 0.3) !important;
+}
+
+.monaco-editor .focused .selected-text {
+    background: rgba(0, 122, 204, 0.4) !important;
+}
+
+/* 搜索匹配高亮 */
+.monaco-editor .findMatch {
+    background: rgba(234, 92, 0, 0.33) !important;
+}
+
+.monaco-editor .currentFindMatch {
+    background: rgba(0, 122, 204, 0.5) !important;
+}
+
+/* 代码镜头样式 */
+.monaco-editor .codelens-decoration {
+    color: #999999 !important;
+    font-size: 12px !important;
+}
+
+.monaco-editor .codelens-decoration:hover {
+    color: #007acc !important;
+}
+
+/* 内联提示样式 */
+.monaco-editor .inline-hints-decoration {
+    color: #969696 !important;
+    font-style: italic !important;
+}
+
+/* 性能优化 */
+.monaco-editor {
+    will-change: scroll-position;
+}
+
+.monaco-editor .view-lines {
+    will-change: transform;
+}
+
+/* 无障碍增强 */
+.monaco-editor[aria-label] {
+    outline: none;
+}
+
+.monaco-editor:focus {
+    outline: 2px solid #007acc;
+    outline-offset: -2px;
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+    .advanced-code-editor {
+        border: 2px solid #ffffff;
+    }
+    
+    .monaco-editor .token.keyword.r { color: #ffffff; font-weight: bold; }
+    .monaco-editor .token.string.r { color: #ffff00; }
+    .monaco-editor .token.number.r { color: #00ffff; }
+    .monaco-editor .token.comment.r { color: #7ca668; }
+    .monaco-editor .token.operator.r { color: #ffffff; }
+    .monaco-editor .token.function.r { color: #ffff00; }
+    .monaco-editor .token.variable.r { color: #ffffff; }
+}
+
+/* 深色模式偏好 */
+@media (prefers-color-scheme: dark) {
+    .advanced-code-editor {
+        background: #0d1117;
+        border-color: #30363d;
+    }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+    .advanced-code-editor,
+    .monaco-editor .decorationsOverviewRuler,
+    .monaco-editor .suggest-widget,
+    .monaco-editor .parameter-hints-widget {
+        transition: none !important;
+        animation: none !important;
+    }
+}

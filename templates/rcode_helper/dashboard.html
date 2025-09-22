@@ -1260,17 +1260,49 @@
                             <label for="{{ explanation_form.r_code.id_for_label }}" class="form-label">
                                 <i class="fas fa-file-code"></i>
                                 {{ explanation_form.r_code.label }}
+                                <div class="float-end">
+                                    <small class="text-muted">
+                                        <span id="dashboard-line-count">0 行</span> | 
+                                        <span id="dashboard-char-count">0 字符</span>
+                                    </small>
+                                </div>
                             </label>
-                            <div class="code-input-container">
-                                {{ explanation_form.r_code }}
-                                <div class="code-line-numbers" id="code-line-numbers"></div>
-                                <div class="selected-lines-info" id="selected-lines-info" style="display: none;">
-                                    <i class="fas fa-highlight me-2"></i>
-                                    <span>已选择行数: </span>
-                                    <span id="selected-lines-display"></span>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="clearLineSelection()">
-                                        <i class="fas fa-times"></i> 清除选择
-                                    </button>
+                            <div class="advanced-code-input-container">
+                                <!-- 高级代码编辑器 -->
+                                <div id="dashboard-code-editor"></div>
+                                <div class="code-editor-toolbar">
+                                    <div class="toolbar-section">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearDashboardEditor()">
+                                            <i class="fas fa-trash me-1"></i>清空
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-info" onclick="toggleDashboardSymbolMode()">
+                                            <i class="fas fa-font me-1"></i><span id="dashboard-symbol-text">符号</span>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="formatDashboardCode()">
+                                            <i class="fas fa-indent me-1"></i>格式化
+                                        </button>
+                                    </div>
+                                    <div class="toolbar-section">
+                                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="toggleDashboardTheme()">
+                                            <i class="fas fa-palette me-1"></i><span id="dashboard-theme-text">主题</span>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="loadDashboardExample()">
+                                            <i class="fas fa-code me-1"></i>示例
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 隐藏的原始textarea -->
+                                <textarea name="r_code" id="{{ explanation_form.r_code.id_for_label }}" style="display: none;" required></textarea>
+                                
+                                <div class="selected-lines-info" id="dashboard-selected-lines-info" style="display: none;">
+                                    <div class="alert alert-info alert-sm mb-0">
+                                        <i class="fas fa-highlight me-2"></i>
+                                        已选择 <strong><span id="dashboard-selected-lines-display">0</span></strong> 行代码用于重点解释
+                                        <button type="button" class="btn btn-sm btn-outline-info ms-2" onclick="clearDashboardLineSelection()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-text text-muted mt-2">{{ explanation_form.r_code.help_text }}</div>
@@ -2140,6 +2172,310 @@
             // TODO: 可以在界面中显示这些建议按钮
             return suggestions;
         }
+
+        // ====== Dashboard 高级代码编辑器功能 ======
+        let dashboardEditor = null;
+        let dashboardCurrentTheme = 'vs-dark';
+        let dashboardSymbolMode = false;
+
+        // 初始化Dashboard编辑器
+        async function initializeDashboardEditor() {
+            try {
+                // 确保AdvancedCodeEditor类可用
+                if (typeof AdvancedCodeEditor === 'undefined') {
+                    console.warn('AdvancedCodeEditor未加载，使用基础编辑器');
+                    return;
+                }
+
+                dashboardEditor = new AdvancedCodeEditor('#dashboard-code-editor', {
+                    language: 'r',
+                    theme: dashboardCurrentTheme,
+                    lineNumbers: true,
+                    wordWrap: false,
+                    minimap: false,
+                    fontSize: 14,
+                    height: 300,
+                    scrollBeyondLastLine: false,
+                    automaticLayout: true,
+                    renderWhitespace: 'selection',
+                    renderControlCharacters: false,
+                    enableSymbolReplacement: false
+                });
+
+                // 监听内容变化
+                dashboardEditor.container.addEventListener('contentChange', function(e) {
+                    const content = e.detail.content;
+                    const hiddenTextarea = document.getElementById('{{ explanation_form.r_code.id_for_label }}');
+                    if (hiddenTextarea) {
+                        hiddenTextarea.value = content;
+                    }
+                    updateDashboardEditorStats();
+                });
+
+                // 监听选择变化
+                dashboardEditor.container.addEventListener('selectionChange', function(e) {
+                    updateDashboardSelectedLinesInfo();
+                });
+
+                updateDashboardEditorStats();
+
+            } catch (error) {
+                console.warn('Dashboard编辑器初始化失败:', error);
+            }
+        }
+
+        function updateDashboardEditorStats() {
+            if (!dashboardEditor) return;
+
+            const content = dashboardEditor.getValue();
+            const lines = content.split('\n').length;
+            const chars = content.length;
+
+            const lineCountEl = document.getElementById('dashboard-line-count');
+            const charCountEl = document.getElementById('dashboard-char-count');
+            
+            if (lineCountEl) lineCountEl.textContent = `${lines} 行`;
+            if (charCountEl) charCountEl.textContent = `${chars} 字符`;
+        }
+
+        function updateDashboardSelectedLinesInfo() {
+            if (!dashboardEditor) return;
+
+            const selectedLines = dashboardEditor.getSelectedLines();
+            const count = selectedLines.length;
+
+            const displayEl = document.getElementById('dashboard-selected-lines-display');
+            const infoDiv = document.getElementById('dashboard-selected-lines-info');
+            const selectedLinesInput = document.querySelector('input[name="selected_lines"]');
+
+            if (displayEl) displayEl.textContent = count;
+
+            if (count > 0) {
+                if (infoDiv) infoDiv.style.display = 'block';
+                if (selectedLinesInput) selectedLinesInput.value = selectedLines.join(',');
+            } else {
+                if (infoDiv) infoDiv.style.display = 'none';
+                if (selectedLinesInput) selectedLinesInput.value = '';
+            }
+        }
+
+        function clearDashboardEditor() {
+            if (dashboardEditor) {
+                dashboardEditor.setValue('');
+                dashboardEditor.clearSelection();
+                showDashboardNotification('编辑器已清空', 'info');
+            }
+        }
+
+        function toggleDashboardSymbolMode() {
+            dashboardSymbolMode = !dashboardSymbolMode;
+            const symbolText = document.getElementById('dashboard-symbol-text');
+            const btn = symbolText?.parentElement;
+
+            if (dashboardSymbolMode) {
+                if (symbolText) symbolText.textContent = '标准';
+                if (btn) {
+                    btn.classList.remove('btn-outline-info');
+                    btn.classList.add('btn-info');
+                }
+                showDashboardNotification('符号模式已启用', 'info');
+            } else {
+                if (symbolText) symbolText.textContent = '符号';
+                if (btn) {
+                    btn.classList.remove('btn-info');
+                    btn.classList.add('btn-outline-info');
+                }
+                showDashboardNotification('标准模式已启用', 'info');
+            }
+
+            if (dashboardEditor && dashboardEditor.options) {
+                dashboardEditor.options.enableSymbolReplacement = dashboardSymbolMode;
+            }
+        }
+
+        function formatDashboardCode() {
+            if (dashboardEditor) {
+                dashboardEditor.formatCode();
+                showDashboardNotification('代码已格式化', 'success');
+            }
+        }
+
+        function toggleDashboardTheme() {
+            dashboardCurrentTheme = dashboardCurrentTheme === 'vs-dark' ? 'vs' : 'vs-dark';
+            const themeText = document.getElementById('dashboard-theme-text');
+
+            if (dashboardCurrentTheme === 'vs-dark') {
+                if (themeText) themeText.textContent = '深色';
+                if (dashboardEditor && dashboardEditor.editor) {
+                    monaco.editor.setTheme('vs-dark');
+                }
+            } else {
+                if (themeText) themeText.textContent = '浅色';
+                if (dashboardEditor && dashboardEditor.editor) {
+                    monaco.editor.setTheme('vs');
+                }
+            }
+        }
+
+        function loadDashboardExample() {
+            const exampleCode = `# R语言数据分析入门示例
+# 作者：R语言助手
+# 时间：${new Date().toLocaleDateString()}
+
+# 1. 加载必要的包
+library(ggplot2)
+library(dplyr)
+
+# 2. 创建示例数据
+students <- data.frame(
+    name = c("张三", "李四", "王五", "赵六", "孙七"),
+    math_score = c(85, 92, 78, 96, 88),
+    english_score = c(90, 85, 92, 89, 94),
+    age = c(20, 21, 19, 22, 20)
+)
+
+# 3. 数据探索
+print("=== 数据概览 ===")
+head(students)
+summary(students)
+
+# 4. 数据分析
+print("=== 分析结果 ===")
+# 计算平均分
+students$average_score <- (students$math_score + students$english_score) / 2
+
+# 找出成绩最好的学生
+best_student <- students[which.max(students$average_score), ]
+print(paste("成绩最好的学生是:", best_student$name))
+
+# 5. 数据可视化
+# 创建散点图
+ggplot(students, aes(x = math_score, y = english_score)) +
+    geom_point(aes(color = name), size = 3) +
+    geom_smooth(method = "lm", se = FALSE, color = "red") +
+    labs(title = "数学成绩与英语成绩的关系",
+         x = "数学成绩", 
+         y = "英语成绩") +
+    theme_minimal()
+
+print("示例代码执行完成！")`;
+
+            if (dashboardEditor) {
+                dashboardEditor.setValue(exampleCode);
+                showDashboardNotification('示例代码已加载', 'success');
+            }
+        }
+
+        function clearDashboardLineSelection() {
+            if (dashboardEditor) {
+                dashboardEditor.clearSelection();
+                updateDashboardSelectedLinesInfo();
+                showDashboardNotification('已清除行选择', 'info');
+            }
+        }
+
+        function showDashboardNotification(message, type = 'info') {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info'} dashboard-notification`;
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
+                    ${message}
+                </div>
+            `;
+
+            // 添加样式
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 250px;
+                animation: slideInRight 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                border: none;
+                border-radius: 8px;
+            `;
+
+            document.body.appendChild(notification);
+
+            // 自动移除
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // 页面加载完成后初始化Dashboard编辑器
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟初始化，确保所有资源都已加载
+            setTimeout(() => {
+                initializeDashboardEditor();
+            }, 1000);
+        });
+    </script>
+    
+    <!-- 高级代码编辑器资源 -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
+    <link rel="stylesheet" href="{% static 'css/advanced-code-editor.css' %}">
+    <script src="{% static 'js/advanced-code-editor.js' %}"></script>
+    
+    <!-- Dashboard编辑器样式 -->
+    <style>
+    .advanced-code-input-container {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #f8f9fa;
+    }
+    
+    .advanced-code-input-container #dashboard-code-editor {
+        height: 300px;
+        border: none;
+    }
+    
+    .code-editor-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: #e9ecef;
+        border-top: 1px solid #dee2e6;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .toolbar-section {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    
+    .dashboard-notification {
+        font-size: 14px;
+    }
+    
+    /* 响应式优化 */
+    @media (max-width: 768px) {
+        .advanced-code-input-container #dashboard-code-editor {
+            height: 250px;
+        }
+        
+        .code-editor-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .toolbar-section {
+            justify-content: center;
+        }
+    }
+    </style>
     </script>
     
     <!-- 主题系统脚本 -->

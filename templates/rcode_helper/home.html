@@ -183,19 +183,72 @@
         <div id="explanation-section" class="section-form" style="display: none;">
             <div class="card premium-card glass-effect">
                 <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border-radius: 28px 28px 0 0;">
-                    <h5 class="mb-0">
-                        <i class="fas fa-code me-2"></i>R语言代码解释
-                    </h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-code me-2"></i>R语言代码解释
+                        </h5>
+                        <div class="editor-controls">
+                            <button type="button" class="btn btn-outline-light btn-sm me-2" onclick="toggleEditorTheme()">
+                                <i class="fas fa-palette me-1"></i><span id="theme-text">深色主题</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-light btn-sm" onclick="formatEditorCode()">
+                                <i class="fas fa-indent me-1"></i>格式化
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form method="post" action="{% url 'rcode_helper:code_explanation' %}" data-progress="true" id="explanation-form">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="{{ explanation_form.r_code.id_for_label }}" class="form-label">
-                                {{ explanation_form.r_code.label }}
+                            <label for="advanced-code-editor" class="form-label d-flex align-items-center justify-content-between">
+                                <span>{{ explanation_form.r_code.label }}</span>
+                                <div class="editor-stats">
+                                    <small class="text-muted">
+                                        <span id="line-count">0 行</span> | 
+                                        <span id="char-count">0 字符</span> |
+                                        <span id="selected-lines-count">选中: 0 行</span>
+                                    </small>
+                                </div>
                             </label>
-                            {{ explanation_form.r_code }}
-                            <input type="hidden" id="r_code_input" value="">
+                            
+                            <!-- 高级代码编辑器容器 -->
+                            <div class="advanced-editor-container">
+                                <div id="advanced-code-editor" class="mb-2"></div>
+                                <div class="editor-toolbar">
+                                    <div class="toolbar-left">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearEditor()">
+                                            <i class="fas fa-trash me-1"></i>清空
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-info" onclick="toggleSymbolMode()">
+                                            <i class="fas fa-font me-1"></i><span id="symbol-mode-text">符号模式</span>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllLines()">
+                                            <i class="fas fa-select-all me-1"></i>全选行
+                                        </button>
+                                    </div>
+                                    <div class="toolbar-right">
+                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="loadExample()">
+                                            <i class="fas fa-code me-1"></i>示例代码
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 选中行信息 -->
+                                <div class="selected-lines-info mt-2" id="selected-lines-info" style="display: none;">
+                                    <div class="alert alert-info alert-sm">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        已选择 <strong><span id="selected-lines-display">0</span></strong> 行代码用于重点解释
+                                        <button type="button" class="btn btn-sm btn-outline-info ms-2" onclick="clearLineSelection()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 隐藏的原始textarea（用于表单提交） -->
+                            <textarea name="r_code" id="{{ explanation_form.r_code.id_for_label }}" style="display: none;" required></textarea>
+                            <input type="hidden" name="selected_lines" id="selected_lines_input" value="">
                             <div class="form-text">{{ explanation_form.r_code.help_text }}</div>
                         </div>
                         
@@ -354,6 +407,339 @@
         this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>正在思考...';
         this.disabled = true;
     });
+</script>
+
+<!-- Monaco Editor -->
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
+
+<!-- Advanced Code Editor -->
+<link rel="stylesheet" href="{% static 'css/advanced-code-editor.css' %}">
+<script src="{% static 'js/advanced-code-editor.js' %}"></script>
+
+<style>
+/* 高级编辑器容器样式 */
+.advanced-editor-container {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.advanced-editor-container #advanced-code-editor {
+    height: 350px;
+    border: none;
+}
+
+.editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #e9ecef;
+    border-top: 1px solid #dee2e6;
+}
+
+.toolbar-left, .toolbar-right {
+    display: flex;
+    gap: 8px;
+}
+
+.editor-controls .btn {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.editor-stats {
+    font-family: 'Monaco', 'Cascadia Code', 'Consolas', monospace;
+}
+
+.selected-lines-info .alert {
+    margin-bottom: 0;
+    padding: 0.5rem 0.75rem;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .editor-controls {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .advanced-editor-container #advanced-code-editor {
+        height: 250px;
+    }
+    
+    .toolbar-left, .toolbar-right {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .editor-stats {
+        display: none;
+    }
+}
+</style>
+
+<script>
+let advancedEditor = null;
+let currentTheme = 'vs-dark';
+let symbolModeActive = false;
+
+async function showExplanationForm() {
+    hideAllForms();
+    document.getElementById('explanation-section').style.display = 'block';
+    document.getElementById('explanation-section').scrollIntoView({ behavior: 'smooth' });
+    
+    // 初始化高级代码编辑器
+    if (!advancedEditor) {
+        await initializeAdvancedEditor();
+    }
+}
+
+async function initializeAdvancedEditor() {
+    try {
+        advancedEditor = new AdvancedCodeEditor('#advanced-code-editor', {
+            language: 'r',
+            theme: currentTheme,
+            lineNumbers: true,
+            wordWrap: false,
+            minimap: false,
+            fontSize: 14,
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            renderWhitespace: 'selection',
+            renderControlCharacters: false,
+            enableSymbolReplacement: false,
+            placeholder: '在此粘贴您的R语言代码...\n\n例如：\n# 数据分析示例\ndata <- data.frame(\n  x = 1:10,\n  y = rnorm(10)\n)\nplot(data$x, data$y)'
+        });
+        
+        // 监听内容变化
+        advancedEditor.container.addEventListener('contentChange', function(e) {
+            const content = e.detail.content;
+            const hiddenTextarea = document.getElementById('{{ explanation_form.r_code.id_for_label }}');
+            if (hiddenTextarea) {
+                hiddenTextarea.value = content;
+            }
+            updateEditorStats();
+        });
+        
+        // 监听选择变化
+        advancedEditor.container.addEventListener('selectionChange', function(e) {
+            updateSelectedLinesInfo();
+        });
+        
+        // 初始化统计信息
+        updateEditorStats();
+        
+    } catch (error) {
+        console.warn('高级编辑器初始化失败，使用备用方案');
+        showNotification('编辑器加载失败，已切换到基础模式', 'warning');
+    }
+}
+
+function updateEditorStats() {
+    if (!advancedEditor) return;
+    
+    const content = advancedEditor.getValue();
+    const lines = content.split('\n').length;
+    const chars = content.length;
+    
+    document.getElementById('line-count').textContent = `${lines} 行`;
+    document.getElementById('char-count').textContent = `${chars} 字符`;
+}
+
+function updateSelectedLinesInfo() {
+    if (!advancedEditor) return;
+    
+    const selectedLines = advancedEditor.getSelectedLines();
+    const count = selectedLines.length;
+    
+    document.getElementById('selected-lines-count').textContent = `选中: ${count} 行`;
+    document.getElementById('selected-lines-display').textContent = count;
+    
+    const infoDiv = document.getElementById('selected-lines-info');
+    const selectedLinesInput = document.getElementById('selected_lines_input');
+    
+    if (count > 0) {
+        infoDiv.style.display = 'block';
+        selectedLinesInput.value = selectedLines.join(',');
+    } else {
+        infoDiv.style.display = 'none';
+        selectedLinesInput.value = '';
+    }
+}
+
+function toggleEditorTheme() {
+    if (!advancedEditor) return;
+    
+    currentTheme = currentTheme === 'vs-dark' ? 'vs' : 'vs-dark';
+    const themeText = document.getElementById('theme-text');
+    
+    if (currentTheme === 'vs-dark') {
+        themeText.textContent = '深色主题';
+        if (advancedEditor.editor) {
+            monaco.editor.setTheme('vs-dark');
+        }
+    } else {
+        themeText.textContent = '浅色主题';
+        if (advancedEditor.editor) {
+            monaco.editor.setTheme('vs');
+        }
+    }
+    
+    // 更新容器样式
+    const container = document.querySelector('.advanced-editor-container');
+    if (currentTheme === 'vs-dark') {
+        container.style.background = '#1e1e1e';
+    } else {
+        container.style.background = '#ffffff';
+    }
+}
+
+function formatEditorCode() {
+    if (advancedEditor) {
+        advancedEditor.formatCode();
+        showNotification('代码已格式化', 'success');
+    }
+}
+
+function clearEditor() {
+    if (advancedEditor) {
+        advancedEditor.setValue('');
+        advancedEditor.clearSelection();
+        showNotification('编辑器已清空', 'info');
+    }
+}
+
+function toggleSymbolMode() {
+    symbolModeActive = !symbolModeActive;
+    const symbolText = document.getElementById('symbol-mode-text');
+    const btn = symbolText.parentElement;
+    
+    if (symbolModeActive) {
+        symbolText.textContent = '标准模式';
+        btn.classList.remove('btn-outline-info');
+        btn.classList.add('btn-info');
+        showNotification('符号模式已启用，特殊符号将被替换显示', 'info');
+    } else {
+        symbolText.textContent = '符号模式';
+        btn.classList.remove('btn-info');
+        btn.classList.add('btn-outline-info');
+        showNotification('已切换到标准模式', 'info');
+    }
+    
+    // 这里可以添加符号替换逻辑
+    if (advancedEditor && advancedEditor.options) {
+        advancedEditor.options.enableSymbolReplacement = symbolModeActive;
+    }
+}
+
+function selectAllLines() {
+    if (advancedEditor) {
+        const content = advancedEditor.getValue();
+        const lineCount = content.split('\n').length;
+        
+        for (let i = 1; i <= lineCount; i++) {
+            advancedEditor.selectedLines.add(i);
+        }
+        
+        advancedEditor.updateLineHighlights();
+        updateSelectedLinesInfo();
+        showNotification(`已选择全部 ${lineCount} 行`, 'success');
+    }
+}
+
+function clearLineSelection() {
+    if (advancedEditor) {
+        advancedEditor.clearSelection();
+        updateSelectedLinesInfo();
+        showNotification('已清除行选择', 'info');
+    }
+}
+
+function loadExample() {
+    const exampleCode = `# R语言数据分析示例
+# 创建数据框
+data <- data.frame(
+    name = c("Alice", "Bob", "Charlie", "Diana"),
+    age = c(25, 30, 35, 28),
+    score = c(85, 92, 78, 89)
+)
+
+# 查看数据结构
+str(data)
+summary(data)
+
+# 数据可视化
+plot(data$age, data$score, 
+     main = "年龄与成绩的关系",
+     xlab = "年龄", 
+     ylab = "成绩",
+     col = "blue", 
+     pch = 16)
+
+# 添加回归线
+abline(lm(score ~ age, data = data), col = "red")
+
+# 计算相关系数
+cor(data$age, data$score)`;
+
+    if (advancedEditor) {
+        advancedEditor.setValue(exampleCode);
+        showNotification('示例代码已加载', 'success');
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // 创建通知元素
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info'} notification-toast`;
+    notification.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
+            ${message}
+        </div>
+    `;
+    
+    // 添加样式
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 300px;
+        animation: slideInRight 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: none;
+        border-radius: 8px;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 自动移除
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// 添加动画样式
+const animationStyles = document.createElement('style');
+animationStyles.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(animationStyles);
 </script>
 
     </div>
