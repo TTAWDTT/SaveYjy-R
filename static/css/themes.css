@@ -15,6 +15,21 @@
     --hover-color: rgba(255, 105, 180, 0.05);
 }
 
+/* 确保默认主题应用 */
+body {
+    --primary-color: #ff69b4;
+    --secondary-color: #ff1493;
+    --accent-color: #ffc0cb;
+    --background-gradient: linear-gradient(135deg, #fecfef 0%, #ffc0cb 50%, #ff69b4 100%);
+    --card-background: rgba(255, 255, 255, 0.95);
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border-color: rgba(255, 105, 180, 0.2);
+    --shadow-color: rgba(255, 105, 180, 0.3);
+    --hover-color: rgba(255, 105, 180, 0.05);
+}
+
 /* ========== 主题定义 ========== */
 
 /* 主题1: 经典粉色 */
@@ -201,7 +216,7 @@
 body {
     background: var(--background-gradient) !important;
     color: var(--text-primary) !important;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease !important;
 }
 
 .card {

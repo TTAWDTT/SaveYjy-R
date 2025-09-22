@@ -100,20 +100,40 @@ class AdvancedCodeEditor {
             this.setupErrorHandling();
             
         } catch (error) {
-            console.warn('Monaco Editor 不可用，使用增强的 textarea 编辑器');
+            console.warn('Monaco Editor 不可用，使用增强的 textarea 编辑器:', error);
             this.createFallbackEditor();
         }
     }
     
     async loadMonacoEditor() {
         return new Promise((resolve, reject) => {
+            // 检查是否已经加载了Monaco
+            if (typeof require !== 'undefined' && typeof monaco !== 'undefined') {
+                resolve();
+                return;
+            }
+            
+            // 创建脚本元素
             const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js';
+            script.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/loader.js';
             script.onload = () => {
-                require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' }});
-                require(['vs/editor/editor.main'], resolve);
+                // 配置require.js
+                if (typeof require !== 'undefined') {
+                    require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs' }});
+                    require(['vs/editor/editor.main'], resolve);
+                } else {
+                    // 如果require未定义，尝试直接加载编辑器
+                    const editorScript = document.createElement('script');
+                    editorScript.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/editor/editor.main.js';
+                    editorScript.onload = resolve;
+                    editorScript.onerror = reject;
+                    document.head.appendChild(editorScript);
+                }
             };
-            script.onerror = reject;
+            script.onerror = () => {
+                console.warn('Monaco Editor加载失败，使用备用方案');
+                reject(new Error('Monaco Editor加载失败'));
+            };
             document.head.appendChild(script);
         });
     }
@@ -134,46 +154,53 @@ class AdvancedCodeEditor {
     }
     
     createEditor() {
-        // 配置 R 语言支持
-        monaco.languages.register({ id: 'r' });
-        
-        // 设置 R 语言语法高亮
-        monaco.languages.setMonarchTokensProvider('r', this.getRSyntaxDefinition());
-        
-        // 设置自动补全
-        monaco.languages.registerCompletionItemProvider('r', this.getRCompletionProvider());
-        
-        // 创建编辑器
-        this.editor = monaco.editor.create(this.container, {
-            value: '',
-            language: 'r',
-            theme: this.options.theme,
-            fontSize: this.options.fontSize,
-            fontFamily: this.options.fontFamily,
-            lineNumbers: 'on',
-            lineNumbersMinChars: 3,
-            lineDecorationsWidth: 10,
-            lineHighlightBackground: 'rgba(255, 255, 255, 0.04)',
-            renderLineHighlight: 'all',
-            wordWrap: this.options.wordWrap ? 'on' : 'off',
-            minimap: { enabled: this.options.minimap },
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-            renderWhitespace: this.options.renderWhitespace,
-            renderControlCharacters: this.options.renderControlCharacters,
-            formatOnPaste: this.options.formatOnPaste,
-            formatOnType: this.options.formatOnType,
-            autoIndent: this.options.autoIndent,
-            bracketPairColorization: this.options.bracketPairColorization,
-            guides: this.options.guides,
-            suggestOnTriggerCharacters: this.options.suggestOnTriggerCharacters,
-            quickSuggestions: this.options.quickSuggestions,
-            tabSize: this.options.tabSize,
-            insertSpaces: this.options.insertSpaces,
-            detectIndentation: this.options.detectIndentation
-        });
-        
-        this.model = this.editor.getModel();
+        try {
+            // 配置 R 语言支持
+            if (monaco.languages) {
+                monaco.languages.register({ id: 'r' });
+                
+                // 设置 R 语言语法高亮
+                monaco.languages.setMonarchTokensProvider('r', this.getRSyntaxDefinition());
+                
+                // 设置自动补全
+                monaco.languages.registerCompletionItemProvider('r', this.getRCompletionProvider());
+            }
+            
+            // 创建编辑器
+            this.editor = monaco.editor.create(this.container, {
+                value: '',
+                language: 'r',
+                theme: this.options.theme,
+                fontSize: this.options.fontSize,
+                fontFamily: this.options.fontFamily,
+                lineNumbers: 'on',
+                lineNumbersMinChars: 3,
+                lineDecorationsWidth: 10,
+                lineHighlightBackground: 'rgba(255, 255, 255, 0.04)',
+                renderLineHighlight: 'all',
+                wordWrap: this.options.wordWrap ? 'on' : 'off',
+                minimap: { enabled: this.options.minimap },
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                renderWhitespace: this.options.renderWhitespace,
+                renderControlCharacters: this.options.renderControlCharacters,
+                formatOnPaste: this.options.formatOnPaste,
+                formatOnType: this.options.formatOnType,
+                autoIndent: this.options.autoIndent,
+                bracketPairColorization: this.options.bracketPairColorization,
+                guides: this.options.guides,
+                suggestOnTriggerCharacters: this.options.suggestOnTriggerCharacters,
+                quickSuggestions: this.options.quickSuggestions,
+                tabSize: this.options.tabSize,
+                insertSpaces: this.options.insertSpaces,
+                detectIndentation: this.options.detectIndentation
+            });
+            
+            this.model = this.editor.getModel();
+        } catch (error) {
+            console.error('创建Monaco编辑器失败:', error);
+            throw error;
+        }
     }
     
     createFallbackEditor() {
@@ -601,26 +628,32 @@ class AdvancedCodeEditor {
     }
     
     setupEventListeners() {
-        if (!this.editor) return;
+        if (!this.editor || !this.model) return;
         
-        // 内容变化监听
-        this.model.onDidChangeContent(() => {
-            this.onContentChange();
-        });
-        
-        // 选择变化监听
-        this.editor.onDidChangeCursorSelection(() => {
-            this.onSelectionChange();
-        });
-        
-        // 键盘快捷键
-        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK, () => {
-            this.formatCode();
-        });
-        
-        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD, () => {
-            this.duplicateLine();
-        });
+        try {
+            // 内容变化监听
+            this.model.onDidChangeContent(() => {
+                this.onContentChange();
+            });
+            
+            // 选择变化监听
+            this.editor.onDidChangeCursorSelection(() => {
+                this.onSelectionChange();
+            });
+            
+            // 键盘快捷键
+            if (this.editor.addCommand && monaco.KeyMod && monaco.KeyCode) {
+                this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK, () => {
+                    this.formatCode();
+                });
+                
+                this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD, () => {
+                    this.duplicateLine();
+                });
+            }
+        } catch (error) {
+            console.warn('设置编辑器事件监听器失败:', error);
+        }
     }
     
     setupSymbolReplacement() {

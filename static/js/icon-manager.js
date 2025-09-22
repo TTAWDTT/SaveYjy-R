@@ -46,13 +46,20 @@ class IconManager {
     }
     
     checkFontAwesome() {
-        // 方法1: 创建测试元素检查Font Awesome是否工作
-        const testElement = document.createElement('i');
-        testElement.className = 'fas fa-home';
-        testElement.style.cssText = 'opacity: 0; position: absolute; pointer-events: none;';
-        document.body.appendChild(testElement);
+        // 更可靠的检测方法：检查多个图标元素
+        const testElements = [];
+        const testClasses = ['fas fa-home', 'fas fa-lightbulb', 'fas fa-code'];
         
-        // 方法2: 检查FontAwesome CSS是否加载
+        // 创建多个测试元素
+        testClasses.forEach(cls => {
+            const testElement = document.createElement('i');
+            testElement.className = cls;
+            testElement.style.cssText = 'opacity: 0; position: absolute; pointer-events: none;';
+            document.body.appendChild(testElement);
+            testElements.push(testElement);
+        });
+        
+        // 检查FontAwesome CSS是否加载
         let fontAwesomeLoaded = false;
         const links = document.querySelectorAll('link[href*="font-awesome"]');
         if (links.length > 0) {
@@ -68,28 +75,36 @@ class IconManager {
         
         // 短暂延迟以确保样式加载
         setTimeout(() => {
-            const computed = window.getComputedStyle(testElement, ':before');
-            const content = computed.getPropertyValue('content');
+            let hasFontAwesome = false;
             
-            // 检查是否有有效的内容
-            const hasFontAwesome = content && content !== 'none' && content !== '""' && content !== '' && content !== 'normal';
+            // 检查所有测试元素
+            for (let i = 0; i < testElements.length; i++) {
+                const computed = window.getComputedStyle(testElements[i], ':before');
+                const content = computed.getPropertyValue('content');
+                
+                // 检查是否有有效的内容
+                if (content && content !== 'none' && content !== '""' && content !== '' && content !== 'normal') {
+                    hasFontAwesome = true;
+                    console.log(`图标 ${testClasses[i]} 检测成功:`, content);
+                    break;
+                }
+            }
             
             console.log('Font Awesome检测:', hasFontAwesome ? '已加载' : '未加载');
-            console.log('检测到的content值:', content);
-            console.log('computed样式:', computed.fontFamily);
             
-            // 更严格的检测：如果没有明确的图标内容或字体族不包含FontAwesome，启用emoji
-            if (!hasFontAwesome || !fontAwesomeLoaded) {
+            // 如果Font Awesome未加载，启用emoji
+            if (!hasFontAwesome) {
                 console.log('启用Emoji备用方案...');
                 this.enableEmojiIcons();
             } else {
-                console.log('Font Awesome正常，但仍然设置备用方案...');
+                console.log('Font Awesome正常，设置备用方案...');
                 // 即使Font Awesome正常，也设置备用映射，以防后续加载失败
                 this.setupFallbacks();
             }
             
-            document.body.removeChild(testElement);
-        }, 100);
+            // 清理测试元素
+            testElements.forEach(el => document.body.removeChild(el));
+        }, 200);
     }
     
     enableEmojiIcons() {
@@ -133,21 +148,17 @@ class IconManager {
         // 检查图标类名并设置备用emoji
         for (const [faClass, emoji] of Object.entries(this.iconMap)) {
             if (icon.classList.contains(faClass)) {
-                // 方法1: 设置aria-hidden属性
-                if (!icon.getAttribute('aria-hidden') || icon.getAttribute('aria-hidden') === 'true') {
-                    icon.setAttribute('aria-hidden', emoji);
-                }
+                // 直接设置文本内容和样式
+                icon.textContent = emoji;
+                icon.style.fontFamily = '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif';
+                icon.style.fontStyle = 'normal';
+                icon.style.fontWeight = 'normal';
+                icon.style.display = 'inline-block';
+                icon.style.width = '1em';
+                icon.style.textAlign = 'center';
                 
-                // 方法2: 如果处于emoji模式且没有内容，直接设置文本内容
-                if (this.isEmojiModeActive) {
-                    const hasContent = window.getComputedStyle(icon, ':before').content !== 'none';
-                    if (!hasContent || icon.textContent.trim() === '') {
-                        icon.textContent = emoji;
-                        icon.style.fontFamily = '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif';
-                        icon.style.fontStyle = 'normal';
-                        icon.style.fontWeight = 'normal';
-                    }
-                }
+                // 移除可能干扰的伪元素
+                icon.style.position = 'relative';
                 break;
             }
         }
@@ -253,9 +264,15 @@ class IconManager {
             // 清除emoji文本内容
             const icons = document.querySelectorAll('i.fas, i.fa, i.far, i.fab');
             icons.forEach(icon => {
+                // 检查是否是emoji字符
                 if (icon.textContent.match(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u)) {
                     icon.textContent = '';
                     icon.style.fontFamily = '';
+                    icon.style.fontStyle = '';
+                    icon.style.fontWeight = '';
+                    icon.style.display = '';
+                    icon.style.width = '';
+                    icon.style.textAlign = '';
                 }
             });
         } else {
