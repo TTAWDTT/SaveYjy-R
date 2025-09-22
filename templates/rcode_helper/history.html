@@ -4,30 +4,44 @@
 
 {% block extra_css %}
 <style>
-    body {
-        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-    }
-    
-    .main-container {
+    /* 页面容器 */
+    .history-container {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(20px);
-        border-radius: 25px;
-        margin: 30px auto;
-        padding: 40px;
-        box-shadow: 0 20px 60px rgba(255, 105, 180, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 24px;
+        margin: 2rem auto;
+        padding: 3rem;
+        box-shadow: 
+            0 32px 64px rgba(0, 0, 0, 0.15),
+            0 16px 32px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+    }
+    
+    .history-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
     }
     
     .page-header {
         margin-bottom: 40px;
         padding-bottom: 20px;
-        border-bottom: 2px solid rgba(255, 182, 193, 0.2);
+        border-bottom: 2px solid rgba(102, 126, 234, 0.1);
     }
     
     .page-title {
         font-size: 32px;
         font-weight: 700;
-        color: #ff1493;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         margin: 0;
         display: flex;
         align-items: center;
@@ -37,7 +51,7 @@
         margin-right: 15px;
         width: 50px;
         height: 50px;
-        background: linear-gradient(135deg, #ff69b4, #ff1493);
+        background: linear-gradient(135deg, #667eea, #764ba2);
         border-radius: 15px;
         display: flex;
         align-items: center;
@@ -46,43 +60,50 @@
         font-size: 22px;
     }
     
-    .btn-pink {
-        background: linear-gradient(135deg, #ff69b4, #ff1493);
+    .btn-primary-gradient {
+        background: linear-gradient(135deg, #667eea, #764ba2);
         border: none;
         border-radius: 50px;
         padding: 12px 25px;
         font-weight: 600;
         color: white;
         transition: all 0.3s ease;
-        box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
     }
     
-    .btn-pink:hover {
+    .btn-primary-gradient:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 35px rgba(255, 105, 180, 0.4);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
         color: white;
+        text-decoration: none;
     }
     
     .request-card {
-        background: rgba(255, 182, 193, 0.1);
-        border: 1px solid rgba(255, 182, 193, 0.3);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(102, 126, 234, 0.1);
         border-radius: 20px;
         transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        overflow: hidden;
     }
     
     .request-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(255, 105, 180, 0.2);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        border-color: rgba(102, 126, 234, 0.3);
     }
     
     .card-header {
-        background: rgba(255, 192, 203, 0.2);
-        border-bottom: 1px solid rgba(255, 182, 193, 0.3);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border-bottom: 1px solid rgba(102, 126, 234, 0.1);
         border-radius: 20px 20px 0 0 !important;
     }
     
-    .badge-pink {
-        background: linear-gradient(135deg, #ff69b4, #ff1493);
+    .badge-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
         color: white;
         padding: 8px 12px;
         border-radius: 50px;
@@ -104,18 +125,66 @@
         border-radius: 50px;
         font-weight: 600;
     }
+    
+    /* 空状态样式 */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 2rem;
+        display: block;
+        opacity: 0.7;
+    }
+    
+    .empty-state h4 {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state p {
+        color: #6c757d;
+        margin-bottom: 2rem;
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        .history-container {
+            margin: 1rem;
+            padding: 2rem;
+        }
+        
+        .page-title {
+            font-size: 24px;
+        }
+        
+        .page-title i {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="main-container">
-        <div class="page-header d-flex justify-content-between align-items-center">
+<div class="container-fluid">
+    <div class="history-container">
+        <div class="page-header d-flex justify-content-between align-items-center flex-wrap">
             <h1 class="page-title">
                 <i class="fas fa-history"></i>
                 历史记录
             </h1>
-            <a href="{% url 'rcode_helper:dashboard' %}" class="btn btn-pink">
+            <a href="{% url 'rcode_helper:dashboard' %}" class="btn btn-primary-gradient">
                 <i class="fas fa-arrow-left me-2"></i>返回主面板
             </a>
         </div>
@@ -123,10 +192,10 @@
         {% if recent_requests %}
             <div class="row">
                 {% for request in recent_requests %}
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-6 col-xl-4 mb-4">
                     <div class="card h-100 request-card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <span class="{% if request.request_type == 'homework' %}badge-pink{% elif request.request_type == 'explanation' %}badge-success{% else %}badge-info{% endif %}">
+                            <span class="{% if request.request_type == 'homework' %}badge-primary{% elif request.request_type == 'explanation' %}badge-success{% else %}badge-info{% endif %}">
                                 {% if request.request_type == 'homework' %}
                                     <i class="fas fa-clipboard-list me-1"></i>作业题解答
                                 {% elif request.request_type == 'explanation' %}
@@ -150,7 +219,7 @@
                             {% endif %}
                         </div>
                         <div class="card-footer bg-transparent">
-                            <a href="{% url 'rcode_helper:request_detail' request.id %}" class="btn btn-pink btn-sm">
+                            <a href="{% url 'rcode_helper:request_detail' request.id %}" class="btn btn-primary-gradient btn-sm">
                                 <i class="fas fa-eye me-1"></i>查看详情
                             </a>
                         </div>
@@ -167,11 +236,11 @@
             {% endif %}
         {% else %}
             <!-- 空状态 -->
-            <div class="text-center py-5">
-                <i class="fas fa-inbox fa-5x text-muted mb-4" style="color: #ff69b4 !important; opacity: 0.7;"></i>
-                <h4 class="text-muted mb-3" style="color: #ff1493 !important;">暂无历史记录</h4>
-                <p class="text-muted mb-4">开始使用R语言助手来创建您的第一个记录吧！</p>
-                <a href="{% url 'rcode_helper:dashboard' %}" class="btn btn-pink btn-lg">
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h4>暂无历史记录</h4>
+                <p>开始使用R语言助手来创建您的第一个记录吧！</p>
+                <a href="{% url 'rcode_helper:dashboard' %}" class="btn btn-primary-gradient btn-lg">
                     <i class="fas fa-rocket me-2"></i>开始使用
                 </a>
             </div>
@@ -182,18 +251,16 @@
 
 {% block scripts %}
 <script>
-    // 卡片悬停效果
+    // 卡片悬停效果增强
     document.addEventListener('DOMContentLoaded', function() {
         const cards = document.querySelectorAll('.request-card');
         cards.forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-5px)';
-                this.style.transition = 'transform 0.3s ease';
-                this.style.boxShadow = '0 8px 25px rgba(255, 105, 180, 0.3)';
+                this.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
             });
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '0 4px 15px rgba(255, 105, 180, 0.2)';
             });
         });
     });

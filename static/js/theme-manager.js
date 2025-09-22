@@ -50,7 +50,11 @@ class ThemeManager {
         const selector = document.createElement('div');
         selector.className = navbarTarget ? 'navbar-theme-selector' : 'enhanced-theme-selector';
         selector.innerHTML = `
-            <button class="theme-toggle-btn nav-link" id="theme-toggle" title="切换主题" style="background: none; border: none; color: rgba(255,255,255,0.9); padding: 0.5rem 0.75rem;">
+            <button class="theme-toggle-btn nav-link" id="theme-toggle" title="切换主题" 
+                    style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); 
+                           color: rgba(255,255,255,0.95); padding: 0.5rem 0.75rem; border-radius: 0.375rem;
+                           transition: all 0.3s ease; font-size: 16px; min-width: 44px; min-height: 36px;
+                           display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);">
                 <span class="theme-icon">🎨</span>
             </button>
             <div class="theme-dropdown" id="theme-dropdown">
@@ -107,22 +111,29 @@ class ThemeManager {
             }
             
             .navbar-theme-selector .theme-toggle-btn {
-                background: none !important;
-                border: none !important;
-                color: rgba(255,255,255,0.9) !important;
+                background: rgba(255, 255, 255, 0.15) !important;
+                border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                color: rgba(255,255,255,0.95) !important;
                 padding: 0.5rem 0.75rem !important;
                 border-radius: 0.375rem !important;
                 transition: all 0.3s ease !important;
                 font-size: 16px !important;
                 width: auto !important;
                 height: auto !important;
+                backdrop-filter: blur(10px);
+                min-width: 44px;
+                min-height: 36px;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
             
             .navbar-theme-selector .theme-toggle-btn:hover {
-                background: rgba(255,255,255,0.1) !important;
+                background: rgba(255,255,255,0.25) !important;
+                border-color: rgba(255, 255, 255, 0.5) !important;
                 color: white !important;
-                transform: none !important;
-                box-shadow: none !important;
+                transform: translateY(-1px) !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
             }
             
             .theme-toggle-btn {

@@ -2,13 +2,27 @@
 
 /* 全局样式 */
 body {
-    font-family: 'Microsoft YaHei', 'SimHei', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', 'Microsoft YaHei', 'SimHei', system-ui, -apple-system, 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     background-attachment: fixed;
     line-height: 1.6;
     min-height: 100vh;
     color: #333;
     position: relative;
+}
+
+/* Emoji 显示优化 */
+.emoji, .emoji-display, .theme-emoji, [data-emoji], span:has(.emoji) {
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif !important;
+    font-variant-emoji: emoji !important;
+    text-rendering: optimizeLegibility !important;
+    font-size: inherit;
+    display: inline-block;
+}
+
+/* 强制Emoji字体渲染 */
+* {
+    font-variant-emoji: emoji;
 }
 
 /* 高级背景纹理 */
