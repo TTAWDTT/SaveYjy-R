@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji显示测试</title>
+    <style>
+        body {
+            font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'SimHei', system-ui, Roboto, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .test-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            color: #333;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+        .emoji-large {
+            font-size: 3rem;
+            margin: 10px;
+            line-height: 1.2;
+        }
+        .emoji-normal {
+            font-size: 1.5rem;
+            margin: 5px;
+        }
+        .status-good { color: #28a745; }
+        .status-bad { color: #dc3545; }
+        .status-warning { color: #ffc107; }
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        .fix-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .fix-button:hover {
+            background: #5a67d8;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 Emoji显示测试</h1>
+        <p>测试Emoji是否正常显示</p>
+        
+        <div class="test-section">
+            <h2>😀 基本Emoji测试</h2>
+            <div class="emoji-large">
+                <p>😀 😂 🤣 😊 😍 🥰 😘 😋 😎 🤔</p>
+                <p>🔥 💯 ✨ 🎉 🎊 🎁 🎈 🎂 🎯 🎮</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎨 全面Emoji测试</h2>
+            <div class="emoji-normal">
+                <p><strong>笑脸类：</strong> 😀 😂 🤣 😊 😍 🥰 😘 😋 😎 🤔 😴 😅 😆 🤪 🤯</p>
+                <p><strong>动物类：</strong> 🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐮 🐷 🐸 🐵</p>
+                <p><strong>食物类：</strong> 🍎 🍌 🍇 🍓 🍑 🍒 🥝 🍅 🥕 🌽 🥖 🍕 🍔 🍟 🌮</p>
+                <p><strong>符号类：</strong> ❤️ 💙 💚 💛 🧡 💜 🖤 🤍 💔 ❣️ 💕 💖 💗 💘 💝</p>
+                <p><strong>手势类：</strong> 👍 👎 👌 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 ☝️ ✋ 🤚</p>
+                <p><strong>活动类：</strong> ⚽ 🏀 🏈 ⚾ 🎾 🏐 🏉 🎱 🏓 🏸 🥅 🏒 🏑 🏏 ⛳</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 测试控制</h2>
+            <button class="fix-button" onclick="runEmojiDebug()">运行调试</button>
+            <button class="fix-button" onclick="forceEmojifix()">强制修复</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 测试结果</h2>
+            <div id="test-results" class="debug-info">
+                等待测试...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function runEmojiDebug() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '正在运行测试...';
+            
+            // 检查window.emojiFixManager是否存在
+            if (typeof window.emojiFixManager !== 'undefined') {
+                const status = window.emojiFixManager.getStatus();
+                results.innerHTML = `
+                    <p><strong>Emoji修复管理器状态:</strong></p>
+                    <p>已修复: ${status.isFixed ? '是' : '否'}</p>
+                    <p>Canvas支持: ${status.canvasSupport ? '是' : '否'}</p>
+                    <p>DOM支持: ${status.domSupport ? '是' : '否'}</p>
+                `;
+            } else {
+                results.innerHTML = '<p>Emoji修复管理器未加载</p>';
+            }
+        }
+
+        function forceEmojifix() {
+            if (typeof window.emojiFixManager !== 'undefined') {
+                window.emojiFixManager.forcefix();
+                document.getElementById('test-results').innerHTML = '<p>已强制执行Emoji修复</p>';
+            } else {
+                document.getElementById('test-results').innerHTML = '<p>Emoji修复管理器未加载</p>';
+            }
+        }
+
+        // 页面加载完成后自动运行测试
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(runEmojiDebug, 2000);
+        });
+    </script>
+    
+    <!-- 加载修复脚本 -->
+    <script src="/static/js/emoji-fix.js"></script>
+</body>
+</html>

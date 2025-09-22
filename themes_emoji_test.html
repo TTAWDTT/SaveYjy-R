@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R语言智能助手 - 主题和Emoji测试</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts with Emoji support -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 确保Emoji字体优先级 */
+        body {
+            font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'SimHei', sans-serif !important;
+        }
+        
+        /* 主题变量 */
+        :root {
+            --primary-color: #ff69b4;
+            --secondary-color: #ff1493;
+            --accent-color: #ffc0cb;
+            --background-gradient: linear-gradient(135deg, #fecfef 0%, #ffc0cb 50%, #ff69b4 100%);
+            --card-background: rgba(255, 255, 255, 0.95);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --border-color: rgba(255, 105, 180, 0.2);
+            --shadow-color: rgba(255, 105, 180, 0.3);
+        }
+        
+        /* 经典粉色主题 */
+        .theme-classic {
+            --primary-color: #ff69b4;
+            --secondary-color: #ff1493;
+            --accent-color: #ffc0cb;
+            --background-gradient: linear-gradient(135deg, #fecfef 0%, #ffc0cb 50%, #ff69b4 100%);
+            --card-background: rgba(255, 255, 255, 0.95);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --border-color: rgba(255, 105, 180, 0.2);
+            --shadow-color: rgba(255, 105, 180, 0.3);
+        }
+        
+        /* 深色主题 */
+        .theme-dark {
+            --primary-color: #6366f1;
+            --secondary-color: #4f46e5;
+            --accent-color: #8b5cf6;
+            --background-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --card-background: rgba(30, 41, 59, 0.95);
+            --text-primary: #f1f5f9;
+            --text-secondary: #e2e8f0;
+            --border-color: rgba(99, 102, 241, 0.3);
+            --shadow-color: rgba(99, 102, 241, 0.4);
+        }
+        
+        /* 海洋蓝主题 */
+        .theme-ocean {
+            --primary-color: #0ea5e9;
+            --secondary-color: #0284c7;
+            --accent-color: #38bdf8;
+            --background-gradient: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+            --card-background: rgba(240, 249, 255, 0.95);
+            --text-primary: #0c4a6e;
+            --text-secondary: #075985;
+            --border-color: rgba(14, 165, 233, 0.2);
+            --shadow-color: rgba(14, 165, 233, 0.3);
+        }
+        
+        /* 森林绿主题 */
+        .theme-forest {
+            --primary-color: #10b981;
+            --secondary-color: #059669;
+            --accent-color: #34d399;
+            --background-gradient: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+            --card-background: rgba(236, 253, 245, 0.95);
+            --text-primary: #064e3b;
+            --text-secondary: #065f46;
+            --border-color: rgba(16, 185, 129, 0.2);
+            --shadow-color: rgba(16, 185, 129, 0.3);
+        }
+        
+        /* 应用主题变量 */
+        body {
+            background: var(--background-gradient) !important;
+            color: var(--text-primary) !important;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .card {
+            background: var(--card-background) !important;
+            border-color: var(--border-color) !important;
+            box-shadow: 0 10px 30px var(--shadow-color) !important;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary-color) !important;
+            border-color: var(--secondary-color) !important;
+        }
+        
+        /* Emoji样式 */
+        .emoji-display {
+            font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif !important;
+            font-size: 2rem;
+            display: inline-block;
+            margin: 0.2rem;
+        }
+        
+        /* 主题切换器 */
+        .theme-switcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .theme-dropdown {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            display: none;
+            min-width: 200px;
+        }
+        
+        .theme-dropdown.show {
+            display: block;
+        }
+        
+        .theme-option {
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 0;
+            transition: background 0.2s;
+        }
+        
+        .theme-option:hover {
+            background: var(--border-color);
+        }
+        
+        /* Emoji修复样式 */
+        .emoji-fix {
+            font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif !important;
+        }
+        
+        /* 图标Fallback样式 */
+        .icon-fallback-active i.fas::before,
+        .icon-fallback-active i.fa::before {
+            content: "" !important;
+            display: none !important;
+        }
+        
+        .icon-fallback-active i.fas::after,
+        .icon-fallback-active i.fa::after {
+            font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif !important;
+            display: inline-block !important;
+            vertical-align: middle !important;
+        }
+        
+        /* 特定图标映射为Emoji */
+        .icon-fallback-active i.fa-home::after { content: "🏠"; }
+        .icon-fallback-active i.fa-lightbulb::after { content: "💡"; }
+        .icon-fallback-active i.fa-brain::after { content: "🧠"; }
+        .icon-fallback-active i.fa-code::after { content: "💻"; }
+        .icon-fallback-active i.fa-heart::after { content: "❤️"; }
+        .icon-fallback-active i.fa-star::after { content: "⭐"; }
+        .icon-fallback-active i.fa-palette::after { content: "🎨"; }
+        .icon-fallback-active i.fa-cog::after { content: "⚙️"; }
+        .icon-fallback-active i.fa-smile::after { content: "😊"; }
+        .icon-fallback-active i.fa-sad::after { content: "😢"; }
+        .icon-fallback-active i.fa-meh::after { content: "😐"; }
+    </style>
+</head>
+<body class="theme-classic">
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: var(--background-gradient);">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>R语言智能助手
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-home me-1"></i>首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-history me-1"></i>历史记录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-chart-line me-1"></i>系统监控</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-tachometer-alt me-1"></i>仪表板</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-vial me-1"></i>功能测试</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link btn" id="emoji-fix-btn" title="修复Emoji显示">
+                            <i class="fas fa-smile me-1"></i>Emoji修复
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-4">🎨 主题和Emoji显示测试</h1>
+            </div>
+        </div>
+        
+        <!-- 主题切换测试 -->
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-palette me-2"></i>主题切换</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>选择不同的主题来改变页面外观：</p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary theme-btn" data-theme="classic">
+                                <span class="emoji-display">🌸</span> 经典粉色主题
+                            </button>
+                            <button class="btn btn-primary theme-btn" data-theme="dark">
+                                <span class="emoji-display">🌙</span> 深色专业主题
+                            </button>
+                            <button class="btn btn-primary theme-btn" data-theme="ocean">
+                                <span class="emoji-display">🌊</span> 海洋蓝主题
+                            </button>
+                            <button class="btn btn-primary theme-btn" data-theme="forest">
+                                <span class="emoji-display">🌲</span> 森林绿主题
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Emoji显示测试 -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-smile me-2"></i>Emoji显示测试</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>检查以下Emoji是否正常显示：</p>
+                        <div class="emoji-grid">
+                            <div class="emoji-display">😀</div>
+                            <div class="emoji-display">😂</div>
+                            <div class="emoji-display">🤣</div>
+                            <div class="emoji-display">😊</div>
+                            <div class="emoji-display">😍</div>
+                            <div class="emoji-display">🥰</div>
+                            <div class="emoji-display">😎</div>
+                            <div class="emoji-display">🤩</div>
+                            <div class="emoji-display">🥳</div>
+                            <div class="emoji-display">😭</div>
+                            <div class="emoji-display">😡</div>
+                            <div class="emoji-display">🤯</div>
+                            <div class="emoji-display">🥶</div>
+                            <div class="emoji-display">😱</div>
+                            <div class="emoji-display">👍</div>
+                            <div class="emoji-display">👎</div>
+                            <div class="emoji-display">👏</div>
+                            <div class="emoji-display">🙌</div>
+                            <div class="emoji-display">🔥</div>
+                            <div class="emoji-display">💯</div>
+                            <div class="emoji-display">✨</div>
+                            <div class="emoji-display">🎉</div>
+                            <div class="emoji-display">🎊</div>
+                            <div class="emoji-display">🎁</div>
+                        </div>
+                        <div class="mt-3">
+                            <button id="test-emoji-btn" class="btn btn-primary">
+                                <i class="fas fa-vial me-1"></i>测试Emoji显示
+                            </button>
+                            <button id="force-emoji-fix-btn" class="btn btn-secondary">
+                                <i class="fas fa-tools me-1"></i>强制修复Emoji
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 图标测试 -->
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-icons me-2"></i>图标显示测试</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>检查Font Awesome图标和Emoji备用显示：</p>
+                        <div class="icon-grid d-flex flex-wrap">
+                            <div class="p-3 text-center">
+                                <i class="fas fa-home fa-2x d-block mb-2"></i>
+                                <span>首页</span>
+                            </div>
+                            <div class="p-3 text-center">
+                                <i class="fas fa-lightbulb fa-2x d-block mb-2"></i>
+                                <span>灯泡</span>
+                            </div>
+                            <div class="p-3 text-center">
+                                <i class="fas fa-brain fa-2x d-block mb-2"></i>
+                                <span>大脑</span>
+                            </div>
+                            <div class="p-3 text-center">
+                                <i class="fas fa-code fa-2x d-block mb-2"></i>
+                                <span>代码</span>
+                            </div>
+                            <div class="p-3 text-center">
+                                <i class="fas fa-heart fa-2x d-block mb-2"></i>
+                                <span>心形</span>
+                            </div>
+                            <div class="p-3 text-center">
+                                <i class="fas fa-star fa-2x d-block mb-2"></i>
+                                <span>星星</span>
+                            </div>
+                            <div class="p-3 text-center">
+                                <i class="fas fa-palette fa-2x d-block mb-2"></i>
+                                <span>调色板</span>
+                            </div>
+                            <div class="p-3 text-center">
+                                <i class="fas fa-cog fa-2x d-block mb-2"></i>
+                                <span>设置</span>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button id="toggle-icon-mode-btn" class="btn btn-primary">
+                                <i class="fas fa-exchange-alt me-1"></i>切换图标模式 (Font Awesome / Emoji)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主题切换器 -->
+    <div class="theme-switcher">
+        <button class="btn btn-primary rounded-circle" id="theme-toggle" style="width: 50px; height: 50px;">
+            <i class="fas fa-palette"></i>
+        </button>
+        <div class="theme-dropdown" id="theme-dropdown">
+            <h6 class="mb-3">选择主题</h6>
+            <div class="theme-option" data-theme="classic">
+                <span class="emoji-display">🌸</span> 经典粉色
+            </div>
+            <div class="theme-option" data-theme="dark">
+                <span class="emoji-display">🌙</span> 深色专业
+            </div>
+            <div class="theme-option" data-theme="ocean">
+                <span class="emoji-display">🌊</span> 海洋蓝
+            </div>
+            <div class="theme-option" data-theme="forest">
+                <span class="emoji-display">🌲</span> 森林绿
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 主题管理器
+        class ThemeManager {
+            constructor() {
+                this.currentTheme = 'classic';
+                this.themes = {
+                    'classic': 'theme-classic',
+                    'dark': 'theme-dark',
+                    'ocean': 'theme-ocean',
+                    'forest': 'theme-forest'
+                };
+                this.init();
+            }
+            
+            init() {
+                // 绑定主题按钮事件
+                document.querySelectorAll('.theme-btn, .theme-option').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const theme = e.currentTarget.dataset.theme;
+                        this.setTheme(theme);
+                    });
+                });
+                
+                // 绑定主题切换器事件
+                const themeToggle = document.getElementById('theme-toggle');
+                const themeDropdown = document.getElementById('theme-dropdown');
+                
+                themeToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    themeDropdown.classList.toggle('show');
+                });
+                
+                // 点击外部关闭下拉菜单
+                document.addEventListener('click', (e) => {
+                    if (!themeToggle.contains(e.target) && !themeDropdown.contains(e.target)) {
+                        themeDropdown.classList.remove('show');
+                    }
+                });
+            }
+            
+            setTheme(themeName) {
+                if (!this.themes[themeName]) return;
+                
+                // 移除所有主题类
+                Object.values(this.themes).forEach(themeClass => {
+                    document.body.classList.remove(themeClass);
+                });
+                
+                // 添加新主题类
+                document.body.classList.add(this.themes[themeName]);
+                this.currentTheme = themeName;
+                
+                console.log('主题已切换到:', themeName);
+            }
+        }
+        
+        // Emoji修复管理器
+        class EmojiFixManager {
+            constructor() {
+                this.isFixed = false;
+                this.isEmojiMode = false;
+                this.init();
+            }
+            
+            init() {
+                // 绑定按钮事件
+                document.getElementById('emoji-fix-btn').addEventListener('click', () => {
+                    this.manualFix();
+                });
+                
+                document.getElementById('test-emoji-btn').addEventListener('click', () => {
+                    this.testEmojiDisplay();
+                });
+                
+                document.getElementById('force-emoji-fix-btn').addEventListener('click', () => {
+                    this.forceFix();
+                });
+                
+                document.getElementById('toggle-icon-mode-btn').addEventListener('click', () => {
+                    this.toggleIconMode();
+                });
+                
+                // 页面加载完成后自动检测
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', () => {
+                        setTimeout(() => this.checkAndFix(), 1000);
+                    });
+                } else {
+                    setTimeout(() => this.checkAndFix(), 1000);
+                }
+            }
+            
+            checkAndFix() {
+                console.log('🔍 开始检测Emoji显示问题...');
+                
+                // 检测Emoji显示
+                const emojiSupport = this.testEmojiDOM();
+                console.log('DOM Emoji支持:', emojiSupport);
+                
+                if (!emojiSupport) {
+                    console.log('⚠️ 检测到Emoji显示问题，开始修复...');
+                    this.applyFixes();
+                } else {
+                    console.log('✅ Emoji显示正常');
+                }
+            }
+            
+            testEmojiDOM() {
+                try {
+                    const testElement = document.createElement('span');
+                    testElement.textContent = '😀';
+                    testElement.style.cssText = `
+                        position: absolute;
+                        top: -9999px;
+                        left: -9999px;
+                        font-size: 100px;
+                        visibility: hidden;
+                    `;
+                    document.body.appendChild(testElement);
+                    
+                    const width = testElement.offsetWidth;
+                    const height = testElement.offsetHeight;
+                    
+                    document.body.removeChild(testElement);
+                    
+                    // 如果宽度和高度合理，说明渲染正常
+                    return width > 50 && height > 50;
+                } catch (e) {
+                    console.warn('DOM测试失败:', e);
+                    return false;
+                }
+            }
+            
+            applyFixes() {
+                // 应用字体修复
+                this.fixFontFamily();
+                this.isFixed = true;
+                console.log('🔧 Emoji修复已应用');
+            }
+            
+            fixFontFamily() {
+                // 确保Emoji字体优先级
+                const style = document.createElement('style');
+                style.textContent = `
+                    body, * {
+                        font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'SimHei', sans-serif !important;
+                    }
+                    
+                    .emoji-fix, .emoji-display {
+                        font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif !important;
+                        font-variant-emoji: emoji !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            manualFix() {
+                alert('🔧 手动触发Emoji修复！');
+                this.checkAndFix();
+            }
+            
+            testEmojiDisplay() {
+                const result = this.testEmojiDOM();
+                alert(result ? '✅ Emoji显示正常' : '❌ Emoji显示异常');
+            }
+            
+            forceFix() {
+                this.applyFixes();
+                alert('✅ Emoji修复已完成！');
+            }
+            
+            toggleIconMode() {
+                document.body.classList.toggle('icon-fallback-active');
+                this.isEmojiMode = !this.isEmojiMode;
+                alert(this.isEmojiMode ? '✅ 已切换到Emoji图标模式' : '✅ 已切换到Font Awesome图标模式');
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            window.themeManager = new ThemeManager();
+            window.emojiFixManager = new EmojiFixManager();
+        });
+    </script>
+</body>
+</html>
