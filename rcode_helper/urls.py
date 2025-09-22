@@ -22,6 +22,9 @@ urlpatterns = [
     # 功能测试页面
     path('test/', views.test_features_view, name='test_features'),
     
+    # Temporary demo view for modern interface
+    path('modern-demo/', views.modern_demo_view, name='modern_demo'),
+    
     # 分析数据收集API
     path('api/analytics/', views.api_analytics, name='api_analytics'),
     

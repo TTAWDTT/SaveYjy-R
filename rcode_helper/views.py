@@ -24,6 +24,17 @@ def test_features_view(request):
     })
 
 
+def modern_demo_view(request):
+    """现代化界面演示视图 - 无需认证"""
+    context = {
+        'homework_form': HomeworkForm(),
+        'explanation_form': CodeExplanationForm(),
+        'chat_form': ChatForm(),
+        'username': 'Demo User'
+    }
+    return render(request, 'rcode_helper/dashboard.html', context)
+
+
 @require_http_methods(["POST"])
 def api_analytics(request):
     """接收性能分析数据的API端点"""

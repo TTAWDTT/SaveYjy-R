@@ -1,47 +1,461 @@
 {% extends 'rcode_helper/base.html' %}
+{% load static %}
 
-{% block title %}R语言助手 - 智能R语言学习平台{% endblock %}
+{% block title %}R语言助手 - 现代化智能学习平台{% endblock %}
+
+{% block extra_css %}
+<!-- Modern Theme CSS -->
+<link href="{% static 'css/modern-theme.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
-<div class="premium-container">
-    <!-- 粒子背景效果 -->
-    <div class="particles-bg">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-
-<div class="row">
-    <div class="col-lg-8 mx-auto">
-        <!-- 欢迎信息 -->
-        <div class="text-center mb-5 dynamic-glow">
-            <h1 class="display-4 mb-3 title-gradient">
-                <span class="emoji-icon icon-glow me-3">📈</span>
-                <span class="typewriter">R语言智能助手</span>
-            </h1>
-            <p class="lead text-muted mb-4">
-                基于先进AI技术，为您提供专业的R语言学习支持
+<div class="modern-bg">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                ✨ AI 驱动的智能R语言学习系统
+            </div>
+            <h1 class="hero-title">重新定义您的<br>R语言学习体验</h1>
+            <p class="hero-subtitle">
+                结合现代设计与人工智能技术，为您打造个性化的R语言学习平台。
+                让每一行代码都充满智慧与效率。
             </p>
-            
-            <!-- 特色标签 -->
-            <div class="mb-4">
-                <span class="feature-tag glass-effect">
-                    <span class="emoji-icon me-1">🧠</span>智能分析
-                </span>
-                <span class="feature-tag glass-effect">
-                    <span class="emoji-icon me-1">💻</span>代码生成
-                </span>
-                <span class="feature-tag glass-effect">
-                    <span class="emoji-icon me-1">💬</span>详细解释
-                </span>
-                <span class="feature-tag glass-effect">
-                    <span class="emoji-icon me-1">🚀</span>高效学习
-                </span>
+            <div class="hero-buttons">
+                <a href="{% url 'rcode_helper:dashboard' %}" class="btn-modern btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    开始学习之旅
+                </a>
+                <a href="#features" class="btn-modern btn-secondary">
+                    <i class="fas fa-info-circle"></i>
+                    了解更多
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-number">1000+</span>
+                    <span class="hero-stat-label">问题解决</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number">98%</span>
+                    <span class="hero-stat-label">准确率</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number">24/7</span>
+                    <span class="hero-stat-label">智能助手</span>
+                </div>
             </div>
         </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">强大功能，简单易用</h2>
+                <p class="section-subtitle">探索R语言助手为您提供的全方位智能学习解决方案</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">智能作业求解</h3>
+                        <p class="feature-description">
+                            基于AI的智能作业分析，支持自动代码生成、错误检测和最佳实践建议。
+                            让您的R语言作业不再困难。
+                        </p>
+                        <a href="{% url 'rcode_helper:dashboard' %}" class="btn-modern btn-primary">
+                            <i class="fas fa-arrow-right"></i>
+                            立即体验
+                        </a>
+                    </div>
+                </div>
+
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">代码智能解释</h3>
+                        <p class="feature-description">
+                            深度代码分析和逐行解释，支持复杂算法解读和性能优化建议。
+                            让每一行代码都清晰明了。
+                        </p>
+                        <a href="{% url 'rcode_helper:dashboard' %}" class="btn-modern btn-primary">
+                            <i class="fas fa-arrow-right"></i>
+                            开始解释
+                        </a>
+                    </div>
+                </div>
+
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">智能对话助手</h3>
+                        <p class="feature-description">
+                            24/7在线AI助手，支持实时问答、学习指导和个性化建议。
+                            您的专属R语言学习伙伴。
+                        </p>
+                        <a href="{% url 'rcode_helper:dashboard' %}" class="btn-modern btn-primary">
+                            <i class="fas fa-arrow-right"></i>
+                            开始对话
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">准备好开启智能学习之旅了吗？</h2>
+            <p class="cta-text">
+                加入数万名学习者的行列，体验AI驱动的R语言学习革命。
+                让人工智能成为您的学习伙伴，释放更多时间专注于创新和实践。
+            </p>
+            <a href="{% url 'rcode_helper:dashboard' %}" class="btn-modern btn-success">
+                <i class="fas fa-star"></i>
+                立即开始学习
+            </a>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Hero Section Styles */
+    .hero-section {
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(67, 97, 238, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(76, 201, 240, 0.15) 0%, transparent 50%),
+            var(--bg-primary);
+        padding: 8rem 2rem 6rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    .hero-content {
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(67, 97, 238, 0.1);
+        border: 1px solid rgba(67, 97, 238, 0.3);
+        border-radius: 50px;
+        padding: 0.75rem 1.5rem;
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--accent-light);
+        backdrop-filter: blur(10px);
+        animation: slideInDown 0.8s ease;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-light) 50%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
+        animation: slideInUp 0.8s ease 0.2s both;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        color: var(--text-secondary);
+        margin-bottom: 3rem;
+        line-height: 1.7;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: slideInUp 0.8s ease 0.4s both;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: slideInUp 0.8s ease 0.6s both;
+        margin-bottom: 4rem;
+    }
+
+    .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 4rem;
+        padding-top: 3rem;
+        border-top: 1px solid var(--border);
+        animation: slideInUp 0.8s ease 0.8s both;
+    }
+
+    .hero-stat {
+        text-align: center;
+    }
+
+    .hero-stat-number {
+        display: block;
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+    }
+
+    .hero-stat-label {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+        font-weight: 500;
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 6rem 2rem;
+        position: relative;
+    }
+
+    .features-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 100px;
+        background: var(--accent-gradient);
+        opacity: 0.6;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        margin-bottom: 4rem;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card-modern {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        padding: 3rem;
+        transition: all var(--transition-base);
+        position: relative;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .feature-card-modern:nth-child(1) { animation-delay: 0.1s; }
+    .feature-card-modern:nth-child(2) { animation-delay: 0.2s; }
+    .feature-card-modern:nth-child(3) { animation-delay: 0.3s; }
+
+    .feature-card-modern:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent);
+    }
+
+    .feature-card-modern::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--accent-gradient);
+        transform: scaleX(0);
+        transition: transform var(--transition-base);
+    }
+
+    .feature-card-modern:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-icon-modern {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
+        border: 2px solid rgba(67, 97, 238, 0.2);
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--accent);
+        margin-bottom: var(--space-lg);
+        transition: all var(--transition-base);
+    }
+
+    .feature-card-modern:hover .feature-icon-modern {
+        transform: scale(1.1);
+        background: rgba(67, 97, 238, 0.2);
+    }
+
+    .feature-content {
+        flex: 1;
+    }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: var(--space-md);
+    }
+
+    .feature-description {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: var(--space-lg);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+        padding: 5rem 2rem;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, transparent 70%);
+        z-index: 0;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .cta-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-light) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+
+    .cta-text {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.7;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 4rem 1rem 3rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .hero-stats {
+            gap: 2rem;
+        }
+
+        .features-section {
+            padding: 4rem 1rem;
+        }
+
+        .feature-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .feature-card-modern {
+            padding: 2rem;
+        }
+
+        .cta-section {
+            padding: 4rem 1rem;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+        }
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Modern UI JavaScript -->
+<script src="{% static 'js/modern-ui.js' %}"></script>
+{% endblock %}
 
         <!-- 功能选择卡片 -->
         <div class="row mb-5">
